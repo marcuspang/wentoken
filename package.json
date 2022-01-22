@@ -15,9 +15,9 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
-    "lint": "eslint --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\" --fix",
-    "lint:sol": "solhint --fix --ignore-path .gitignore \"contracts/**/*.sol\"",
-    "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\" --write",
+    "lint": "eslint --ignore-path .gitignore \"**/*.+(ts|js|tsx)\" --fix",
+    "lint:sol": "solhint --fix --ignore-path .gitignore \"**/*.sol\"",
+    "format": "prettier --ignore-path .gitignore \"**/*.+(ts|js|tsx)\" --write",
     "dev:network": "yarn hardhat run --network hardhat scripts/deploy.ts && yarn hardhat node",
     "postinstall": "husky install"
   },

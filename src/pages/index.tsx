@@ -1,18 +1,19 @@
-import Head from 'next/head';
+import { Box, Button, Text } from '@chakra-ui/react';
+import { useMoralis } from 'react-moralis';
 
 export default function Home() {
+  const { authenticate, isAuthenticated, user, logout } = useMoralis();
+
+  if (!isAuthenticated) {
+    return <Button onClick={() => authenticate()}>Authenticate</Button>;
+  }
+
   return (
-    <div>
-      <Head>
-        <title>wenToken</title>
-        <meta
-          name="description"
-          content="NFT Portfolio and trading platform for inter-NFT trades"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main>Main</main>
-      <footer>Footer</footer>
-    </div>
+    <Box>
+      <Text as="h1" fontSize={'lg'}>
+        Welcome {user.get('username')}
+      </Text>
+      <Button onClick={logout}>Logout</Button>
+    </Box>
   );
 }

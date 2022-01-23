@@ -58,7 +58,7 @@ const NFTCard = ({
         w={"full"}
         borderWidth="0px"
         rounded="lg"
-        shadow="lg"
+        boxShadow={"lg"}
         position="relative"
       >
         <Image
@@ -101,10 +101,10 @@ const NFTCard = ({
           </HStack>
           <Flex justifyContent="space-evenly">
             <Button minW="30%" maxW="50%" variant={"normal"}>
-              BUY
+              Sell
             </Button>
             <Button minW="30%" maxW="50%" variant={"normal-dark"}>
-              TRADE
+              Trade
             </Button>
           </Flex>
         </Box>

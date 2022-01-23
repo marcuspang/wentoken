@@ -50,8 +50,14 @@ const PortfolioPage: NextPage = () => {
         <Box boxShadow={"xl"} rounded={"xl"} px={10} pt={8} pb={6}>
           <PortfolioStats sum={sum} tokens={tokens} isLoading={isLoading} />
         </Box>
-        {/* {tokens.map((token, index) => <PortfolioCollection tokenAmount={token} tokenId={index} key={index} />)} */}
-        <PortfolioCollection tokenAmount={tokens[0]} tokenId={0} />
+        {tokens.map((token, index) => (
+          <PortfolioCollection
+            tokenAmount={token}
+            tokenId={index}
+            key={index}
+          />
+        ))}
+        {/* <PortfolioCollection tokenAmount={tokens[0]} tokenId={0} /> */}
       </Box>
     </Layout>
   );

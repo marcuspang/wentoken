@@ -71,11 +71,15 @@ const NFTCard = ({
 
         <Box p="4">
           <Box d="flex" alignItems="flex-start" mb={2}>
-            {isTradeable && (
-              <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="green">
+            {isTradeable ?               
+            <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="green">
                 Tradeable
-              </Badge>
-            )}
+              </Badge> :
+              <Box h='19.2px'></Box>
+            //   <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="white" color="white">
+            //   Untradeable
+            // </Badge>
+          }
           </Box>
           <HStack justifyContent="space-between" spacing={1} mb={4}>
             <Stack width={"70%"} spacing={0}>

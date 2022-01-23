@@ -11,16 +11,26 @@ import {
   IconProps,
   useColorModeValue,
   Button, 
-  Text } from "@chakra-ui/react";
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Input,
+  Text} from "@chakra-ui/react";
 import { useMoralis } from "react-moralis";
 import NFTCard from "../components/Explore/NFTCard";
 import Card from "../components/Explore/Card";
 import Layout from "../components/Layout/Layout";
 
+
 const Home = () => {
   const { authenticate, isAuthenticated, isWeb3Enabled, user, logout } =
     useMoralis();
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Layout>
       {isAuthenticated && isWeb3Enabled && (
@@ -75,8 +85,7 @@ const Home = () => {
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: 'column', sm: 'row' }}>
-            <Button
-              rounded={'full'}
+            <Button onClick={onOpen} rounded={'full'}
               size={'lg'}
               fontWeight={'normal'}
               px={6}
@@ -128,6 +137,33 @@ const Home = () => {
         
       </Stack>
     </Container>
+
+
+    <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Submit your email to stay updated!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+          <Input
+            placeholder="your-email@web3.com"
+            _placeholder={{ color: 'gray.500' }}
+            type="email"
+          />
+            
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button colorScheme='green' >
+              Submit Email
+              </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
     </Layout>
   );
 };
@@ -141,3 +177,5 @@ const PlayIcon = createIcon({
 
 
 export default Home;
+
+//

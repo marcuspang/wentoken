@@ -1,5 +1,6 @@
 import { Button, Text } from "@chakra-ui/react";
 import { useMoralis } from "react-moralis";
+import Card from "../components/Explore/Card";
 import Layout from "../components/Layout/Layout";
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
       ) : (
         <Button onClick={() => authenticate()}>Authenticate</Button>
       )}
+      <Card />
     </Layout>
   );
 };

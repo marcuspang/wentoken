@@ -1,20 +1,20 @@
-import { Box, VStack, Flex, Container } from '@chakra-ui/react';
-import Card from '../../components/Explore/Card'
+import { Box, Flex, VStack } from "@chakra-ui/react";
+import Card from "../../components/Explore/Card";
 
 const ExplorePage = () => (
   <Box>
-    <VStack spacing='0'>
-      <Box w='100%' h='40px' bg='yellow.200' align='center'>
+    <VStack spacing="0">
+      <Box w="100%" h="40px" bg="yellow.200" align="center">
         Explore NFTs
       </Box>
-      <Box w='100%' h='40px' bg='tomato' align='center'>
+      <Box w="100%" h="40px" bg="tomato" align="center">
         filter
       </Box>
-      <Box flexGrow="1" h='full' bg='pink.100'>
-        <Flex w='100%'>
-        <Card/>
-        <Card/>
-        <Card/>
+      <Box flexGrow="1" h="full" bg="pink.100">
+        <Flex w="100%">
+          <Card />
+          <Card />
+          <Card />
         </Flex>
       </Box>
     </VStack>
@@ -26,7 +26,7 @@ const ExplorePage = () => (
 //       <div>explore page</div>
 //     )
 //     }
-  
+
 // use the following when can retrieve the NFT data
 
 // function ExplorePage({nfts}) {
@@ -56,4 +56,4 @@ const ExplorePage = () => (
 //   }
 // }
 
-  export default ExplorePage
+export default ExplorePage;

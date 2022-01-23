@@ -1,15 +1,14 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { useMoralis } from "react-moralis";
-import Layout from "../components/Layout";
+import Layout from "../components/Layout/Layout";
 
-export default function Home() {
+const Home = () => {
   const { authenticate, isAuthenticated, user, logout } = useMoralis();
-
   return (
     <Layout>
       {isAuthenticated && (
         <Text as="h1" fontSize={"lg"}>
-          Welcome {user!.get("username")}
+          Welcome {user!.get("ethAddress")}
         </Text>
       )}
       {isAuthenticated ? (
@@ -19,4 +18,6 @@ export default function Home() {
       )}
     </Layout>
   );
-}
+};
+
+export default Home;

@@ -9,8 +9,8 @@ import "@fontsource/poppins/400.css";
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <MoralisProvider
-      appId={process.env.NEXT_PUBLIC_MORALIS_APP_ID!}
-      serverUrl={process.env.NEXT_PUBLIC_MORALIS_SERVER_URL!}
+      appId={process.env.MORALIS_APP_ID!}
+      serverUrl={process.env.MORALIS_SERVER_URL!}
     >
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />

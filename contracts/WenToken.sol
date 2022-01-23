@@ -11,7 +11,7 @@ contract WenToken is ERC1155, Ownable, ERC1155Supply {
   uint256 public constant GREEN = 2;
   uint256 public constant RED = 3;
   // mint fee same for all types
-  uint256 public constant MINT_FEE = 0.00.01 ETHer;
+  uint256 public constant MINT_FEE = 0.01 ether;
 
   constructor() ERC1155("") {
     _mint(msg.sender, BLACK, 10**1, "");

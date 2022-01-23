@@ -22,8 +22,11 @@
     "postinstall": "husky install"
   },
   "lint-staged": {
-    "./src/**/*.{ts,js,jsx,tsx}": [
+    "./**/*.{ts,js,jsx,tsx}": [
       "yarn lint",
+      "yarn format"
+    ],
+    "./**/*.{json,md}": [
       "yarn format"
     ]
   },

@@ -15,25 +15,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { TOKENS } from "../../constants/constants";
-
-// const data = {
-//   isTradeable: true,
-//   imageURL:
-//     "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
-//   collection: "Parallel Alpha",
-//   name: "Marcolian Parallel Collectible Card Back",
-//   value: "0.3 ETH",
-//   pnl: "3.1%",
-// };
-
-export interface NFTCard {
-  collectionId: number;
-  isTradeable: boolean;
-  imageUrl: string;
-  name: string;
-  value: string;
-  pnl: string;
-}
+import { NFTCard } from "../Explore/NFTCard";
 
 interface NFTCardProps extends NFTCard, FlexProps {}
 
@@ -68,50 +50,42 @@ const NFTCard = ({
           width={"60%"}
           mx="auto"
         />
-
-        <Box p="4">
-          <Box d="flex" mb={2}>
+        <Box p="3">
+          <Flex mb={2}>
             {isTradeable && (
-              <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="green">
+              <Badge rounded="full" px="2" fontSize="xs" colorScheme="green">
                 Tradeable
               </Badge>
             )}
-          </Box>
+          </Flex>
           <HStack
             justifyContent="space-between"
             alignItems={"flex-start"}
             spacing={1}
-            mb={4}
           >
-            <Stack width={"67%"} spacing={0}>
-              <Text fontSize="sm" fontWeight="normal" isTruncated>
+            <Stack width={"50%"} spacing={0}>
+              <Text fontSize="xs" fontWeight="normal" isTruncated>
                 {TOKENS[collectionId]}
               </Text>
-              <Text fontSize="md" fontWeight="semibold" lineHeight={1.1}>
+              <Text fontSize="sm" fontWeight="semibold" lineHeight={1.1}>
                 {name}
               </Text>
             </Stack>
             <Stat
               display={"flex"}
-              width={"33%"}
+              width={"30%"}
               textAlign={"right"}
               justifyContent={"flex-end"}
             >
-              <StatNumber fontSize={"md"}>{value}</StatNumber>
-              <StatHelpText>
+              <StatNumber fontSize={"xs"}>{value}</StatNumber>
+              <StatHelpText mb={0}>
                 <StatArrow type="increase" />
-                {pnl}
+                <Text fontSize={"xs"} display={"inline-block"}>
+                  {pnl}
+                </Text>
               </StatHelpText>
             </Stat>
           </HStack>
-          <Flex justifyContent="space-evenly">
-            <Button minW="30%" maxW="50%" variant={"normal"}>
-              Sell
-            </Button>
-            <Button minW="30%" maxW="50%" variant={"normal-dark"}>
-              Trade
-            </Button>
-          </Flex>
         </Box>
       </Box>
     </Flex>

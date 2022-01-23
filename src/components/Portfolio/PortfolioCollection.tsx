@@ -26,14 +26,14 @@ const PortfolioCollection = ({
           .map((index) => (
             <NFTCard
               key={index}
-              collectionId={0}
+              collectionId={tokenId}
               imageUrl={
                 "https://cloudflare-ipfs.com/ipfs/" + imageUris[tokenId]
               }
               isTradeable
-              name="potato"
-              pnl="1 ETH"
-              value="1 ETH"
+              name={TOKENS[tokenId] + " #" + (+index + 1)}
+              pnl="0.01 ETH"
+              value="0.01 ETH"
               maxW={"calc(100% / 4 - 1rem)"}
               flex={"calc(100% / 4 - 1rem)"}
               pb={3}

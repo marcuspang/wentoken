@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import Layout from "../../components/Layout/Layout";
 import LogoIcon from "../../components/Layout/LogoIcon";
+import NFTCards from "../../components/Trade/NFTCards";
 import { TOKENS } from "../../constants/constants";
 import createTokenOptions from "../../util/createTokenOptions";
 
@@ -24,12 +25,15 @@ interface TokenAmount {
 const TradePage = () => {
   const router = useRouter();
   const { to } = router.query;
+
   const { user } = useMoralis();
   const { data, fetch, isFetching } = useWeb3ExecuteFunction();
+
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
 
   const [tokens, setTokens] = useState<number[]>([]);
+  const [selectedTokens, setSelectedTokens] = useState<number[]>([]);
 
   useEffect(() => {
     if (user) {
@@ -45,7 +49,6 @@ const TradePage = () => {
           Array(Object.keys(TOKENS).length / 2).fill(to),
         );
         ids = ids.concat(ids);
-        console.log(accounts, ids);
       }
       fetch({
         params: createTokenOptions("balanceOfBatch", {
@@ -78,9 +81,13 @@ const TradePage = () => {
             </Text>
             <Input ref={fromInputRef} placeholder="Enter to search your NFTs" />
             {isFetching ? (
-              <Spinner />
+              <Flex justifyContent={"center"} pt={4}>
+                <Spinner />
+              </Flex>
             ) : (
-              <Text flexGrow="1">add scrollable section</Text>
+              <NFTCards
+                tokenAmounts={tokens.slice(0, Object.keys(TOKENS).length / 2)}
+              />
             )}
           </Stack>
         </Box>
@@ -107,10 +114,18 @@ const TradePage = () => {
             </Text>
             <Input ref={toInputRef} placeholder="Enter to search their NFTs" />
             {isFetching ? (
-              <Spinner />
+              <Flex justifyContent={"center"} pt={4}>
+                <Spinner />
+              </Flex>
             ) : (
-              <Text flexGrow="1">add scrollable section</Text>
-            )}{" "}
+              <NFTCards
+                tokenAmounts={tokens.slice(
+                  Object.keys(TOKENS).length / 2,
+                  Object.keys(TOKENS).length,
+                )}
+                name={toInputRef?.current?.value}
+              />
+            )}
           </Stack>
         </Box>
       </Flex>

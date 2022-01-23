@@ -87,8 +87,7 @@ const WalletButton = () => {
                       "connectorId",
                       connector.connectorId,
                     );
-                    console.log(authError);
-                    if (!authError) {
+                    if (!authError && isAuthenticated) {
                       toast({
                         status: "success",
                         isClosable: true,

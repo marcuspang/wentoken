@@ -8,10 +8,12 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <Box>
+    <>
       <Navbar />
-      {children}
-    </Box>
+      <Box maxW={"8xl"} mx={"auto"}>
+        {children}
+      </Box>
+    </>
   );
 };
 

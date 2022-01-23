@@ -33,7 +33,7 @@ const PortfolioStats = ({ sum, tokens, isLoading }: PortfolioStatsProps) => {
         <Stat size="md">
           <StatLabel fontSize="lg">No. of collections</StatLabel>
           <StatNumber fontSize={"4xl"} fontWeight={800}>
-            {isLoading ? <Spinner /> : tokens.length}
+            {isLoading ? <Spinner /> : tokens.filter(Boolean).length}
           </StatNumber>
           <StatHelpText>
             <StatArrow type="increase" />1

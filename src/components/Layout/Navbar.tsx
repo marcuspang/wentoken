@@ -17,11 +17,11 @@ import WalletButton from "./WalletButton";
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user, isAuthenticated, isWeb3Enabled } = useMoralis();
+  const { user, isAuthenticated } = useMoralis();
   const toast = useToast();
 
   const portfolioOnClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
-    if (!user || !isAuthenticated || !isWeb3Enabled) {
+    if (!user || !isAuthenticated) {
       e.preventDefault();
       toast({
         isClosable: true,
@@ -37,10 +37,15 @@ const Navbar = () => {
       <Box
         bg={useColorModeValue("white", "gray.900")}
         boxShadow={"md"}
-        px={4}
         as={"header"}
       >
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+        <Flex
+          h={16}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+          mx={"auto"}
+          maxW={"8xl"}
+        >
           <IconButton
             size={"md"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}

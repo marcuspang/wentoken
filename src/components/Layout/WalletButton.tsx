@@ -12,6 +12,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { IoWalletOutline } from "react-icons/io5";
 import { useMoralis } from "react-moralis";
 
@@ -52,6 +53,7 @@ const WalletButton = () => {
     onOpen: logoutOnOpen,
   } = useDisclosure();
   const toast = useToast();
+  const router = useRouter();
 
   let modal = null;
 
@@ -134,6 +136,7 @@ const WalletButton = () => {
                   title: "Successfully logged out",
                 });
                 logoutOnClose();
+                router.push("/");
               }}
             >
               Logout

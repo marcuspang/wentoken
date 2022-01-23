@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-const initialSupply = [10, Math.pow(10, 9), Math.pow(10, 18), Math.pow(10, 27)];
+const initialSupply = [10, Math.pow(10, 2), Math.pow(10, 3), Math.pow(10, 4)];
 const imageUris = [
   "ipfs://QmTTz2Yr2Z59stC69MNhB49Xdg3vBMiLuf8LRNz8QrHZXg", // black
   "ipfs://QmNwxhPo8pzbuvxtsCEyRKYeUy8wndokntS6rX7NH3QjvU", // blue

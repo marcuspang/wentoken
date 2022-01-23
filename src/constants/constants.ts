@@ -1,9 +1,9 @@
-export const BLACK = 0;
-export const BLUE = 1;
-export const GREEN = 2;
-export const RED = 3;
-
-export const TOKEN_IDS = [BLACK, BLUE, GREEN, RED];
+export const TOKENS = [
+  { id: 0, name: "Black" },
+  { id: 1, name: "Blue" },
+  { id: 2, name: "Green" },
+  { id: 4, name: "Red" },
+];
 
 export const MINT_PRICE = 0.01; // in ether
 export const ETH_PRICE = 2500; // in USD

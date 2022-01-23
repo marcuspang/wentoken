@@ -15,9 +15,9 @@ contract WenToken is ERC1155, Ownable, ERC1155Supply {
 
   constructor() ERC1155("") {
     _mint(msg.sender, BLACK, 10**1, "");
-    _mint(msg.sender, BLUE, 10**9, "");
-    _mint(msg.sender, GREEN, 10**18, "");
-    _mint(msg.sender, RED, 10**27, "");
+    _mint(msg.sender, BLUE, 10**2, "");
+    _mint(msg.sender, GREEN, 10**3, "");
+    _mint(msg.sender, RED, 10**4, "");
   }
 
   function setURI(string memory newuri) public onlyOwner {

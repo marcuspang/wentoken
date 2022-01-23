@@ -3,8 +3,6 @@ import { Icon, IconProps } from "@chakra-ui/react";
 const LogoIcon = ({ ...props }: IconProps) => {
   return (
     <Icon
-      width="88"
-      height="88"
       viewBox="0 0 88 88"
       fill="none"
       {...props}

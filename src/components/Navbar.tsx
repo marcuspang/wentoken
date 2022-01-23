@@ -11,6 +11,7 @@ import {
 import CustomLink from "./CustomLink";
 import Logo from "./Logo";
 import { IoWalletOutline } from "react-icons/io5";
+import WalletButton from "./WalletButton";
 
 const links = ["Trade", "Explore", "Portfolio"];
 
@@ -19,7 +20,12 @@ const Navbar = () => {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} as={"header"}>
+      <Box
+        bg={useColorModeValue("white", "gray.900")}
+        boxShadow={"md"}
+        px={4}
+        as={"header"}
+      >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -43,7 +49,7 @@ const Navbar = () => {
                 </CustomLink>
               ))}
             </HStack>
-            <IoWalletOutline width={"50px"} height={"50px"} />
+            <WalletButton />
           </HStack>
         </Flex>
 

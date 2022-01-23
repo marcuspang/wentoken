@@ -9,17 +9,28 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { MouseEventHandler } from "react";
 import { useMoralis } from "react-moralis";
 import CustomLink from "./CustomLink";
 import Logo from "./Logo";
 import WalletButton from "./WalletButton";
 
-const links = ["Trade", "Explore", "Portfolio"];
-
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user } = useMoralis();
+  const { user, isAuthenticated, isWeb3Enabled } = useMoralis();
   const toast = useToast();
+
+  const portfolioOnClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    if (!user || !isAuthenticated || !isWeb3Enabled) {
+      e.preventDefault();
+      toast({
+        isClosable: true,
+        status: "info",
+        title: "Not authorized",
+        description: "Please login to see your portfolio!",
+      });
+    }
+  };
 
   return (
     <>
@@ -55,17 +66,7 @@ const Navbar = () => {
               <CustomLink
                 fontWeight={"semibold"}
                 href={"/portfolio/" + user?.get("ethAddress")}
-                onClick={(e) => {
-                  if (!user) {
-                    (e.target as any).href = "/";
-                    toast({
-                      isClosable: true,
-                      status: "info",
-                      title: "Not authorized",
-                      description: "Please login to see your portfolio!",
-                    });
-                  }
-                }}
+                onClick={portfolioOnClick}
               >
                 Portfolio
               </CustomLink>
@@ -86,17 +87,7 @@ const Navbar = () => {
               <CustomLink
                 fontWeight={"semibold"}
                 href={"/portfolio/" + user?.getUsername()}
-                onClick={(e) => {
-                  if (!user) {
-                    (e.target as any).href = "/";
-                    toast({
-                      isClosable: true,
-                      status: "info",
-                      title: "Not authorized",
-                      description: "Please login to see your portfolio!",
-                    });
-                  }
-                }}
+                onClick={portfolioOnClick}
               >
                 Portfolio
               </CustomLink>

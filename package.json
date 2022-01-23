@@ -15,10 +15,13 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
+    "frp": "./frp_windows/frpc.exe -c ./frp_windows/frpc.ini",
+    "frp:mac": "./frp_mac/frpc.exe -c ./frp_mac/frpc.ini",
     "lint": "eslint --ignore-path .gitignore \"**/*.+(ts|js|tsx)\" --fix",
     "lint:sol": "solhint --fix --ignore-path .gitignore \"**/*.sol\"",
     "format": "prettier --ignore-path .gitignore \"**/*.+(ts|js|tsx)\" --write",
-    "dev:network": "yarn hardhat run --network hardhat scripts/deploy.ts && yarn hardhat node",
+    "dev:network": "concurrently --kill-others-on-fail \"yarn hardhat node\" \"yarn hardhat run scripts/deploy.ts --network localhost\"  \"yarn frp\"",
+    "dev:network:mac": "concurrently --kill-others-on-fail \"yarn hardhat run --network hardhat scripts/deploy.ts\" \"yarn hardhat node\" \"yarn frp:mac\"",
     "postinstall": "husky install"
   },
   "lint-staged": {
@@ -38,6 +41,7 @@
     "@fontsource/poppins": "4.5.0",
     "@openzeppelin/contracts": "4.4.2",
     "@walletconnect/web3-provider": "1.7.1",
+    "concurrently": "7.0.0",
     "framer-motion": "^5",
     "moralis": "1.1.0",
     "next": "12.0.8",

@@ -5,8 +5,8 @@ const createTokenOptions = (
   params: Record<string, unknown>,
   msgValue?: string | number,
 ) => ({
-  contractAddress: process.env.WENTOKEN_ADDRESS,
   abi: WenToken.abi,
+  contractAddress: process.env.WENTOKEN_ADDRESS,
   functionName,
   params,
   msgValue,

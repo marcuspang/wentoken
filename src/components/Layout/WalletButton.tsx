@@ -37,8 +37,14 @@ export const connectors = [
 ];
 
 const WalletButton = () => {
-  const { authenticate, isAuthenticated, user, logout, authError } =
-    useMoralis();
+  const {
+    authenticate,
+    isAuthenticated,
+    user,
+    logout,
+    authError,
+    isWeb3Enabled,
+  } = useMoralis();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     isOpen: logoutIsOpen,
@@ -49,7 +55,7 @@ const WalletButton = () => {
 
   let modal = null;
 
-  if (!isAuthenticated || !user) {
+  if (!isAuthenticated || !user || !isWeb3Enabled) {
     modal = (
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -145,7 +151,9 @@ const WalletButton = () => {
     <>
       <IoWalletOutline
         size={25}
-        onClick={!isAuthenticated || !user ? onOpen : logoutOnOpen}
+        onClick={
+          !isAuthenticated || !user || !isWeb3Enabled ? onOpen : logoutOnOpen
+        }
         cursor={"pointer"}
       />
       {modal}

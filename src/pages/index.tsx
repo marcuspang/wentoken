@@ -3,15 +3,16 @@ import { useMoralis } from "react-moralis";
 import Layout from "../components/Layout/Layout";
 
 const Home = () => {
-  const { authenticate, isAuthenticated, user, logout } = useMoralis();
+  const { authenticate, isAuthenticated, isWeb3Enabled, user, logout } =
+    useMoralis();
   return (
     <Layout>
-      {isAuthenticated && (
+      {isAuthenticated && isWeb3Enabled && (
         <Text as="h1" fontSize={"lg"}>
           Welcome {user!.get("ethAddress")}
         </Text>
       )}
-      {isAuthenticated ? (
+      {isAuthenticated && isWeb3Enabled ? (
         <Button onClick={logout}>Logout</Button>
       ) : (
         <Button onClick={() => authenticate()}>Authenticate</Button>

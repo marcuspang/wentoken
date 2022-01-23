@@ -1,10 +1,12 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import NFTCard from "../../components/Explore/NFTCard";
 import Layout from "../../components/Layout/Layout";
+import PortfolioCollection from "../../components/Portfolio/PortfolioCollection";
 import PortfolioStats from "../../components/Portfolio/PortfolioStats";
 import { TOKENS } from "../../constants/constants";
 import createTokenOptions from "../../util/createTokenOptions";
@@ -23,6 +25,7 @@ const PortfolioPage: NextPage = () => {
   const [tokens, setTokens] = useState<number[]>([]);
   const [sum, setSum] = useState(0);
 
+  // fetch data
   useEffect(() => {
     if (!isAuthenticated || !isWeb3Enabled || !user) {
       router.push("/");
@@ -30,12 +33,18 @@ const PortfolioPage: NextPage = () => {
 
     tokenFetch({
       params: createTokenOptions("balanceOfBatch", {
-        accounts: Array(TOKENS.length).fill(address),
-        ids: TOKENS.map((token) => token.id),
+        // [address, address, address, address]
+        accounts: Array(Object.keys(TOKENS).length / 2).fill(address),
+        // [0, 1, 2, 3]
+        ids: Object.values(TOKENS).splice(
+          Object.keys(TOKENS).length / 2,
+          Object.keys(TOKENS).length,
+        ),
       }),
     });
   }, []);
 
+  // once data is retrieved, update localstate for tokens and sum of tokens
   useEffect(() => {
     if (data) {
       setTokens(
@@ -53,21 +62,15 @@ const PortfolioPage: NextPage = () => {
       );
     }
   }, [data]);
-  console.log(data);
 
   return (
     <Layout>
-      <Box
-        maxW={"6xl"}
-        mx={"auto"}
-        mt={6}
-        pt={8}
-        pb={6}
-        px={10}
-        boxShadow={"xl"}
-        rounded={"xl"}
-      >
-        <PortfolioStats sum={sum} tokens={tokens} isLoading={isLoading} />
+      <Box maxW={"6xl"} mx={"auto"} mt={4}>
+        <Box boxShadow={"xl"} rounded={"xl"} px={10} pt={8} pb={6}>
+          <PortfolioStats sum={sum} tokens={tokens} isLoading={isLoading} />
+        </Box>
+        {/* {tokens.map((token, index) => <PortfolioCollection tokenAmount={token} tokenId={index} key={index} />)} */}
+        <PortfolioCollection tokenAmount={tokens[0]} tokenId={0} />
       </Box>
     </Layout>
   );

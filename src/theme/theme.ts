@@ -18,6 +18,25 @@ const theme = extendTheme({
             },
           };
         },
+        normal: (props: any) => {
+          return {
+            color: "black",
+            bg: "white",
+            border: "1px solid black",
+            _hover: {
+              bg: "gray.100",
+            },
+          };
+        },
+        "normal-dark": (props: any) => {
+          return {
+            color: "white",
+            bg: "black",
+            _hover: {
+              bg: "gray.600",
+            },
+          };
+        },
         "dark-shadow": (props: any) => {
           return {
             color: "white",
@@ -32,7 +51,5 @@ const theme = extendTheme({
     },
   },
 });
-
-console.log(theme);
 
 export default theme;

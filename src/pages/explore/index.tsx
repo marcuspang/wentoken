@@ -1,5 +1,5 @@
 import { Box, Flex, VStack } from "@chakra-ui/react";
-import Card from "../../components/Explore/Card";
+import NFTCard from "../../components/Explore/NFTCard";
 
 const ExplorePage = () => (
   <Box>
@@ -12,9 +12,9 @@ const ExplorePage = () => (
       </Box>
       <Box flexGrow="1" h="full" bg="pink.100">
         <Flex w="100%">
-          <Card />
-          <Card />
-          <Card />
+          <NFTCard />
+          <NFTCard />
+          <NFTCard />
         </Flex>
       </Box>
     </VStack>

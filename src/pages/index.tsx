@@ -1,11 +1,12 @@
 import { Button, Text } from "@chakra-ui/react";
 import { useMoralis } from "react-moralis";
-import Card from "../components/Explore/Card";
+import NFTCard from "../components/Explore/NFTCard";
 import Layout from "../components/Layout/Layout";
 
 const Home = () => {
   const { authenticate, isAuthenticated, isWeb3Enabled, user, logout } =
     useMoralis();
+
   return (
     <Layout>
       {isAuthenticated && isWeb3Enabled && (
@@ -18,7 +19,6 @@ const Home = () => {
       ) : (
         <Button onClick={() => authenticate()}>Authenticate</Button>
       )}
-      <Card />
     </Layout>
   );
 };

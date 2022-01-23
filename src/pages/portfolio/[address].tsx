@@ -1,10 +1,9 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
-import NFTCard from "../../components/Explore/NFTCard";
 import Layout from "../../components/Layout/Layout";
 import PortfolioCollection from "../../components/Portfolio/PortfolioCollection";
 import PortfolioStats from "../../components/Portfolio/PortfolioStats";

@@ -56,7 +56,6 @@ const NFTCard = ({
       <Box
         bg={useColorModeValue("white", "gray.800")}
         w={"full"}
-        maxW={"xs"}
         borderWidth="0px"
         rounded="lg"
         shadow="lg"

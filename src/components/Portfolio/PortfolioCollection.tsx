@@ -27,7 +27,8 @@ const PortfolioCollection = ({
             name="potato"
             pnl="1 ETH"
             value="1 ETH"
-            flex={"calc(100% / 3 - 1rem)"}
+            maxW={"calc(100% / 4 - 1rem)"}
+            flex={"calc(100% / 4 - 1rem)"}
             pb={3}
           />
         ))}

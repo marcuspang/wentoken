@@ -1,14 +1,14 @@
 import {
+  Spinner,
   Stack,
-  StatGroup,
   Stat,
+  StatArrow,
+  StatGroup,
+  StatHelpText,
   StatLabel,
   StatNumber,
-  StatHelpText,
-  StatArrow,
-  Spinner,
 } from "@chakra-ui/react";
-import PortfolioSum from "./PortfolioSum";
+import { ETH_PRICE, MINT_PRICE } from "../../constants/constants";
 
 interface PortfolioStatsProps {
   sum: number;
@@ -19,7 +19,16 @@ interface PortfolioStatsProps {
 const PortfolioStats = ({ sum, tokens, isLoading }: PortfolioStatsProps) => {
   return (
     <Stack>
-      <PortfolioSum sum={sum} />
+      <Stat size="md">
+        <StatLabel fontSize="lg">NFT Net Worth</StatLabel>
+        <StatNumber fontSize={"5xl"} fontWeight={800}>
+          ${(sum && sum * MINT_PRICE * ETH_PRICE) || 0}
+        </StatNumber>
+        <StatHelpText>
+          <StatArrow type="increase" fontSize={"md"} />
+          3.16%
+        </StatHelpText>
+      </Stat>
       <StatGroup pt={4}>
         <Stat size="md">
           <StatLabel fontSize="lg">No. of collections</StatLabel>

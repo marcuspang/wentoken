@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { useEffect } from "react";
 import { useMoralis, useMoralisQuery } from "react-moralis";
 import Layout from "../../components/Layout/Layout";
+import TradeExecutedTable from "../../components/Trade/TradeExecutedTable";
 import TradeTable from "../../components/Trade/TradeTable";
 import { PendingTrades } from "./[id]";
 
@@ -26,9 +27,7 @@ const TradeMainPage: NextPage = () => {
   useEffect(() => {
     fromFetch();
     toFetch();
-  }, [isWeb3EnableLoading, isInitializing]);
-
-  console.log(fromData, toData);
+  }, [isWeb3EnableLoading, isInitializing, user]);
 
   return (
     <Layout>
@@ -41,7 +40,7 @@ const TradeMainPage: NextPage = () => {
           as="h1"
           fontSize={"3xl"}
           fontWeight={800}
-          mb={4}
+          mb={6}
           mt={6}
           width={"fit-content"}
         >
@@ -58,7 +57,7 @@ const TradeMainPage: NextPage = () => {
           as="h1"
           fontSize={"3xl"}
           fontWeight={800}
-          mb={4}
+          mb={6}
           mt={6}
           width={"fit-content"}
         >
@@ -66,22 +65,25 @@ const TradeMainPage: NextPage = () => {
         </Text>
       </Tooltip>
       <TradeTable isFetching={toIsFetching} trades={toData} isOthers />
-      <Tooltip
-        label="Existing trade offers that are awaiting for your confirmation"
-        rounded={"md"}
-        p={2}
-      >
+      <Tooltip label="Trade offers executed" rounded={"md"} p={2}>
         <Text
           as="h1"
           fontSize={"3xl"}
           fontWeight={800}
-          mb={4}
+          mb={6}
           mt={6}
           width={"fit-content"}
         >
           Executed Trades
         </Text>
       </Tooltip>
+      <TradeTable
+        isFetching={toIsFetching || fromIsFetching}
+        isExecuted
+        trades={toData
+          .filter((trade) => trade.attributes.executed)
+          .concat(fromData.filter((trade) => trade.attributes.executed))}
+      />
     </Layout>
   );
 };

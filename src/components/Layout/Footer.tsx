@@ -68,6 +68,7 @@ export default function Footer() {
       bg={useColorModeValue("gray.50", "gray.900")}
       color={useColorModeValue("gray.700", "gray.200")}
       as="footer"
+      mt={10}
     >
       <Box
         borderTopWidth={1}

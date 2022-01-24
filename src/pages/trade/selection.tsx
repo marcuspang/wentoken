@@ -114,7 +114,6 @@ const TradeSelectionPage: NextPage = () => {
           return temp;
         });
       }
-      console.log(selectedFromTokens, selectedToTokens);
     },
     [],
   );

@@ -22,7 +22,6 @@ const ExploreCollections = () => {
       ids: TOKEN_IDS,
     },
   });
-  const [checkedItems, setCheckedItems] = useState(false);
   const [tokens, setTokens] = useState<number[]>([]);
 
   useEffect(() => {
@@ -33,6 +32,9 @@ const ExploreCollections = () => {
     if (data) {
       setTokens((data as unknown as string[]).map(Number));
     }
+    return () => {
+      setTokens([]);
+    };
   }, [data]);
 
   return (

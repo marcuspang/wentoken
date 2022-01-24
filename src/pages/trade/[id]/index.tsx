@@ -81,6 +81,17 @@ const TradeSubmissionPage: NextPage = () => {
     }
   }, [data]);
 
+  const updatePendingTrade = async (status: "confirmed" | "executed") => {
+    const Trade = Moralis.Object.extend("PendingTrades");
+    const trade = new Trade();
+    for (const property in data[0].attributes) {
+      trade.set(property, data[0].attributes[property as keyof PendingTrades]);
+    }
+    trade.set("objectId", router.query.id);
+    trade.set(status, true);
+    await trade.save();
+  };
+
   const submitTrade = useCallback(async () => {
     if (data && data.length) {
       if (!isExecuting) {
@@ -89,20 +100,9 @@ const TradeSubmissionPage: NextPage = () => {
             operator: data[0].attributes.to,
             approved: "true",
           }),
-          onSuccess: (res) => console.log("here", res),
         });
         if (!approvalError) {
-          const Trade = Moralis.Object.extend("PendingTrades");
-          const trade = new Trade();
-          for (const property in data[0].attributes) {
-            trade.set(
-              property,
-              data[0].attributes[property as keyof PendingTrades],
-            );
-          }
-          trade.set("objectId", router.query.id);
-          trade.set("confirmed", true);
-          await trade.save();
+          updatePendingTrade("confirmed");
           toast({
             status: "success",
             title: "Successfully submitted your trade offer",
@@ -124,30 +124,19 @@ const TradeSubmissionPage: NextPage = () => {
             data: "0x00",
           }),
         });
+
         if (!executeError) {
-          const Trade = Moralis.Object.extend("PendingTrades");
-          const trade = new Trade();
-          for (const property in data[0].attributes) {
-            trade.set(
-              property,
-              data[0].attributes[property as keyof PendingTrades],
-            );
-          }
-          trade.set("objectId", router.query.id);
-          trade.set("executed", true);
-          await trade.save();
+          updatePendingTrade("executed");
           toast({
             status: "success",
-            title: "Successfully submitted your trade offer",
-            description:
-              "Please wait until the other party has accepted your request",
+            title: "Successfully executed trade offer",
             isClosable: true,
           });
           router.push("/trade");
         }
       }
     }
-  }, []);
+  }, [isWeb3EnableLoading, isInitializing]);
 
   return (
     <Layout>
@@ -187,7 +176,7 @@ const TradeSubmissionPage: NextPage = () => {
             isEmpty={!data || !data.length}
             isFetching={isFetching}
             isExecuting={isExecuting}
-            onClick={() => submitTrade()}
+            onClick={submitTrade}
             isDisabled={!isAuthorized}
             {...(data && data[0] && data[0].attributes)}
           />

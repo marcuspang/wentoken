@@ -7,7 +7,7 @@ import TradeTable from "../../components/Trade/TradeTable";
 import { PendingTrades } from "./[id]";
 
 const TradeMainPage: NextPage = () => {
-  const { user, isWeb3EnableLoading } = useMoralis();
+  const { user, isWeb3EnableLoading, isInitializing } = useMoralis();
   const {
     data: fromData,
     isFetching: fromIsFetching,
@@ -26,9 +26,9 @@ const TradeMainPage: NextPage = () => {
   useEffect(() => {
     fromFetch();
     toFetch();
-  }, [isWeb3EnableLoading]);
+  }, [isWeb3EnableLoading, isInitializing]);
 
-  console.log(toData);
+  console.log(fromData, toData);
 
   return (
     <Layout>
@@ -65,7 +65,23 @@ const TradeMainPage: NextPage = () => {
           Pending Trade Offers From Others
         </Text>
       </Tooltip>
-      <TradeTable isFetching={toIsFetching} trades={toData} />
+      <TradeTable isFetching={toIsFetching} trades={toData} isOthers />
+      <Tooltip
+        label="Existing trade offers that are awaiting for your confirmation"
+        rounded={"md"}
+        p={2}
+      >
+        <Text
+          as="h1"
+          fontSize={"3xl"}
+          fontWeight={800}
+          mb={4}
+          mt={6}
+          width={"fit-content"}
+        >
+          Executed Trades
+        </Text>
+      </Tooltip>
     </Layout>
   );
 };

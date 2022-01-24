@@ -16,7 +16,8 @@ import { PendingTrades } from "../../pages/trade/[id]";
 interface TradeConfirmationMenuProps extends PendingTrades {
   isFetching: boolean;
   isEmpty: boolean;
-  submit: boolean;
+  isDisabled: boolean;
+  isExecuting: boolean;
   onClick: () => void;
 }
 
@@ -26,8 +27,9 @@ const TradeConfirmationMenu = ({
   to,
   fromTokenAmounts,
   toTokenAmounts,
-  submit,
+  isDisabled,
   isEmpty,
+  isExecuting,
   confirmed,
   onClick,
 }: TradeConfirmationMenuProps) => {
@@ -137,16 +139,20 @@ const TradeConfirmationMenu = ({
         <Button
           variant="shadow"
           onClickCapture={() => router.back()}
-          isDisabled={confirmed}
+          isDisabled={isDisabled || confirmed}
         >
           Edit Trade
         </Button>
         <Button
           variant={"dark-shadow"}
-          isDisabled={isFetching || submit || confirmed}
+          isDisabled={!isExecuting && (isDisabled || confirmed)}
           onClickCapture={onClick}
         >
-          {confirmed ? "Offer submitted" : "Confirm Offer"}
+          {isExecuting
+            ? "Execute trade"
+            : confirmed
+            ? "Offer submitted"
+            : "Confirm Offer"}
         </Button>
       </HStack>
     </Stack>

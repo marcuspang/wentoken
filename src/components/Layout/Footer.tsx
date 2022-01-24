@@ -1,22 +1,19 @@
-import { ReactNode } from "react";
 import {
   Box,
-  Button,
+  chakra,
   Container,
   Stack,
-  SimpleGrid,
   Text,
-  Link,
-  VisuallyHidden,
-  chakra,
   useColorModeValue,
+  VisuallyHidden,
 } from "@chakra-ui/react";
+import { ReactNode } from "react";
 import {
-  FaTwitter,
-  FaYoutube,
-  FaInstagram,
   FaGithub,
   FaHome,
+  FaInstagram,
+  FaTwitter,
+  FaYoutube,
 } from "react-icons/fa";
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
@@ -70,16 +67,17 @@ export default function Footer() {
     <Box
       bg={useColorModeValue("gray.50", "gray.900")}
       color={useColorModeValue("gray.700", "gray.200")}
+      as="footer"
     >
       <Box
         borderTopWidth={1}
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.700")}
       >
-        <Container
-          as={Stack}
-          maxW={"6xl"}
+        <Stack
           py={4}
+          maxW={"8xl"}
+          mx={"auto"}
           direction={{ base: "column", md: "row" }}
           spacing={4}
           justify={{ md: "space-between" }}
@@ -124,7 +122,7 @@ export default function Footer() {
               <FaHome />
             </SocialButton>
           </Stack>
-        </Container>
+        </Stack>
       </Box>
     </Box>
   );

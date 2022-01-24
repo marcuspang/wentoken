@@ -1,8 +1,7 @@
 import { Box, Button, Flex, HStack, Text, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  useERC20Balances,
   useMoralis,
   useNativeBalance,
   useWeb3ExecuteFunction,
@@ -29,13 +28,13 @@ const ExploreCollection = ({
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(8);
 
-  const purchaseNFT = () => {
+  const purchaseNFT = async () => {
     if (user) {
       if (
         amount.balance &&
         +ethers.utils.formatEther(amount.balance) >= MINT_PRICE
       ) {
-        fetch({
+        await fetch({
           params: createTokenOptions(
             "payToMint",
             {

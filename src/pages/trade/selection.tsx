@@ -33,9 +33,8 @@ import createTokenOptions from "../../util/createTokenOptions";
 const TradeSelectionPage: NextPage = () => {
   const router = useRouter();
 
-  const { user, isWeb3EnableLoading } = useMoralis();
-  const { isSaving, save, error, object } =
-    useNewMoralisObject("PendingTrades");
+  const { user, isWeb3EnableLoading, isInitializing } = useMoralis();
+  const { isSaving, save } = useNewMoralisObject("PendingTrades");
 
   const { data, fetch, isFetching } = useWeb3ExecuteFunction();
 
@@ -71,7 +70,7 @@ const TradeSelectionPage: NextPage = () => {
         }),
       });
     }
-  }, [isWeb3EnableLoading, toAddress]);
+  }, [isWeb3EnableLoading, isInitializing, toAddress]);
 
   useEffect(() => {
     if (data) {

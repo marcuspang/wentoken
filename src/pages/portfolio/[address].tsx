@@ -6,7 +6,7 @@ import { useApiContract } from "react-moralis";
 import Layout from "../../components/Layout/Layout";
 import PortfolioCollection from "../../components/Portfolio/PortfolioCollection";
 import PortfolioStats from "../../components/Portfolio/PortfolioStats";
-import { TOKENS } from "../../constants/constants";
+import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
 import { wenTokenAbi, wenTokenAddress } from "../../util/createTokenOptions";
 
 const PortfolioPage: NextPage = () => {
@@ -19,12 +19,9 @@ const PortfolioPage: NextPage = () => {
     chain: "ropsten",
     params: {
       // [address, address, address, address]
-      accounts: Array(Object.keys(TOKENS).length / 2).fill(address),
+      accounts: Array(TOKEN_LENGTH).fill(address),
       // [0, 1, 2, 3]
-      ids: Object.values(TOKENS).splice(
-        Object.keys(TOKENS).length / 2,
-        Object.keys(TOKENS).length,
-      ),
+      ids: TOKEN_IDS,
     },
   });
 

@@ -2,25 +2,31 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Spinner,
   Stack,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import Layout from "../../components/Layout/Layout";
 import LogoIcon from "../../components/Layout/LogoIcon";
-import NFTCards from "../../components/Trade/TradeNFTCards";
-import { TOKENS } from "../../constants/constants";
+import TradeMenu from "../../components/Trade/TradeMenu";
+import TradeNFTCards from "../../components/Trade/TradeNFTCards";
+import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
 import createTokenOptions from "../../util/createTokenOptions";
-
-interface TokenAmount {
-  _hex: string;
-  _isBigNumber: boolean;
-}
 
 const TradePage = () => {
   const router = useRouter();
@@ -29,26 +35,28 @@ const TradePage = () => {
   const { user } = useMoralis();
   const { data, fetch, isFetching } = useWeb3ExecuteFunction();
 
-  const fromInputRef = useRef<HTMLInputElement>(null);
-  const toInputRef = useRef<HTMLInputElement>(null);
+  const toAddressInputRef = useRef<HTMLInputElement>(null);
 
   const [tokens, setTokens] = useState<number[]>([]);
   const [selectedTokens, setSelectedTokens] = useState<number[]>([]);
+  const [toAddressInputError, setToAddressInputError] = useState(false);
+  const [toAddress, setToAddress] = useState(to);
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
     if (user) {
-      let accounts = Array(Object.keys(TOKENS).length / 2).fill(
-        user.get("ethAddress"),
-      );
-      let ids = Object.values(TOKENS).splice(
-        Object.keys(TOKENS).length / 2,
-        Object.keys(TOKENS).length,
-      );
-      if (to) {
-        accounts = accounts.concat(
-          Array(Object.keys(TOKENS).length / 2).fill(to),
-        );
+      let accounts = Array(TOKEN_LENGTH).fill(user.get("ethAddress"));
+      let ids = TOKEN_IDS;
+      if (toAddress) {
+        accounts = accounts.concat(Array(TOKEN_LENGTH).fill(toAddress));
         ids = ids.concat(ids);
+      } else if (to) {
+        accounts = accounts.concat(Array(TOKEN_LENGTH).fill(to));
+        ids = ids.concat(ids);
+      } else if (!tokens.length) {
+        // if there are tokens already and no toAddress or to then dont fetch again
+        return;
       }
       fetch({
         params: createTokenOptions("balanceOfBatch", {
@@ -59,38 +67,59 @@ const TradePage = () => {
         }),
       });
     }
-  }, [user, to]);
+  }, [user, to, toAddress]);
 
   useEffect(() => {
     if (data) {
-      setTokens(
-        (data as TokenAmount[]).map((token) =>
-          ethers.BigNumber.from(token).toNumber(),
-        ),
+      const tokenAmounts = (data as ethers.BigNumber[]).map((token) =>
+        ethers.BigNumber.from(token).toNumber(),
       );
+      setTokens(tokenAmounts);
     }
   }, [data]);
 
+  const addressOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (e.target.value && ethers.utils.isAddress(e.target.value)) {
+      setToAddress(e.target.value);
+      setToAddressInputError(false);
+    } else {
+      setToAddressInputError(true);
+      setToAddress("");
+    }
+  };
+
   return (
     <Layout>
-      <Flex justifyContent="space-between" alignItems="stretch" p={3}>
-        <Box flex="4">
-          <Stack>
-            <Text as="h1" fontWeight={800} fontSize={"3xl"}>
-              Select Your NFTs
-            </Text>
-            <Input ref={fromInputRef} placeholder="Enter to search your NFTs" />
-            {isFetching ? (
-              <Flex justifyContent={"center"} pt={4}>
-                <Spinner />
-              </Flex>
-            ) : (
-              <NFTCards
-                tokenAmounts={tokens.slice(0, Object.keys(TOKENS).length / 2)}
+      <Modal onClose={onClose} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent pb={5}>
+          <ModalHeader>Enter address</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl isInvalid={toAddressInputError}>
+              <FormLabel htmlFor="toAddress">Address</FormLabel>
+              <Input
+                id="toAddress"
+                defaultValue={to || toAddress}
+                onChange={addressOnChange}
+                placeholder="Enter someone's address to start trading!"
               />
-            )}
-          </Stack>
-        </Box>
+              {toAddressInputError && (
+                <FormErrorMessage>
+                  Please input a valid address
+                </FormErrorMessage>
+              )}
+            </FormControl>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <Flex justifyContent="space-between" alignItems="stretch" p={3}>
+        <TradeMenu
+          inputPlaceholder="Enter to search your NFTs"
+          isLoading={isFetching}
+          title="Select Your NFTs"
+          tokenAmounts={tokens.slice(0, TOKEN_LENGTH)}
+        />
         <Box flex="1.5">
           <Flex
             h="100vh"
@@ -107,27 +136,13 @@ const TradePage = () => {
             </Button>
           </Flex>
         </Box>
-        <Box flex="4">
-          <Stack>
-            <Text as="h2" fontWeight={800} fontSize={"3xl"}>
-              Select Their NFTs
-            </Text>
-            <Input ref={toInputRef} placeholder="Enter to search their NFTs" />
-            {isFetching ? (
-              <Flex justifyContent={"center"} pt={4}>
-                <Spinner />
-              </Flex>
-            ) : (
-              <NFTCards
-                tokenAmounts={tokens.slice(
-                  Object.keys(TOKENS).length / 2,
-                  Object.keys(TOKENS).length,
-                )}
-                name={toInputRef?.current?.value}
-              />
-            )}
-          </Stack>
-        </Box>
+        <TradeMenu
+          inputPlaceholder="Enter to their your NFTs"
+          isLoading={isFetching}
+          title="Select Their NFTs"
+          onOpen={onOpen}
+          tokenAmounts={tokens.slice(TOKEN_LENGTH, TOKEN_LENGTH * 2)}
+        />
       </Flex>
     </Layout>
   );

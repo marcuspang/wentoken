@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useApiContract } from "react-moralis";
-import { TOKENS } from "../../constants/constants";
+import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
 import { wenTokenAbi, wenTokenAddress } from "../../util/createTokenOptions";
 import ExploreCollection from "./ExploreCollection";
 
@@ -15,12 +15,9 @@ const ExploreCollections = () => {
     chain: "ropsten",
     params: {
       // [address, address, address, address]
-      accounts: Array(Object.keys(TOKENS).length / 2).fill(purchaseAddress),
+      accounts: Array(TOKEN_LENGTH).fill(purchaseAddress),
       // [0, 1, 2, 3]
-      ids: Object.values(TOKENS).splice(
-        Object.keys(TOKENS).length / 2,
-        Object.keys(TOKENS).length,
-      ),
+      ids: TOKEN_IDS,
     },
   });
   const [checkedItems, setCheckedItems] = useState(false);

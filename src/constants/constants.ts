@@ -4,6 +4,11 @@ export enum TOKENS {
   Green = 2,
   Red = 3,
 }
+export const TOKEN_LENGTH = Object.keys(TOKENS).length / 2;
+export const TOKEN_IDS = Object.values(TOKENS).slice(
+  TOKEN_LENGTH,
+  TOKEN_LENGTH * 2,
+);
 export const imageUris = [
   "QmTTz2Yr2Z59stC69MNhB49Xdg3vBMiLuf8LRNz8QrHZXg", // black
   "QmNwxhPo8pzbuvxtsCEyRKYeUy8wndokntS6rX7NH3QjvU", // blue

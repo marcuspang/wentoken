@@ -8,7 +8,8 @@ interface NFTCardsProps {
   name?: string;
 }
 
-const NFTCards = ({ tokenAmounts, name }: NFTCardsProps) => {
+// TODO better way to manage number of NFTs rendered
+const TradeNFTCards = ({ tokenAmounts, name }: NFTCardsProps) => {
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(8);
   const [count, setCount] = useState(0);
@@ -42,4 +43,4 @@ const NFTCards = ({ tokenAmounts, name }: NFTCardsProps) => {
   );
 };
 
-export default NFTCards;
+export default TradeNFTCards;

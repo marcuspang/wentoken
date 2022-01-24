@@ -82,7 +82,7 @@ export default function Footer() {
           mx={"auto"}
           direction={{ base: "column", md: "row" }}
           spacing={4}
-          justifyConten={{ md: "space-between" }}
+          justifyContent={{ md: "space-between" }}
           align={{ md: "center" }}
         >
           <Text>© 2022 wenToken. All rights reserved</Text>

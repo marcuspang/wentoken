@@ -1,8 +1,7 @@
 import { Box, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
-import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useMoralis,
   useMoralisQuery,
@@ -92,7 +91,7 @@ const TradeSubmissionPage: NextPage = () => {
     await trade.save();
   };
 
-  const submitTrade = useCallback(async () => {
+  const submitTrade = async () => {
     if (data && data.length) {
       if (!isExecuting) {
         await approvalFetch({
@@ -136,7 +135,7 @@ const TradeSubmissionPage: NextPage = () => {
         }
       }
     }
-  }, [isWeb3EnableLoading, isInitializing]);
+  };
 
   return (
     <Layout>

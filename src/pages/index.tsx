@@ -19,7 +19,7 @@ import { NextPage } from "next";
 import Card from "../components/Explore/Card";
 import Layout from "../components/Layout/Layout";
 import theme from "../theme/theme";
-import PlayIcon from "./PlayIcon";
+import PlayIcon from "../components/Layout/PlayIcon";
 
 // fetch({
 //   params: createTokenOptions(

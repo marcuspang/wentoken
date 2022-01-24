@@ -17,7 +17,7 @@ import {
 import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { ChangeEventHandler, useCallback, useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import {
   useMoralis,
   useNewMoralisObject,
@@ -91,32 +91,33 @@ const TradeSelectionPage: NextPage = () => {
     }
   };
 
-  const editSelection = useCallback(
-    (tokenId: number, selection: "to" | "from", edit: 1 | -1) => {
-      if (selection === "from") {
-        setSelectedFromTokens((prev) => {
-          const temp = prev;
-          if (edit === 1) {
-            temp[tokenId]++;
-          } else {
-            temp[tokenId]--;
-          }
-          return temp;
-        });
-      } else {
-        setSelectedToTokens((prev) => {
-          const temp = prev;
-          if (edit === 1) {
-            temp[tokenId]++;
-          } else {
-            temp[tokenId]--;
-          }
-          return temp;
-        });
-      }
-    },
-    [],
-  );
+  const editSelection = (
+    tokenId: number,
+    selection: "to" | "from",
+    edit: 1 | -1,
+  ) => {
+    if (selection === "from") {
+      setSelectedFromTokens((prev) => {
+        const temp = prev;
+        if (edit === 1) {
+          temp[tokenId]++;
+        } else {
+          temp[tokenId]--;
+        }
+        return temp;
+      });
+    } else {
+      setSelectedToTokens((prev) => {
+        const temp = prev;
+        if (edit === 1) {
+          temp[tokenId]++;
+        } else {
+          temp[tokenId]--;
+        }
+        return temp;
+      });
+    }
+  };
 
   return (
     <Layout>

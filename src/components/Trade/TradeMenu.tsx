@@ -64,7 +64,7 @@ const TradeMenu = ({
             editSelection={(tokenId: number, edit: 1 | -1) =>
               editSelection(
                 tokenId,
-                typeof onOpen === "function" ? "from" : "to",
+                typeof onOpen === "function" ? "to" : "from",
                 edit,
               )
             }

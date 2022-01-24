@@ -37,6 +37,7 @@ const TradeTable = ({
   isExecuted,
 }: TradeTableProps) => {
   const router = useRouter();
+  console.log(isOthers, isExecuted, trades);
 
   return (
     <>
@@ -56,8 +57,7 @@ const TradeTable = ({
           <Tbody>
             {trades.map(
               (trade) =>
-                !trade.attributes.executed ||
-                (isExecuted && (
+                (!trade.attributes.executed || isExecuted) && (
                   <Tr
                     key={trade.id}
                     transition={"opacity 0.1s ease"}
@@ -85,7 +85,7 @@ const TradeTable = ({
                       )}
                     </Td>
                   </Tr>
-                )),
+                ),
             )}
           </Tbody>
         )}

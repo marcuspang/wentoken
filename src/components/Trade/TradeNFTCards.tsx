@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { imageUris, TOKENS } from "../../constants/constants";
-import NFTCard from "./NFTCard";
+import TradeNFTCard from "./TradeNFTCard";
 
 interface NFTCardsProps {
   tokenAmounts: number[];
@@ -19,7 +19,7 @@ const NFTCards = ({ tokenAmounts, name }: NFTCardsProps) => {
         Array.from(Array(tokenAmount), (_, index) => index)
           .map((index) => {
             return (
-              <NFTCard
+              <TradeNFTCard
                 key={index}
                 collectionId={0}
                 imageUrl={

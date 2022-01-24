@@ -14,11 +14,11 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { TOKENS } from "../../constants/constants";
-import { NFTCard } from "../Explore/NFTCard";
+import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
 interface NFTCardProps extends NFTCard, FlexProps {}
 
-const NFTCard = ({
+const TradeNFTCard = ({
   collectionId,
   pnl,
   value,
@@ -91,4 +91,4 @@ const NFTCard = ({
   );
 };
 
-export default NFTCard;
+export default TradeNFTCard;

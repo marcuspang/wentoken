@@ -1,7 +1,7 @@
 import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { imageUris, TOKENS } from "../../constants/constants";
-import NFTCard from "../Explore/NFTCard";
+import NFTCard from "./PortfolioNFTCard";
 
 interface PortfolioCollectionProps {
   tokenAmount: number;

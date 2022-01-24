@@ -1,28 +1,18 @@
-import { Box, Flex, VStack, Container } from "@chakra-ui/react";
-import ExploreCollection from "../../components/Explore/ExploreCollection";
+import { HStack, Text } from "@chakra-ui/react";
+import ExploreCollections from "../../components/Explore/ExploreCollections";
 import ExploreFilter from "../../components/Explore/ExploreFilter";
 import Layout from "../../components/Layout/Layout";
 
 const ExplorePage = () => (
   <Layout>
-    <Container maxW='container.xl' p='5px 0 0 0'>
-  <Box>
-    <Flex h='100%' w='100%' flexDirection='column' justifyContent='center' alignItems='center'>
-      <Box alignSelf='center' fontWeight={'semibold'}>
-        EXPLORE NFTs
-      </Box>
-      <Box alignSelf='center' w='100%'>
-        <ExploreFilter />
-      </Box>
-      <Box alignSelf='center' w='100%'>
-        <ExploreCollection />
-      </Box>
-    </Flex> 
-  </Box>
-  </Container>
-</Layout>
-
-
+    <HStack h="100%" w="100%" flexDirection="column">
+      <Text as="h1" fontWeight={"bold"} fontSize="4xl" mt={10} mb={7}>
+        Explore NFTs
+      </Text>
+      <ExploreFilter />
+    </HStack>
+    <ExploreCollections />
+  </Layout>
 );
 
 export default ExplorePage;

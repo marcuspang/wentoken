@@ -1,15 +1,15 @@
-import { Box, Flex, Checkbox } from "@chakra-ui/react";
+import { Box, Flex, Checkbox, Text } from "@chakra-ui/react";
 
 const options = [
-    {
-        'name': 'Tradeable cards only',
-        'defaultCheckValue': false
-    },
-    {
-        'name': 'some other options like pnl',
-        'defaultCheckValue': false
-    }
-]
+  {
+    name: "Tradeable cards only",
+    defaultCheckValue: false,
+  },
+  {
+    name: "Placeholder",
+    defaultCheckValue: false,
+  },
+];
 
 // const checked = () => {
 //     const handleCheck = (event) => {
@@ -17,32 +17,29 @@ const options = [
 //         console.log('do validate')
 //       }
 //     }
-  
+
 //     return <input type="text" onKeyDown={handleKeyDown} />
 //   }
 
 const ExploreFilter = () => {
-    return (
-        <Box>
-            <Flex justifyContent={'flex-start'}>
-                <Box minW='8vw' alignSelf={'center'} fontSize={'xs'} pl={'10px'}>Filter By:</Box>
-                <Box alignSelf={'center'}>
-                    <Flex flexWrap={"wrap"} gap={4}>
-                        {options.map((option, index) => (
-                            <Checkbox
-                                colorScheme={'green'}
-                                key={index}
-                                defaultIsChecked={option.defaultCheckValue}
-                                maxW={"calc(100% / 4 - 1rem)"}
-                                flex={"calc(100% / 4 - 1rem)"}
-                            >{option.name}</Checkbox>
-                        ))}
-                    </Flex>
-                </Box>
-            </Flex>
-        </Box>
-
-    );
+  return (
+    <Flex justifyContent={"flex-start"} alignItems={"center"}>
+      <Text fontSize={"md"} mr={4}>
+        Filter By:
+      </Text>
+      <Flex flexWrap={"wrap"} gap={4}>
+        {options.map((option, index) => (
+          <Checkbox
+            colorScheme={"green"}
+            key={index}
+            defaultIsChecked={option.defaultCheckValue}
+          >
+            <Text fontSize={"md"}>{option.name}</Text>
+          </Checkbox>
+        ))}
+      </Flex>
+    </Flex>
+  );
 };
 
 export default ExploreFilter;

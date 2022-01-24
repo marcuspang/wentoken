@@ -37,7 +37,7 @@ export interface NFTCard {
 
 interface NFTCardProps extends NFTCard, FlexProps {}
 
-const NFTCard = ({
+const PortfolioNFTCard = ({
   collectionId,
   pnl,
   value,
@@ -71,15 +71,23 @@ const NFTCard = ({
 
         <Box p="4">
           <Box d="flex" alignItems="flex-start" mb={2}>
-            {isTradeable ?               
-            <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="green">
-                Tradeable
-              </Badge> :
-              <Box h='19.2px'></Box>
-            //   <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="white" color="white">
-            //   Untradeable
-            // </Badge>
-          }
+            {
+              isTradeable ? (
+                <Badge
+                  rounded="full"
+                  px="2"
+                  fontSize="0.8em"
+                  colorScheme="green"
+                >
+                  Tradeable
+                </Badge>
+              ) : (
+                <Box h="19.2px"></Box>
+              )
+              //   <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="white" color="white">
+              //   Untradeable
+              // </Badge>
+            }
           </Box>
           <HStack
             justifyContent="space-between"
@@ -122,4 +130,4 @@ const NFTCard = ({
   );
 };
 
-export default NFTCard;
+export default PortfolioNFTCard;

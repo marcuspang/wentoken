@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import Layout from "../../components/Layout/Layout";
 import LogoIcon from "../../components/Layout/LogoIcon";
-import NFTCards from "../../components/Trade/NFTCards";
+import NFTCards from "../../components/Trade/TradeNFTCards";
 import { TOKENS } from "../../constants/constants";
 import createTokenOptions from "../../util/createTokenOptions";
 

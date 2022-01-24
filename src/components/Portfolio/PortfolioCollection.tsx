@@ -1,4 +1,5 @@
 import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { imageUris, TOKENS } from "../../constants/constants";
 import NFTCard from "./PortfolioNFTCard";
@@ -12,6 +13,7 @@ const PortfolioCollection = ({
   tokenAmount,
   tokenId,
 }: PortfolioCollectionProps) => {
+  const router = useRouter();
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(8);
 
@@ -36,6 +38,7 @@ const PortfolioCollection = ({
               value="0.01 ETH"
               maxW={"calc(100% / 4 - 1rem)"}
               flex={"calc(100% / 4 - 1rem)"}
+              onClick={() => router.push("/trade/selection")}
               pb={3}
             />
           ))}

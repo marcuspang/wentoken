@@ -22,7 +22,7 @@ const PortfolioStats = ({ sum, tokens, isLoading }: PortfolioStatsProps) => {
       <Stat size="md">
         <StatLabel fontSize="lg">NFT Net Worth</StatLabel>
         <StatNumber fontSize={"5xl"} fontWeight={800}>
-          ${(sum && sum * MINT_PRICE * ETH_PRICE) || 0}
+          ${(sum && sum * MINT_PRICE * ETH_PRICE).toFixed(2) || 0}
         </StatNumber>
         <StatHelpText>
           <StatArrow type="increase" fontSize={"md"} />
@@ -45,8 +45,7 @@ const PortfolioStats = ({ sum, tokens, isLoading }: PortfolioStatsProps) => {
             {isLoading ? <Spinner /> : sum}
           </StatNumber>
           <StatHelpText>
-            <StatArrow type="increase" />
-            12
+            <StatArrow type="increase" />1
           </StatHelpText>
         </Stat>
         <Stat size="md">
@@ -55,8 +54,7 @@ const PortfolioStats = ({ sum, tokens, isLoading }: PortfolioStatsProps) => {
             {isLoading ? <Spinner /> : Math.max(0, ...tokens)}
           </StatNumber>
           <StatHelpText>
-            <StatArrow type="increase" />
-            12
+            <StatArrow type="increase" />1
           </StatHelpText>
         </Stat>
       </StatGroup>

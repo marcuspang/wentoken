@@ -1,5 +1,6 @@
 import { Box, Button, Flex, HStack, Text, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import {
   useMoralis,
@@ -19,10 +20,11 @@ const ExploreCollection = ({
   tokenAmount,
   tokenId,
 }: ExploreCollectionProps) => {
-  const { data, fetch, isFetching, error } = useWeb3ExecuteFunction();
+  const { fetch, error } = useWeb3ExecuteFunction();
   const { user } = useMoralis();
   const { data: amount } = useNativeBalance({ chain: "ropsten" });
 
+  const router = useRouter();
   const toast = useToast();
 
   const [startIndex, setStartIndex] = useState(0);
@@ -54,6 +56,7 @@ const ExploreCollection = ({
               "Go to your portfolio page to see it once the transaction is finished",
             isClosable: true,
           });
+          router.push("/portfolio/" + user.get("ethAddress"));
         }
       } else {
         toast({

@@ -1,3 +1,4 @@
+import { CheckIcon } from "@chakra-ui/icons";
 import {
   Badge,
   Box,
@@ -59,13 +60,28 @@ const TradeNFTCard = ({
         onClickCapture={() => setSelected((prev) => !prev)}
         position="relative"
       >
-        <Image
-          src={imageUrl}
-          alt={`${name} image`}
-          roundedTop="lg"
-          width={"60%"}
-          mx="auto"
-        />
+        <Box>
+          <Image
+            src={imageUrl}
+            alt={`${name} image`}
+            roundedTop="lg"
+            width={"60%"}
+            mx="auto"
+          />
+          {selected && (
+            <CheckIcon
+              position={"absolute"}
+              top={"2px"}
+              right={"2px"}
+              width={6}
+              height={6}
+              p={1}
+              rounded={"md"}
+              color={"green.400"}
+              bg={"black"}
+            />
+          )}
+        </Box>
         <Box p="3">
           <Flex mb={2}>
             {isTradeable && (

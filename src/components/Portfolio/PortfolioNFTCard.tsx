@@ -35,7 +35,9 @@ export interface NFTCard {
   pnl: string;
 }
 
-interface NFTCardProps extends NFTCard, FlexProps {}
+interface NFTCardProps extends NFTCard, FlexProps {
+  onClick: () => void;
+}
 
 const PortfolioNFTCard = ({
   collectionId,
@@ -44,6 +46,7 @@ const PortfolioNFTCard = ({
   imageUrl,
   isTradeable,
   name,
+  onClick,
   ...props
 }: NFTCardProps) => {
   return (
@@ -120,7 +123,12 @@ const PortfolioNFTCard = ({
             <Button minW="30%" maxW="50%" variant={"normal"}>
               Sell
             </Button>
-            <Button minW="30%" maxW="50%" variant={"normal-dark"}>
+            <Button
+              minW="30%"
+              maxW="50%"
+              variant={"normal-dark"}
+              onClick={onClick}
+            >
               Trade
             </Button>
           </Flex>

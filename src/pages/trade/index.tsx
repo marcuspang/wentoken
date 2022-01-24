@@ -3,12 +3,12 @@ import { NextPage } from "next";
 import { useEffect } from "react";
 import { useMoralis, useMoralisQuery } from "react-moralis";
 import Layout from "../../components/Layout/Layout";
-import TradeExecutedTable from "../../components/Trade/TradeExecutedTable";
 import TradeTable from "../../components/Trade/TradeTable";
 import { PendingTrades } from "./[id]";
 
 const TradeMainPage: NextPage = () => {
-  const { user, isWeb3EnableLoading, isInitializing } = useMoralis();
+  const { user, isInitializing, isWeb3EnableLoading } = useMoralis();
+
   const {
     data: fromData,
     isFetching: fromIsFetching,
@@ -27,7 +27,7 @@ const TradeMainPage: NextPage = () => {
   useEffect(() => {
     fromFetch();
     toFetch();
-  }, [isWeb3EnableLoading, isInitializing, user]);
+  }, [isWeb3EnableLoading, isInitializing, user, fromFetch, toFetch]);
 
   return (
     <Layout>

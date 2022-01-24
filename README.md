@@ -2,7 +2,7 @@
 
 ## Project Solution
 
-An NFT to NFT Trading marketplace through an escrow smart contract combined with a NFT Portfolion valuation with collection aggregate statistics
+An NFT to NFT Trading marketplace through an escrow smart contract combined with a NFT Portfolio valuation with collection aggregate statistics
 
 ## Features
 

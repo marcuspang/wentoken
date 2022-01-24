@@ -1,7 +1,7 @@
 # wentoken - Submission for NUS FinTech Hackathon 2022
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=ayVbUMYLJAY" target="_blank"><img src="http://img.youtube.com/vi/ayVbUMYLJAY/0.jpg" 
-alt="wentoken submission video" width="240" height="180" border="10" /></a>
+alt="wentoken submission video" width="50%" height="auto" /></a>
 
 ## Problems we are addressing
 

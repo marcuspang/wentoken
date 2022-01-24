@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -11,9 +11,9 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Navbar />
-      <Box maxW={"8xl"} mx={"auto"}>
+      <Container maxW={"8xl"} mx={"auto"}>
         {children}
-      </Box>
+      </Container>
       <Footer />
     </>
   );

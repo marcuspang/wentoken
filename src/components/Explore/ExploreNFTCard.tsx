@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { TOKENS } from "../../constants/constants";
+import theme from "../../theme/theme";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
 // const data = {
@@ -55,7 +56,7 @@ const ExploreNFTCard = ({
         w={"full"}
         borderWidth="0px"
         rounded="lg"
-        boxShadow={"lg"}
+        boxShadow={theme.shadows.light}
         position="relative"
       >
         <Image

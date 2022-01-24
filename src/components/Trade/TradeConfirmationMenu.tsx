@@ -9,9 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import router from "next/router";
-import { TOKENS } from "../../constants/constants";
 import { v4 as uuidv4 } from "uuid";
+import { TOKENS } from "../../constants/constants";
 import { PendingTrades } from "../../pages/trade/[id]";
+import theme from "../../theme/theme";
 
 interface TradeConfirmationMenuProps extends PendingTrades {
   isFetching: boolean;
@@ -34,7 +35,14 @@ const TradeConfirmationMenu = ({
   onClick,
 }: TradeConfirmationMenuProps) => {
   return (
-    <Stack ml={8} my={4} boxShadow={"xl"} p={6} gap={4} rounded={"xl"}>
+    <Stack
+      ml={8}
+      my={4}
+      boxShadow={theme.shadows.light}
+      p={6}
+      gap={4}
+      rounded={"xl"}
+    >
       <Text as="h1" fontSize={"3xl"} fontWeight={800}>
         Trade Information
       </Text>

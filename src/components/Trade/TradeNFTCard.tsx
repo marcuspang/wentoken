@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { TOKENS } from "../../constants/constants";
+import theme from "../../theme/theme";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
 interface NFTCardProps extends NFTCard, FlexProps {
@@ -50,7 +51,7 @@ const TradeNFTCard = ({
         w={"full"}
         borderWidth="0px"
         rounded="lg"
-        boxShadow={"lg"}
+        boxShadow={theme.shadows.light}
         transition={"opacity 0.1s ease-in"}
         _hover={{
           cursor: "pointer",

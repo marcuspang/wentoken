@@ -15,6 +15,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { TOKENS } from "../../constants/constants";
+import theme from "../../theme/theme";
 
 // const data = {
 //   isTradeable: true,
@@ -61,7 +62,7 @@ const PortfolioNFTCard = ({
         w={"full"}
         borderWidth="0px"
         rounded="lg"
-        boxShadow={"lg"}
+        boxShadow={theme.shadows.light}
         position="relative"
       >
         <Image

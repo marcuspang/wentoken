@@ -16,7 +16,7 @@ import { fakescatterchartdata } from "../../constants/constants";
 
 const PortfolioScatterChart = (props: StackProps) => (
   <VStack {...props}>
-    <ResponsiveContainer width={"100%"} height={"100%"}>
+    <ResponsiveContainer width={"100%"} height={300}>
       <ScatterChart>
         <XAxis dataKey="x" />
         <YAxis dataKey="y" />

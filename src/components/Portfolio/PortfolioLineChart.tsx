@@ -13,7 +13,7 @@ import { fakelinechartdata } from "../../constants/constants";
 
 const PortfolioLineChart = (props: StackProps) => (
   <VStack {...props}>
-    <ResponsiveContainer width="100%" height={"100%"}>
+    <ResponsiveContainer width="100%" height={300}>
       <LineChart data={fakelinechartdata}>
         <XAxis dataKey="name" />
         <YAxis />

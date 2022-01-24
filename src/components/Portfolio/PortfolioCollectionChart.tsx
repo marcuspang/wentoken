@@ -32,7 +32,11 @@ const PortfolioCollectionChart = () => {
           </Menu>
         </HStack>
       </Flex>
-      <Flex gap={4} justifyContent={"space-around"}>
+      <Flex
+        gap={4}
+        justifyContent={"space-around"}
+        flexWrap={{ base: "wrap", lg: "nowrap" }}
+      >
         <PortfolioComposedChart flex={"33%"} />
         <PortfolioScatterChart flex={"33%"} />
         <PortfolioLineChart flex={"33%"} />

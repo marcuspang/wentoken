@@ -18,6 +18,7 @@ import {
 import { NextPage } from "next";
 import Card from "../components/Explore/Card";
 import Layout from "../components/Layout/Layout";
+import theme from "../theme/theme";
 import PlayIcon from "./PlayIcon";
 
 // fetch({
@@ -85,22 +86,20 @@ const Home: NextPage = () => {
           >
             <Button
               onClick={onOpen}
-              rounded={"full"}
+              rounded={"xl"}
               size={"lg"}
               fontWeight={"normal"}
               px={6}
               colorScheme={"red"}
-              bg={"red.400"}
-              _hover={{ bg: "red.500" }}
             >
               Join Beta
             </Button>
             <Button
-              rounded={"full"}
+              rounded={"xl"}
               size={"lg"}
               fontWeight={"normal"}
               px={6}
-              leftIcon={<PlayIcon h={4} w={4} color={"gray.300"} />}
+              leftIcon={<PlayIcon h={4} w={4} color={"gray.400"} />}
             >
               How It Works
             </Button>
@@ -116,7 +115,7 @@ const Home: NextPage = () => {
           <Box
             position={"relative"}
             rounded={"2xl"}
-            boxShadow={"2xl"}
+            boxShadow={theme.shadows.light}
             width={"fit-content"}
             overflow={"hidden"}
           >
@@ -139,10 +138,10 @@ const Home: NextPage = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button colorScheme="green">Submit Email</Button>
+            <Button colorScheme="blue">Submit Email</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

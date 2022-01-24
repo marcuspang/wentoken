@@ -75,13 +75,14 @@ export default function Footer() {
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.700")}
       >
-        <Stack
+        <Container
+          display={"flex"}
           py={4}
           maxW={"8xl"}
           mx={"auto"}
           direction={{ base: "column", md: "row" }}
           spacing={4}
-          justify={{ md: "space-between" }}
+          justifyConten={{ md: "space-between" }}
           align={{ md: "center" }}
         >
           <Text>© 2022 wenToken. All rights reserved</Text>
@@ -123,7 +124,7 @@ export default function Footer() {
               <FaHome />
             </SocialButton>
           </Stack>
-        </Stack>
+        </Container>
       </Box>
     </Box>
   );

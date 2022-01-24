@@ -1,6 +1,7 @@
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Container,
   Flex,
   HStack,
   IconButton,
@@ -11,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { MouseEventHandler } from "react";
 import { useMoralis } from "react-moralis";
+import theme from "../../theme/theme";
 import CustomLink from "./CustomLink";
 import Logo from "./Logo";
 import WalletButton from "./WalletButton";
@@ -36,10 +38,11 @@ const Navbar = () => {
     <>
       <Box
         bg={useColorModeValue("white", "gray.900")}
-        boxShadow={"md"}
+        boxShadow={theme.shadows.light}
         as={"header"}
       >
-        <Flex
+        <Container
+          display="flex"
           h={16}
           alignItems={"center"}
           justifyContent={"space-between"}
@@ -78,7 +81,7 @@ const Navbar = () => {
             </HStack>
             <WalletButton />
           </HStack>
-        </Flex>
+        </Container>
 
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>

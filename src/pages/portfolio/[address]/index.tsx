@@ -8,6 +8,7 @@ import PortfolioCollection from "../../../components/Portfolio/PortfolioCollecti
 import PortfolioCollectionChart from "../../../components/Portfolio/PortfolioCollectionChart";
 import PortfolioStats from "../../../components/Portfolio/PortfolioStats";
 import { TOKENS, TOKEN_IDS, TOKEN_LENGTH } from "../../../constants/constants";
+import theme from "../../../theme/theme";
 import { wenTokenAbi, wenTokenAddress } from "../../../util/createTokenOptions";
 
 const PortfolioPage: NextPage = () => {
@@ -45,7 +46,13 @@ const PortfolioPage: NextPage = () => {
   return (
     <Layout>
       <Box maxW={"6xl"} mx={"auto"} mt={4}>
-        <Box boxShadow={"xl"} rounded={"xl"} px={10} pt={8} pb={6}>
+        <Box
+          boxShadow={theme.shadows.light}
+          rounded={"xl"}
+          px={10}
+          pt={8}
+          pb={6}
+        >
           <PortfolioStats sum={sum} tokens={tokens} isLoading={isLoading} />
         </Box>
         {tokens.map(

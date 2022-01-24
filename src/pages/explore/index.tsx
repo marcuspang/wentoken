@@ -1,59 +1,28 @@
-import { Box, Flex, VStack } from "@chakra-ui/react";
-import NFTCard from "../../components/Explore/NFTCard";
+import { Box, Flex, VStack, Container } from "@chakra-ui/react";
+import ExploreCollection from "../../components/Explore/ExploreCollection";
+import ExploreFilter from "../../components/Explore/ExploreFilter";
+import Layout from "../../components/Layout/Layout";
 
 const ExplorePage = () => (
+  <Layout>
+    <Container maxW='container.xl' p='5px 0 0 0'>
   <Box>
-    <VStack spacing="0">
-      <Box w="100%" h="40px" bg="yellow.200" align="center">
-        Explore NFTs
+    <Flex h='100%' w='100%' flexDirection='column' justifyContent='center' alignItems='center'>
+      <Box alignSelf='center' fontWeight={'semibold'}>
+        EXPLORE NFTs
       </Box>
-      <Box w="100%" h="40px" bg="tomato" align="center">
-        filter
+      <Box alignSelf='center' w='100%'>
+        <ExploreFilter />
       </Box>
-      <Box flexGrow="1" h="full" bg="pink.100">
-        <Flex w="100%">
-          <NFTCard />
-          <NFTCard />
-          <NFTCard />
-        </Flex>
+      <Box alignSelf='center' w='100%'>
+        <ExploreCollection />
       </Box>
-    </VStack>
+    </Flex> 
   </Box>
+  </Container>
+</Layout>
+
+
 );
-
-// function ExplorePage() {
-//     return (
-//       <div>explore page</div>
-//     )
-//     }
-
-// use the following when can retrieve the NFT data
-
-// function ExplorePage({nfts}) {
-//   return (
-//     <ul>
-//       {nfts.map((nft) => (
-//         <li>{nft.title}</li>
-//         <li>{nft.img}</li>
-//         <li>{nft.description}</li>
-//       ))}
-//     </ul>
-//   )
-//   }
-
-// // This function gets called at build time
-// export async function getStaticProps() {
-//   // Call an external API endpoint to get posts
-//   const res = await fetch('https://.../nfts') // fetch nfts from opensea
-//   const posts = await res.json()
-
-//   // By returning { props: { nfts } }, the ExplorePage component
-//   // will receive `nfts` as a prop at build time
-//   return {
-//     props: {
-//       nfts,
-//     },
-//   }
-// }
 
 export default ExplorePage;

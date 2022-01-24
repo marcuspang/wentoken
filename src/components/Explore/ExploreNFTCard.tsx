@@ -14,6 +14,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { TOKENS } from "../../constants/constants";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
@@ -41,6 +42,7 @@ const ExploreNFTCard = ({
   onEditSelection,
   ...props
 }: NFTCardProps) => {
+  const router = useRouter();
   return (
     <Flex
       alignItems="center"
@@ -116,6 +118,13 @@ const ExploreNFTCard = ({
               minW="30%"
               maxW="50%"
               variant={"normal-dark"}
+              onClick={() =>
+                // TODO implement offers by other people
+                router.push(
+                  "/trade/selection?to=" +
+                    "0xE269cf4647c3BE31E4e99ADeD398aA164BdFa0aC",
+                )
+              }
               isDisabled={!isTradeable}
             >
               Trade

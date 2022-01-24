@@ -172,15 +172,16 @@ const TradeSelectionPage: NextPage = () => {
               isDisabled={isSaving}
               onClick={async () => {
                 const result = await save({
-                  to: toAddress,
+                  to: (toAddress as string).toLowerCase(),
                   toTokenIds: TOKEN_IDS,
                   toTokenAmounts: selectedToTokens,
-                  from: user?.get("ethAddress"),
+                  from: user?.get("ethAddress").toLowerCase(),
                   fromTokenIds: TOKEN_IDS,
                   fromTokenAmounts: selectedFromTokens,
                   confirmed: false,
+                  executed: false,
                 });
-                // TODO add error
+                // TODO add error handling
                 router.push("/trade/" + result.id);
               }}
             >

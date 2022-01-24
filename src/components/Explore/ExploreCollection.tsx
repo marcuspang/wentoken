@@ -20,11 +20,9 @@ const ExploreCollection = ({
   tokenAmount,
   tokenId,
 }: ExploreCollectionProps) => {
-  const { data, fetch, isFetching } = useWeb3ExecuteFunction();
+  const { data, fetch, isFetching, error } = useWeb3ExecuteFunction();
   const { user } = useMoralis();
   const { data: amount } = useNativeBalance({ chain: "ropsten" });
-
-  // console.log(amount && ethers.utils.formatEther(amount));
 
   const toast = useToast();
 
@@ -49,14 +47,18 @@ const ExploreCollection = ({
             ethers.utils.parseEther("0.01").toString(),
           ),
         });
-        toast({
-          status: "success",
-          title: "Bought 1 " + TOKENS[tokenId] + " token!",
-          description:
-            "Go to your portfolio page to see it once the transaction is finished",
-        });
+        if (!error) {
+          toast({
+            status: "success",
+            title: "Bought 1 " + TOKENS[tokenId] + " token!",
+            description:
+              "Go to your portfolio page to see it once the transaction is finished",
+            isClosable: true,
+          });
+        }
       } else {
         toast({
+          isClosable: true,
           status: "error",
           title: "Not enough ETH",
           description: "Please add more ethereum to your account on faucets",

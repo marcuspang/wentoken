@@ -11,14 +11,11 @@ import {
 import router from "next/router";
 import { TOKENS } from "../../constants/constants";
 import { v4 as uuidv4 } from "uuid";
+import { PendingTrades } from "../../pages/trade/[id]";
 
-interface TradeConfirmationMenuProps {
+interface TradeConfirmationMenuProps extends PendingTrades {
   isFetching: boolean;
   isEmpty: boolean;
-  from: string;
-  to: string;
-  fromTokenAmounts: number[];
-  toTokenAmounts: number[];
   submit: boolean;
   onClick: () => void;
 }
@@ -31,6 +28,7 @@ const TradeConfirmationMenu = ({
   toTokenAmounts,
   submit,
   isEmpty,
+  confirmed,
   onClick,
 }: TradeConfirmationMenuProps) => {
   return (
@@ -136,15 +134,19 @@ const TradeConfirmationMenu = ({
         <Text>Gas Fees: 0.001 ETH</Text>
       </Stack>
       <HStack justifyContent={"space-around"}>
-        <Button variant="shadow" onClickCapture={() => router.back()}>
+        <Button
+          variant="shadow"
+          onClickCapture={() => router.back()}
+          isDisabled={confirmed}
+        >
           Edit Trade
         </Button>
         <Button
           variant={"dark-shadow"}
-          isDisabled={isFetching || submit}
+          isDisabled={isFetching || submit || confirmed}
           onClickCapture={onClick}
         >
-          Confirm Offer
+          {confirmed ? "Offer submitted" : "Confirm Offer"}
         </Button>
       </HStack>
     </Stack>

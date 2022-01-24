@@ -16,6 +16,7 @@ export interface PendingTrades {
   fromTokenIds: typeof TOKEN_IDS;
   fromTokenAmounts: number[];
   confirmed: boolean;
+  executed: boolean;
 }
 
 const TradeSubmissionPage: NextPage = () => {
@@ -38,12 +39,14 @@ const TradeSubmissionPage: NextPage = () => {
       if (!user) {
         toast({
           status: "error",
+          isClosable: true,
           title: "You are not logged in",
         });
       }
       if (user!.get("ethAddress") !== data[0].attributes.from) {
         toast({
           status: "error",
+          isClosable: true,
           title: "You are not authorized to submit this trade",
         });
       }
@@ -64,6 +67,14 @@ const TradeSubmissionPage: NextPage = () => {
       trade.set("confirmed", true);
       trade.save();
       setSubmit(false);
+      toast({
+        status: "success",
+        title: "Successfully submitted your trade offer",
+        description:
+          "Please wait until the other party has accepted your request",
+        isClosable: true,
+      });
+      router.push("/trade");
     }
   }, [submit]);
 

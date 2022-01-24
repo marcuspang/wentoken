@@ -47,6 +47,7 @@ const TradeSelectionPage: NextPage = () => {
   );
   const [toAddressInputError, setToAddressInputError] = useState(false);
   const [toAddress, setToAddress] = useState(router.query.to);
+  const [validForm, setValidForm] = useState(false);
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -80,6 +81,21 @@ const TradeSelectionPage: NextPage = () => {
       setTokens(tokenAmounts);
     }
   }, [data]);
+
+  useEffect(() => {
+    console.log(selectedFromTokens, selectedToTokens);
+    if (
+      selectedFromTokens &&
+      selectedFromTokens.length &&
+      selectedToTokens &&
+      selectedToTokens.length
+    ) {
+      setValidForm(true);
+    } else {
+      setValidForm(false);
+    }
+    console.log("here");
+  }, [selectedFromTokens, selectedToTokens]);
 
   const addressOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.value && ethers.utils.isAddress(e.target.value)) {
@@ -168,7 +184,7 @@ const TradeSelectionPage: NextPage = () => {
             <Button
               variant={"dark-shadow"}
               mb={4}
-              isDisabled={isSaving}
+              isDisabled={isSaving || !validForm}
               onClick={async () => {
                 const result = await save({
                   to: (toAddress as string).toLowerCase(),

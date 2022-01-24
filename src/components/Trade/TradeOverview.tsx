@@ -26,29 +26,11 @@ const TradeOverview = () => {
     query.equalTo("to", user?.get("ethAddress").toLowerCase()),
   );
 
-  const [fromTokens, setFromTokens] = useState<Moralis.Object<PendingTrades>[]>(
-    [],
-  );
-  const [toTokens, setToTokens] = useState<Moralis.Object<PendingTrades>[]>([]);
-
   useEffect(() => {
     fromFetch();
     toFetch();
   }, [user, isAuthenticating, isWeb3EnableLoading, isInitializing]);
 
-  useEffect(() => {
-    if (fromData && fromData.length) {
-      setFromTokens(fromData);
-    }
-    if (toTokens && toTokens.length) {
-      setToTokens(toData);
-    }
-
-    return () => {
-      setFromTokens([]);
-      setToTokens([]);
-    };
-  }, [toData, fromData]);
   return (
     <>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
@@ -75,7 +57,7 @@ const TradeOverview = () => {
           Select Screen
         </Button>
       </Flex>
-      <TradeTable isFetching={fromIsFetching} trades={fromTokens} />
+      <TradeTable isFetching={fromIsFetching} trades={fromData} />
       <Tooltip
         label="Existing trade offers that are awaiting for your confirmation"
         rounded={"md"}
@@ -92,7 +74,7 @@ const TradeOverview = () => {
           Pending Trade Offers From Others
         </Text>
       </Tooltip>
-      <TradeTable isFetching={toIsFetching} trades={toTokens} isOthers />
+      <TradeTable isFetching={toIsFetching} trades={toData} isOthers />
       <Tooltip label="Trade offers executed" rounded={"md"} p={2}>
         <Text
           as="h1"
@@ -108,9 +90,9 @@ const TradeOverview = () => {
       <TradeTable
         isFetching={toIsFetching || fromIsFetching}
         isExecuted
-        trades={toTokens
+        trades={fromData
           .filter((trade) => trade.attributes.executed)
-          .concat(fromTokens.filter((trade) => trade.attributes.executed))}
+          .concat(toData.filter((trade) => trade.attributes.executed))}
       />
     </>
   );

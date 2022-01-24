@@ -66,3 +66,127 @@ export const fakecards = [
     pnl: "5 ETH",
   },
 ];
+
+export const fakecomposedchartdata = [
+  {
+    "name": "d1",
+    "price": 2155,
+    "volume": 2400
+  },
+  {
+    "name": "d2",
+    "price": 2800,
+    "volume": 2512
+  },
+  {
+    "name": "d3",
+    "price": 2500,
+    "volume": 2000,
+  },
+  {
+    "name": "d4",
+    "price": 2980,
+    "volume": 3208
+  },
+  {
+    "name": "d5",
+    "price": 2600,
+    "volume": 3000
+  },
+  {
+    "name": "d6",
+    "price": 4090,
+    "volume": 3800
+  },
+  {
+    "name": "d7",
+    "price": 5090,
+    "volume": 4600
+  },
+];
+
+export const fakescatterchartdata = [
+  {
+    "x": 200,
+    "y": 260
+  },
+  {
+    "x": 240,
+    "y": 290
+  },
+  {
+    "x": 190,
+    "y": 290
+  },
+  {
+    "x": 198,
+    "y": 250
+  },
+  {
+    "x": 180,
+    "y": 280
+  },
+  {
+    "x": 210,
+    "y": 220
+  },
+  {
+    "x": 180,
+    "y": 300
+  },
+  {
+    "x": 290,
+    "y": 350
+  },
+  {
+    "x": 140,
+    "y": 370
+  },
+  {
+    "x": 198,
+    "y": 220
+  },
+  {
+    "x": 440,
+    "y": 350
+  },
+  {
+    "x": 400,
+    "y": 450
+  }
+];
+
+export const fakelinechartdata = [
+  {
+    "name": "2016",
+    "uv": 1000
+  },
+  {
+    "name": "2017",
+    "uv": 1800
+  },
+  {
+    "name": "2018",
+    "uv": 1440
+  },
+  {
+    "name": "2019",
+    "uv": 2780
+  },
+  {
+    "name": "2020",
+    "uv": 1890
+  },
+  {
+    "name": "2021",
+    "uv": 2790
+  },
+  {
+    "name": "2022",
+    "uv": 2390
+  },
+  {
+    "name": "Page G",
+    "uv": 3090
+  }
+]

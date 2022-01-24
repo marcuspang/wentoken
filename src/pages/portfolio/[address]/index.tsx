@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useApiContract } from "react-moralis";
 import Layout from "../../../components/Layout/Layout";
 import PortfolioCollection from "../../../components/Portfolio/PortfolioCollection";
+import PortfolioCollectionChart from "../../../components/Portfolio/PortfolioCollectionChart";
 import PortfolioStats from "../../../components/Portfolio/PortfolioStats";
 import { TOKEN_IDS, TOKEN_LENGTH } from "../../../constants/constants";
 import { wenTokenAbi, wenTokenAddress } from "../../../util/createTokenOptions";
@@ -50,11 +51,14 @@ const PortfolioPage: NextPage = () => {
         {tokens.map(
           (token, index) =>
             token > 0 && (
+              <Box>
+              <PortfolioCollectionChart/>
               <PortfolioCollection
                 tokenAmount={token}
                 tokenId={index}
                 key={index}
               />
+              </Box>
             ),
         )}
       </Box>

@@ -1,32 +1,3 @@
-// import {
-//     Box,
-//     Container,
-//     Stack,
-//     Text,
-//     useColorModeValue,
-//   } from "@chakra-ui/react";
-
-//   export default function Footer() {
-//     return (
-//       <Box
-//       mt={12}
-//         bg={useColorModeValue("gray.100", "gray.900")}
-//       >
-//         <Container
-//           as={Stack}
-//           maxW={"8xl"}
-//           py={4}
-//           direction={{ base: "column", md: "row" }}
-//           spacing={4}
-//           justify={{ base: "center", md: "space-between" }}
-//           align={{ base: "center", md: "center" }}
-//         >
-//           <Text>© 2022 wenToken. All rights reserved</Text>
-//         </Container>
-//       </Box>
-//     );
-//   }
-
 import { ReactNode } from "react";
 import {
   Box,
@@ -56,23 +27,18 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const onFinish = (event: any) => {
-  const id = event.target.id;
-  if (id !== "5") {
-    window.open("https://github.com/marcuspang/wentoken");
-  }
-};
-
 const SocialButton = ({
   children,
   label,
   href,
   id,
+  target,
 }: {
   children: ReactNode;
   label: string;
   href: string;
   id: string;
+  target?: string;
 }) => {
   return (
     <chakra.button
@@ -84,7 +50,7 @@ const SocialButton = ({
       as={"a"}
       href={href}
       id={id}
-      onClick={onFinish}
+      target={target}
       display={"inline-flex"}
       alignItems={"center"}
       justifyContent={"center"}
@@ -124,6 +90,7 @@ export default function Footer() {
             <SocialButton
               label={"Twitter"}
               href={"https://github.com/marcuspang/wentoken"}
+              target="_blank"
               id={"1"}
             >
               <FaTwitter />
@@ -131,6 +98,7 @@ export default function Footer() {
             <SocialButton
               label={"YouTube"}
               href={"https://github.com/marcuspang/wentoken"}
+              target="_blank"
               id={"2"}
             >
               <FaYoutube />
@@ -138,6 +106,7 @@ export default function Footer() {
             <SocialButton
               label={"Instagram"}
               href={"https://github.com/marcuspang/wentoken"}
+              target="_blank"
               id={"3"}
             >
               <FaInstagram />
@@ -145,20 +114,11 @@ export default function Footer() {
             <SocialButton
               label={"Github"}
               href={"https://github.com/marcuspang/wentoken"}
+              target="_blank"
               id={"4"}
             >
               <FaGithub />
             </SocialButton>
-            {/* <SocialButton
-                target="_blank"
-                onClick={() => {
-                window.open(
-                    "https://github.com/marcuspang/wentoken",
-                );
-                }}
-            >
-                <FaGithub />  
-            </SocialButton> */}
 
             <SocialButton label={"Home"} href={"/"} id={"5"}>
               <FaHome />

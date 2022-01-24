@@ -49,6 +49,12 @@ const ExploreCollection = ({
             ethers.utils.parseEther("0.01").toString(),
           ),
         });
+        toast({
+          status: "success",
+          title: "Bought 1 " + TOKENS[tokenId] + " token!",
+          description:
+            "Go to your portfolio page to see it once the transaction is finished",
+        });
       } else {
         toast({
           status: "error",

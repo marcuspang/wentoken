@@ -13,36 +13,36 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { TOKENS } from "../../constants/constants";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
-interface NFTCardProps extends NFTCard, FlexProps {
-  editCurrentSelection: (edit: 1 | -1) => void;
-}
+// const data = {
+//   isTradeable: true,
+//   imageURL:
+//     "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
+//   collection: "Parallel Alpha",
+//   name: "Marcolian Parallel Collectible Card Back",
+//   value: "0.3 ETH",
+//   pnl: "3.1%",
+// };
 
-const TradeNFTCard = ({
+interface NFTCardProps extends NFTCard, FlexProps {}
+
+const TradeConfirmationNFTCard = ({
   collectionId,
   pnl,
   value,
   imageUrl,
   isTradeable,
   name,
-  editCurrentSelection,
-  ...rest
+  ...props
 }: NFTCardProps) => {
-  const [edit, setEdit] = useState<1 | -1>(1);
-  const [selected, setSelected] = useState(false);
   return (
     <Flex
       alignItems="center"
       justifyContent="center"
       border-radius="20 20 0 0"
-      onClickCapture={() => {
-        editCurrentSelection(edit);
-        setEdit((prev) => -prev as 1 | -1);
-      }}
-      {...rest}
+      {...props}
     >
       <Box
         bg={useColorModeValue("white", "gray.800")}
@@ -50,13 +50,6 @@ const TradeNFTCard = ({
         borderWidth="0px"
         rounded="lg"
         boxShadow={"lg"}
-        transition={"opacity 0.1s ease-in"}
-        _hover={{
-          cursor: "pointer",
-          opacity: 0.6,
-        }}
-        opacity={selected ? 0.6 : 1}
-        onClickCapture={() => setSelected((prev) => !prev)}
         position="relative"
       >
         <Image
@@ -66,39 +59,41 @@ const TradeNFTCard = ({
           width={"60%"}
           mx="auto"
         />
-        <Box p="3">
-          <Flex mb={2}>
-            {isTradeable && (
-              <Badge rounded="full" px="2" fontSize="xs" colorScheme="green">
+
+        <Box p="4">
+          <Box d="flex" alignItems="flex-start" mb={2}>
+            {isTradeable ? (
+              <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="green">
                 Tradeable
               </Badge>
+            ) : (
+              <Box h="19.2px"></Box>
             )}
-          </Flex>
+          </Box>
           <HStack
             justifyContent="space-between"
             alignItems={"flex-start"}
             spacing={1}
+            pt={2}
           >
-            <Stack width={"50%"} spacing={0}>
-              <Text fontSize="xs" fontWeight="normal" isTruncated>
+            <Stack width={"67%"} spacing={0}>
+              <Text fontSize="sm" fontWeight="normal" isTruncated>
                 {TOKENS[collectionId]}
               </Text>
-              <Text fontSize="sm" fontWeight="semibold" lineHeight={1.1}>
+              <Text fontSize="md" fontWeight="semibold" lineHeight={1.1}>
                 {name}
               </Text>
             </Stack>
             <Stat
               display={"flex"}
-              width={"30%"}
+              width={"33%"}
               textAlign={"right"}
               justifyContent={"flex-end"}
             >
-              <StatNumber fontSize={"xs"}>{value}</StatNumber>
-              <StatHelpText mb={0}>
+              <StatNumber fontSize={"md"}>{value}</StatNumber>
+              <StatHelpText>
                 <StatArrow type="increase" />
-                <Text fontSize={"xs"} display={"inline-block"}>
-                  {pnl}
-                </Text>
+                {pnl}
               </StatHelpText>
             </Stat>
           </HStack>
@@ -108,4 +103,4 @@ const TradeNFTCard = ({
   );
 };
 
-export default TradeNFTCard;
+export default TradeConfirmationNFTCard;

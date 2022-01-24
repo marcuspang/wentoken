@@ -45,7 +45,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "4.3.1",
-    "react-moralis": "1.1.0"
+    "react-moralis": "1.1.0",
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.4",
@@ -59,6 +60,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "17.0.38",
     "@types/react-dom": "17.0.11",
+    "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
     "chai": "^4.2.0",

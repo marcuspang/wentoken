@@ -1,187 +1,84 @@
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Button,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
+  Spinner,
+  Table,
+  Tbody,
+  Td,
   Text,
-  useDisclosure,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import { ethers } from "ethers";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { ChangeEventHandler, useCallback, useEffect, useState } from "react";
-import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
-import CustomLink from "../../components/Layout/CustomLink";
+import { useMoralis, useMoralisQuery } from "react-moralis";
 import Layout from "../../components/Layout/Layout";
-import LogoIcon from "../../components/Layout/LogoIcon";
-import TradeMenu from "../../components/Trade/TradeMenu";
-import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
-import createTokenOptions from "../../util/createTokenOptions";
+import { TOKENS } from "../../constants/constants";
+import { PendingTrades } from "./[id]";
 
-const TradePage = () => {
+const convertToString = (tokenAmounts: number[]) => {
+  return tokenAmounts
+    .map((tokenAmount, index) =>
+      tokenAmount === 0 ? "" : tokenAmount + " " + TOKENS[index],
+    )
+    .filter(Boolean)
+    .join(", ");
+};
+
+const TradeMainPage: NextPage = () => {
+  const { user } = useMoralis();
+  const { data, error, isFetching } = useMoralisQuery<PendingTrades>(
+    "PendingTrades",
+    (query) => query.equalTo("from", user?.get("ethAddress")),
+  );
   const router = useRouter();
-  const { to } = router.query;
-
-  const { user, isWeb3EnableLoading } = useMoralis();
-  const { data, fetch, isFetching } = useWeb3ExecuteFunction();
-
-  const [tokens, setTokens] = useState<number[]>([]);
-  const [selectedFromTokens, setSelectedFromTokens] = useState<number[]>(
-    new Array(TOKEN_LENGTH).fill(0) as number[],
-  );
-  const [selectedToTokens, setSelectedToTokens] = useState<number[]>(
-    new Array(TOKEN_LENGTH).fill(0) as number[],
-  );
-  const [toAddressInputError, setToAddressInputError] = useState(false);
-  const [toAddress, setToAddress] = useState(to);
-
-  const { isOpen, onClose, onOpen } = useDisclosure();
-
-  useEffect(() => {
-    if (user) {
-      let accounts = Array(TOKEN_LENGTH).fill(user.get("ethAddress"));
-      let ids = TOKEN_IDS;
-      if (toAddress) {
-        accounts = accounts.concat(Array(TOKEN_LENGTH).fill(toAddress));
-        ids = ids.concat(ids);
-      } else if (to) {
-        accounts = accounts.concat(Array(TOKEN_LENGTH).fill(to));
-        ids = ids.concat(ids);
-      } else if (tokens.length) {
-        // if there are tokens already and no toAddress or to then dont fetch again
-        return;
-      }
-      fetch({
-        params: createTokenOptions("balanceOfBatch", {
-          // [from * 4, to * 4]
-          accounts,
-          // [0, 1, 2, 3, 0, 1, 2, 3]
-          ids,
-        }),
-      });
-    }
-  }, [isWeb3EnableLoading, to, toAddress]);
-
-  useEffect(() => {
-    if (data) {
-      const tokenAmounts = (data as ethers.BigNumber[]).map((token) =>
-        ethers.BigNumber.from(token).toNumber(),
-      );
-      setTokens(tokenAmounts);
-    }
-  }, [data]);
-
-  const addressOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (e.target.value && ethers.utils.isAddress(e.target.value)) {
-      setToAddress(e.target.value);
-      setToAddressInputError(false);
-    } else {
-      setToAddress("");
-      setToAddressInputError(true);
-    }
-  };
-
-  const editSelection = useCallback(
-    (tokenId: number, selection: "to" | "from", edit: 1 | -1) => {
-      if (selection === "from") {
-        setSelectedFromTokens((prev) => {
-          const temp = prev;
-          if (edit === 1) {
-            temp[tokenId]++;
-          } else {
-            temp[tokenId]--;
-          }
-          return temp;
-        });
-      } else {
-        setSelectedToTokens((prev) => {
-          const temp = prev;
-          if (edit === 1) {
-            temp[tokenId]++;
-          } else {
-            temp[tokenId]--;
-          }
-          return temp;
-        });
-      }
-      console.log(selectedFromTokens, selectedToTokens);
-    },
-    [],
-  );
-
+  console.log(data);
   return (
     <Layout>
-      <Modal onClose={onClose} isOpen={isOpen}>
-        <ModalOverlay />
-        <ModalContent pb={5}>
-          <ModalHeader>Enter address</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl isInvalid={toAddressInputError}>
-              <FormLabel htmlFor="toAddress">Address</FormLabel>
-              <Box mb={4}>
-                <Input
-                  id="toAddress"
-                  defaultValue={to || toAddress}
-                  onChange={addressOnChange}
-                  placeholder="Enter someone's address to start trading!"
-                />
-                {toAddressInputError && (
-                  <FormErrorMessage>
-                    Please input a valid address
-                  </FormErrorMessage>
-                )}
-              </Box>
-              <CustomLink href="/explore">
-                Not sure? Click here to look for existing offers
-              </CustomLink>
-            </FormControl>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-      <Flex justifyContent="space-between" alignItems="stretch" p={3}>
-        <TradeMenu
-          inputPlaceholder="Enter to search your NFTs"
-          isLoading={isFetching}
-          title="Select Your NFTs"
-          tokenAmounts={tokens.slice(0, TOKEN_LENGTH)}
-          editSelection={editSelection}
-        />
-        <Box flex="1.5">
-          <Flex
-            h="100vh"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <LogoIcon w={20} h={20} />
-            <Button variant={"dark-shadow"} mb={4}>
-              Next
-            </Button>
-            <Button variant={"dark-shadow"} onClick={() => router.back()}>
-              Back
-            </Button>
+      <Text as="h1" fontSize={"3xl"} fontWeight={800} mb={4} mt={4}>
+        Pending Trades
+      </Text>
+      <Table variant={"striped"}>
+        <Thead>
+          <Tr>
+            <Th fontSize={"sm"}>To</Th>
+            <Th fontSize={"sm"}>From</Th>
+            <Th fontSize={"sm"}>From Tokens</Th>
+            <Th fontSize={"sm"}>To Tokens</Th>
+            <Th fontSize={"sm"}>Submitted</Th>
+          </Tr>
+        </Thead>
+        {isFetching ? (
+          <Flex justifyContent={"center"}>
+            <Spinner />
           </Flex>
-        </Box>
-        <TradeMenu
-          inputPlaceholder="Enter to their your NFTs"
-          isLoading={isFetching}
-          title="Select Their NFTs"
-          onOpen={onOpen}
-          tokenAmounts={tokens.slice(TOKEN_LENGTH, TOKEN_LENGTH * 2)}
-          editSelection={editSelection}
-        />
-      </Flex>
+        ) : (
+          <Tbody>
+            {data.map((item) => (
+              <Tr
+                key={item.id}
+                transition={"opacity 0.1s ease"}
+                _hover={{
+                  cursor: "pointer",
+                  opacity: 0.6,
+                }}
+                onClick={() => router.push("/trade/" + item.id)}
+              >
+                <Td>{item.attributes.to.substring(0, 30) + "..."}</Td>
+                <Td>{item.attributes.from.substring(0, 30) + "..."}</Td>
+                <Td>{convertToString(item.attributes.fromTokenAmounts)}</Td>
+                <Td>{convertToString(item.attributes.toTokenAmounts)}</Td>
+                <Td>
+                  {item.attributes.confirmed ? <CheckIcon /> : <CloseIcon />}
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        )}
+      </Table>
     </Layout>
   );
 };
 
-export default TradePage;
+export default TradeMainPage;

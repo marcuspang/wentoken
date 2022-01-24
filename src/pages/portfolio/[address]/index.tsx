@@ -3,11 +3,11 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useApiContract } from "react-moralis";
-import Layout from "../../components/Layout/Layout";
-import PortfolioCollection from "../../components/Portfolio/PortfolioCollection";
-import PortfolioStats from "../../components/Portfolio/PortfolioStats";
-import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
-import { wenTokenAbi, wenTokenAddress } from "../../util/createTokenOptions";
+import Layout from "../../../components/Layout/Layout";
+import PortfolioCollection from "../../../components/Portfolio/PortfolioCollection";
+import PortfolioStats from "../../../components/Portfolio/PortfolioStats";
+import { TOKEN_IDS, TOKEN_LENGTH } from "../../../constants/constants";
+import { wenTokenAbi, wenTokenAddress } from "../../../util/createTokenOptions";
 
 const PortfolioPage: NextPage = () => {
   const router = useRouter();

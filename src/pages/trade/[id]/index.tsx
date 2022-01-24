@@ -92,7 +92,7 @@ const TradeSubmissionPage: NextPage = () => {
     await trade.save();
   };
 
-  const submitTrade = useCallback(async () => {
+  const submitTrade = async () => {
     if (data && data.length) {
       if (!isExecuting) {
         await approvalFetch({
@@ -136,7 +136,7 @@ const TradeSubmissionPage: NextPage = () => {
         }
       }
     }
-  }, [isWeb3EnableLoading, isInitializing]);
+  };
 
   return (
     <Layout>

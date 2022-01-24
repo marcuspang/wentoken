@@ -1,12 +1,13 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useApiContract } from "react-moralis";
 import Layout from "../../../components/Layout/Layout";
 import PortfolioCollection from "../../../components/Portfolio/PortfolioCollection";
+import PortfolioCollectionChart from "../../../components/Portfolio/PortfolioCollectionChart";
 import PortfolioStats from "../../../components/Portfolio/PortfolioStats";
-import { TOKEN_IDS, TOKEN_LENGTH } from "../../../constants/constants";
+import { TOKENS, TOKEN_IDS, TOKEN_LENGTH } from "../../../constants/constants";
 import { wenTokenAbi, wenTokenAddress } from "../../../util/createTokenOptions";
 
 const PortfolioPage: NextPage = () => {
@@ -50,11 +51,17 @@ const PortfolioPage: NextPage = () => {
         {tokens.map(
           (token, index) =>
             token > 0 && (
-              <PortfolioCollection
-                tokenAmount={token}
-                tokenId={index}
-                key={index}
-              />
+              <Box key={index}>
+                <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2} mt={10}>
+                  {TOKENS[index]}
+                </Text>
+                <PortfolioCollectionChart />
+                <PortfolioCollection
+                  tokenAmount={token}
+                  tokenId={index}
+                  key={index}
+                />
+              </Box>
             ),
         )}
       </Box>

@@ -19,9 +19,6 @@ const PortfolioCollection = ({
 
   return (
     <Box mt={6}>
-      <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2}>
-        {TOKENS[tokenId]}
-      </Text>
       <Flex flexWrap={"wrap"} gap={4} justifyContent={"space-around"}>
         {Array.from(Array(tokenAmount), (_, index) => index)
           .slice(startIndex, endIndex)

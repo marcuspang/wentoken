@@ -82,7 +82,6 @@ export default function Footer() {
           maxW={"8xl"}
           mx={"auto"}
           direction={{ base: "column", md: "row" }}
-          spacing={4}
           justifyContent={{ md: "space-between" }}
           align={{ md: "center" }}
         >

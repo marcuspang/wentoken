@@ -37,8 +37,6 @@ const TradeTable = ({
   isExecuted,
 }: TradeTableProps) => {
   const router = useRouter();
-  console.log(isOthers, isExecuted, trades);
-
   return (
     <>
       <Table variant={"striped"}>

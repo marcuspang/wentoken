@@ -6,6 +6,7 @@ import {
   Text,
   useColorModeValue,
   VisuallyHidden,
+  Spacer,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import {
@@ -86,6 +87,7 @@ export default function Footer() {
           align={{ md: "center" }}
         >
           <Text>© 2022 wenToken. All rights reserved</Text>
+          <Spacer />
           <Stack direction={"row"} spacing={6}>
             <SocialButton
               label={"Twitter"}

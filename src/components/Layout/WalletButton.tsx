@@ -13,6 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { IoWalletOutline } from "react-icons/io5";
 import { useMoralis } from "react-moralis";
 
@@ -44,6 +45,7 @@ const WalletButton = () => {
     user,
     logout,
     authError,
+    enableWeb3,
     isWeb3Enabled,
   } = useMoralis();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -55,9 +57,15 @@ const WalletButton = () => {
   const toast = useToast();
   const router = useRouter();
 
+  useEffect(() => {
+    if (user && !isWeb3Enabled) {
+      enableWeb3();
+    }
+  }, [enableWeb3, isWeb3Enabled, user]);
+
   let modal = null;
 
-  if (!isAuthenticated || !user || !isWeb3Enabled) {
+  if (!isAuthenticated || !user) {
     modal = (
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -79,8 +87,7 @@ const WalletButton = () => {
                       "connectorId",
                       connector.connectorId,
                     );
-                    console.log(authError);
-                    if (!authError) {
+                    if (!authError && isAuthenticated) {
                       toast({
                         status: "success",
                         isClosable: true,
@@ -154,9 +161,7 @@ const WalletButton = () => {
     <>
       <IoWalletOutline
         size={25}
-        onClick={
-          !isAuthenticated || !user || !isWeb3Enabled ? onOpen : logoutOnOpen
-        }
+        onClick={!isAuthenticated || !user ? onOpen : logoutOnOpen}
         cursor={"pointer"}
       />
       {modal}

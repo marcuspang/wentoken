@@ -58,7 +58,7 @@ const NFTCard = ({
         w={"full"}
         borderWidth="0px"
         rounded="lg"
-        shadow="lg"
+        boxShadow={"lg"}
         position="relative"
       >
         <Image
@@ -81,8 +81,13 @@ const NFTCard = ({
             // </Badge>
           }
           </Box>
-          <HStack justifyContent="space-between" spacing={1} mb={4}>
-            <Stack width={"70%"} spacing={0}>
+          <HStack
+            justifyContent="space-between"
+            alignItems={"flex-start"}
+            spacing={1}
+            mb={4}
+          >
+            <Stack width={"67%"} spacing={0}>
               <Text fontSize="sm" fontWeight="normal" isTruncated>
                 {TOKENS[collectionId]}
               </Text>
@@ -92,7 +97,7 @@ const NFTCard = ({
             </Stack>
             <Stat
               display={"flex"}
-              width={"30%"}
+              width={"33%"}
               textAlign={"right"}
               justifyContent={"flex-end"}
             >
@@ -105,10 +110,10 @@ const NFTCard = ({
           </HStack>
           <Flex justifyContent="space-evenly">
             <Button minW="30%" maxW="50%" variant={"normal"}>
-              BUY
+              Sell
             </Button>
             <Button minW="30%" maxW="50%" variant={"normal-dark"}>
-              TRADE
+              Trade
             </Button>
           </Flex>
         </Box>

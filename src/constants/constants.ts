@@ -107,6 +107,14 @@ export const fakecomposedchartdata = [
 
 export const fakescatterchartdata = [
   {
+    x: 168,
+    y: 250,
+  },
+  {
+    x: 190,
+    y: 290,
+  },
+  {
     x: 200,
     y: 260,
   },
@@ -114,36 +122,29 @@ export const fakescatterchartdata = [
     x: 240,
     y: 290,
   },
+
   {
-    x: 190,
-    y: 290,
-  },
-  {
-    x: 198,
-    y: 250,
-  },
-  {
-    x: 180,
+    x: 250,
     y: 280,
   },
   {
-    x: 210,
+    x: 310,
     y: 220,
   },
   {
-    x: 180,
+    x: 400,
     y: 300,
   },
   {
-    x: 290,
+    x: 340,
     y: 350,
   },
   {
-    x: 140,
+    x: 250,
     y: 370,
   },
   {
-    x: 198,
+    x: 438,
     y: 220,
   },
   {
@@ -151,16 +152,12 @@ export const fakescatterchartdata = [
     y: 350,
   },
   {
-    x: 400,
+    x: 500,
     y: 450,
   },
 ];
 
 export const fakelinechartdata = [
-  {
-    name: "2016",
-    uv: 1000,
-  },
   {
     name: "2017",
     uv: 1800,
@@ -171,7 +168,7 @@ export const fakelinechartdata = [
   },
   {
     name: "2019",
-    uv: 2780,
+    uv: 2580,
   },
   {
     name: "2020",
@@ -184,9 +181,5 @@ export const fakelinechartdata = [
   {
     name: "2022",
     uv: 2390,
-  },
-  {
-    name: "Page G",
-    uv: 3090,
   },
 ];

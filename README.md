@@ -1,5 +1,10 @@
 # wentoken - Submission for NUS FinTech Hackathon 2022
 
+## Problems we are addressing
+
+1. Traders cannot conduct NFT<>NFT trades despite many gaming/card NFTs
+2. Portfolio value is quite naive by using floor price alone
+
 ## Project Solution
 
 An NFT to NFT Trading marketplace through an escrow smart contract combined with a NFT Portfolio valuation with collection aggregate statistics
@@ -27,14 +32,16 @@ Main features for each page built
 3. view executed NFT to NFT trades
 4. selection screen to choose user's NFTs for another user's NFTs and begin a trade offer to the other user
 
+### Home Page
+
+1. ability to sign up for beta access for our platform
+
 ## Limitations of our solution
 
-1. Traders cannot conduct NFT<>NFT trades despite many gaming/card NFTs
-2. Portfolio value is quite naive by using floor price alone
+1. Cross chain NFT trading not yet implemented
+2. Macro statistics might be expensive to query and analyze
 
 ## Future implementations
 
-1. Integrate with tokens on different chains
-2. Add cross-chain NFT to NFT trading features
-3. Add more filters on explore page
-4. Add more search filters in trade selection screen
+1. Add more filters on explore page
+2. Add more search filters in trade selection screen

@@ -14,8 +14,13 @@ interface TradeMenuProps {
   isLoading: boolean;
   tokenAmounts: number[];
   title: string;
-  onOpen?: () => void;
   inputPlaceholder: string;
+  onOpen?: () => void;
+  editSelection: (
+    tokenId: number,
+    selection: "to" | "from",
+    edit: 1 | -1,
+  ) => void;
 }
 
 const TradeMenu = ({
@@ -24,6 +29,7 @@ const TradeMenu = ({
   title,
   inputPlaceholder,
   onOpen,
+  editSelection,
 }: TradeMenuProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   return (
@@ -53,7 +59,16 @@ const TradeMenu = ({
             Nothing found :(
           </Text>
         ) : (
-          <TradeNFTCards tokenAmounts={tokenAmounts} />
+          <TradeNFTCards
+            tokenAmounts={tokenAmounts}
+            editSelection={(tokenId: number, edit: 1 | -1) =>
+              editSelection(
+                tokenId,
+                typeof onOpen === "function" ? "from" : "to",
+                edit,
+              )
+            }
+          />
         )}
       </Stack>
     </Box>

@@ -161,7 +161,7 @@ const WalletButton = () => {
     <>
       <IoWalletOutline
         size={25}
-        onClick={!isAuthenticated || !user ? onOpen : logoutOnOpen}
+        onClickCapture={!isAuthenticated || !user ? onOpen : logoutOnOpen}
         cursor={"pointer"}
       />
       {modal}

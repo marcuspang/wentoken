@@ -13,10 +13,13 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { TOKENS } from "../../constants/constants";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
-interface NFTCardProps extends NFTCard, FlexProps {}
+interface NFTCardProps extends NFTCard, FlexProps {
+  editCurrentSelection: (edit: 1 | -1) => void;
+}
 
 const TradeNFTCard = ({
   collectionId,
@@ -25,14 +28,20 @@ const TradeNFTCard = ({
   imageUrl,
   isTradeable,
   name,
-  ...props
+  editCurrentSelection,
+  ...rest
 }: NFTCardProps) => {
+  const [edit, setEdit] = useState<1 | -1>(1);
   return (
     <Flex
       alignItems="center"
       justifyContent="center"
       border-radius="20 20 0 0"
-      {...props}
+      onClickCapture={() => {
+        editCurrentSelection(edit);
+        setEdit((prev) => -prev as 1 | -1);
+      }}
+      {...rest}
     >
       <Box
         bg={useColorModeValue("white", "gray.800")}
@@ -40,6 +49,9 @@ const TradeNFTCard = ({
         borderWidth="0px"
         rounded="lg"
         boxShadow={"lg"}
+        _hover={{
+          bg: "red",
+        }}
         position="relative"
       >
         <Image

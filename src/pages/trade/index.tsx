@@ -12,19 +12,17 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Spinner,
-  Stack,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import { ChangeEventHandler, useEffect, useRef, useState } from "react";
+import { ChangeEventHandler, useCallback, useEffect, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import CustomLink from "../../components/Layout/CustomLink";
 import Layout from "../../components/Layout/Layout";
 import LogoIcon from "../../components/Layout/LogoIcon";
 import TradeMenu from "../../components/Trade/TradeMenu";
-import TradeNFTCards from "../../components/Trade/TradeNFTCards";
 import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
 import createTokenOptions from "../../util/createTokenOptions";
 
@@ -32,13 +30,16 @@ const TradePage = () => {
   const router = useRouter();
   const { to } = router.query;
 
-  const { user } = useMoralis();
+  const { user, isWeb3EnableLoading } = useMoralis();
   const { data, fetch, isFetching } = useWeb3ExecuteFunction();
 
-  const toAddressInputRef = useRef<HTMLInputElement>(null);
-
   const [tokens, setTokens] = useState<number[]>([]);
-  const [selectedTokens, setSelectedTokens] = useState<number[]>([]);
+  const [selectedFromTokens, setSelectedFromTokens] = useState<number[]>(
+    new Array(TOKEN_LENGTH).fill(0) as number[],
+  );
+  const [selectedToTokens, setSelectedToTokens] = useState<number[]>(
+    new Array(TOKEN_LENGTH).fill(0) as number[],
+  );
   const [toAddressInputError, setToAddressInputError] = useState(false);
   const [toAddress, setToAddress] = useState(to);
 
@@ -54,7 +55,7 @@ const TradePage = () => {
       } else if (to) {
         accounts = accounts.concat(Array(TOKEN_LENGTH).fill(to));
         ids = ids.concat(ids);
-      } else if (!tokens.length) {
+      } else if (tokens.length) {
         // if there are tokens already and no toAddress or to then dont fetch again
         return;
       }
@@ -67,7 +68,7 @@ const TradePage = () => {
         }),
       });
     }
-  }, [user, to, toAddress]);
+  }, [isWeb3EnableLoading, to, toAddress]);
 
   useEffect(() => {
     if (data) {
@@ -83,10 +84,38 @@ const TradePage = () => {
       setToAddress(e.target.value);
       setToAddressInputError(false);
     } else {
-      setToAddressInputError(true);
       setToAddress("");
+      setToAddressInputError(true);
     }
   };
+
+  const editSelection = useCallback(
+    (tokenId: number, selection: "to" | "from", edit: 1 | -1) => {
+      if (selection === "from") {
+        setSelectedFromTokens((prev) => {
+          const temp = prev;
+          if (edit === 1) {
+            temp[tokenId]++;
+          } else {
+            temp[tokenId]--;
+          }
+          return temp;
+        });
+      } else {
+        setSelectedToTokens((prev) => {
+          const temp = prev;
+          if (edit === 1) {
+            temp[tokenId]++;
+          } else {
+            temp[tokenId]--;
+          }
+          return temp;
+        });
+      }
+      console.log(selectedFromTokens, selectedToTokens);
+    },
+    [],
+  );
 
   return (
     <Layout>
@@ -98,17 +127,22 @@ const TradePage = () => {
           <ModalBody>
             <FormControl isInvalid={toAddressInputError}>
               <FormLabel htmlFor="toAddress">Address</FormLabel>
-              <Input
-                id="toAddress"
-                defaultValue={to || toAddress}
-                onChange={addressOnChange}
-                placeholder="Enter someone's address to start trading!"
-              />
-              {toAddressInputError && (
-                <FormErrorMessage>
-                  Please input a valid address
-                </FormErrorMessage>
-              )}
+              <Box mb={4}>
+                <Input
+                  id="toAddress"
+                  defaultValue={to || toAddress}
+                  onChange={addressOnChange}
+                  placeholder="Enter someone's address to start trading!"
+                />
+                {toAddressInputError && (
+                  <FormErrorMessage>
+                    Please input a valid address
+                  </FormErrorMessage>
+                )}
+              </Box>
+              <CustomLink href="/explore">
+                Not sure? Click here to look for existing offers
+              </CustomLink>
             </FormControl>
           </ModalBody>
         </ModalContent>
@@ -119,6 +153,7 @@ const TradePage = () => {
           isLoading={isFetching}
           title="Select Your NFTs"
           tokenAmounts={tokens.slice(0, TOKEN_LENGTH)}
+          editSelection={editSelection}
         />
         <Box flex="1.5">
           <Flex
@@ -142,6 +177,7 @@ const TradePage = () => {
           title="Select Their NFTs"
           onOpen={onOpen}
           tokenAmounts={tokens.slice(TOKEN_LENGTH, TOKEN_LENGTH * 2)}
+          editSelection={editSelection}
         />
       </Flex>
     </Layout>

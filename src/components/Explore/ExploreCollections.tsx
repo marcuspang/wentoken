@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useApiContract } from "react-moralis";
+import { useApiContract, useMoralis } from "react-moralis";
 import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
 import { wenTokenAbi, wenTokenAddress } from "../../util/createTokenOptions";
 import ExploreCollection from "./ExploreCollection";
@@ -8,6 +8,7 @@ import ExploreCollection from "./ExploreCollection";
 const purchaseAddress = "0xE269cf4647c3BE31E4e99ADeD398aA164BdFa0aC";
 
 const ExploreCollections = () => {
+  const { isWeb3EnableLoading } = useMoralis();
   const { data, isLoading, runContractFunction } = useApiContract({
     abi: wenTokenAbi,
     functionName: "balanceOfBatch",
@@ -25,7 +26,7 @@ const ExploreCollections = () => {
 
   useEffect(() => {
     runContractFunction();
-  }, [runContractFunction]);
+  }, [isWeb3EnableLoading]);
 
   useEffect(() => {
     if (data) {
@@ -35,15 +36,21 @@ const ExploreCollections = () => {
 
   return (
     <Box px={3}>
-      {tokens.map(
-        (token, index) =>
-          token > 0 && (
-            <ExploreCollection
-              tokenAmount={token}
-              tokenId={index}
-              key={index}
-            />
-          ),
+      {isLoading ? (
+        <Flex justifyContent={"center"} mt={10}>
+          <Spinner />
+        </Flex>
+      ) : (
+        tokens.map(
+          (token, index) =>
+            token > 0 && (
+              <ExploreCollection
+                tokenAmount={token}
+                tokenId={index}
+                key={index}
+              />
+            ),
+        )
       )}
     </Box>
   );

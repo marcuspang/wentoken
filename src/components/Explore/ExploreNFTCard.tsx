@@ -28,7 +28,7 @@ import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 // };
 
 interface NFTCardProps extends NFTCard, FlexProps {
-  onClick: () => void;
+  onEditSelection: () => void;
 }
 
 const ExploreNFTCard = ({
@@ -38,7 +38,7 @@ const ExploreNFTCard = ({
   imageUrl,
   isTradeable,
   name,
-  onClick,
+  onEditSelection,
   ...props
 }: NFTCardProps) => {
   return (
@@ -104,7 +104,12 @@ const ExploreNFTCard = ({
             </Stat>
           </HStack>
           <Flex justifyContent="space-evenly">
-            <Button minW="30%" maxW="50%" variant={"normal"} onClick={onClick}>
+            <Button
+              minW="30%"
+              maxW="50%"
+              variant={"normal"}
+              onClick={onEditSelection}
+            >
               Buy
             </Button>
             <Button

@@ -71,7 +71,7 @@ const Navbar = () => {
               <CustomLink
                 fontWeight={"semibold"}
                 href={"/portfolio/" + user?.get("ethAddress")}
-                onClick={portfolioOnClick}
+                onClickCapture={portfolioOnClick}
               >
                 Portfolio
               </CustomLink>
@@ -92,7 +92,7 @@ const Navbar = () => {
               <CustomLink
                 fontWeight={"semibold"}
                 href={"/portfolio/" + user?.getUsername()}
-                onClick={portfolioOnClick}
+                onClickCapture={portfolioOnClick}
               >
                 Portfolio
               </CustomLink>

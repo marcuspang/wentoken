@@ -1,8 +1,13 @@
 import { Box, Button, Flex, HStack, Text, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
-import { useState } from "react";
-import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
-import { imageUris, TOKENS } from "../../constants/constants";
+import { useEffect, useState } from "react";
+import {
+  useERC20Balances,
+  useMoralis,
+  useNativeBalance,
+  useWeb3ExecuteFunction,
+} from "react-moralis";
+import { imageUris, MINT_PRICE, TOKENS } from "../../constants/constants";
 import createTokenOptions from "../../util/createTokenOptions";
 import ExploreNFTCard from "./ExploreNFTCard";
 
@@ -17,6 +22,9 @@ const ExploreCollection = ({
 }: ExploreCollectionProps) => {
   const { data, fetch, isFetching } = useWeb3ExecuteFunction();
   const { user } = useMoralis();
+  const { data: amount } = useNativeBalance({ chain: "ropsten" });
+
+  // console.log(amount && ethers.utils.formatEther(amount));
 
   const toast = useToast();
 
@@ -25,18 +33,29 @@ const ExploreCollection = ({
 
   const purchaseNFT = () => {
     if (user) {
-      fetch({
-        params: createTokenOptions(
-          "payToMint",
-          {
-            to: user.get("ethAddress"),
-            id: tokenId,
-            amount: 1,
-            data: "0x00",
-          },
-          ethers.utils.parseEther("0.01").toString(),
-        ),
-      });
+      if (
+        amount.balance &&
+        +ethers.utils.formatEther(amount.balance) >= MINT_PRICE
+      ) {
+        fetch({
+          params: createTokenOptions(
+            "payToMint",
+            {
+              to: user.get("ethAddress"),
+              id: tokenId,
+              amount: 1,
+              data: "0x00",
+            },
+            ethers.utils.parseEther("0.01").toString(),
+          ),
+        });
+      } else {
+        toast({
+          status: "error",
+          title: "Not enough ETH",
+          description: "Please add more ethereum to your account on faucets",
+        });
+      }
     } else {
       toast({
         status: "info",

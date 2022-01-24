@@ -32,6 +32,7 @@ const TradeNFTCard = ({
   ...rest
 }: NFTCardProps) => {
   const [edit, setEdit] = useState<1 | -1>(1);
+  const [selected, setSelected] = useState(false);
   return (
     <Flex
       alignItems="center"
@@ -49,9 +50,12 @@ const TradeNFTCard = ({
         borderWidth="0px"
         rounded="lg"
         boxShadow={"lg"}
+        transition={"opacity 0.1s ease-in"}
         _hover={{
-          bg: "red",
+          cursor: "pointer",
+          opacity: 0.6,
         }}
+        onClickCapture={() => setSelected((prev) => !prev)}
         position="relative"
       >
         <Image

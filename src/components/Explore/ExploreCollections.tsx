@@ -8,7 +8,7 @@ import ExploreCollection from "./ExploreCollection";
 const purchaseAddress = "0xE269cf4647c3BE31E4e99ADeD398aA164BdFa0aC";
 
 const ExploreCollections = () => {
-  const { isWeb3EnableLoading } = useMoralis();
+  const { isWeb3EnableLoading, isAuthenticated } = useMoralis();
   const { data, isLoading, runContractFunction } = useApiContract({
     abi: wenTokenAbi,
     functionName: "balanceOfBatch",
@@ -26,7 +26,7 @@ const ExploreCollections = () => {
 
   useEffect(() => {
     runContractFunction();
-  }, [isWeb3EnableLoading]);
+  }, [isWeb3EnableLoading, isAuthenticated]);
 
   useEffect(() => {
     if (data) {

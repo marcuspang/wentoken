@@ -29,7 +29,7 @@ import Layout from "../../components/Layout/Layout";
 import LogoIcon from "../../components/Layout/LogoIcon";
 import TradeMenu from "../../components/Trade/TradeMenu";
 import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
-import createTokenOptions from "../../util/createTokenOptions";
+import { createTokenOptions } from "../../util/createTokenOptions";
 
 // check if selections are empty, to prevent user from getting free NFTs
 const checkIsSelectionValid = (fromTokens: number[], toTokens: number[]) => {
@@ -147,8 +147,6 @@ const TradeSelectionPage: NextPage = () => {
     },
     [],
   );
-
-  console.log(selectedFromTokens, selectedToTokens, validForm);
 
   return (
     <Layout>

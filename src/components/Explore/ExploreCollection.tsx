@@ -8,7 +8,7 @@ import {
   useWeb3ExecuteFunction,
 } from "react-moralis";
 import { imageUris, MINT_PRICE, TOKENS } from "../../constants/constants";
-import createTokenOptions from "../../util/createTokenOptions";
+import { createTokenOptions } from "../../util/createTokenOptions";
 import ExploreNFTCard from "./ExploreNFTCard";
 
 interface ExploreCollectionProps {
@@ -86,7 +86,7 @@ const ExploreCollection = ({
           .map((index) => (
             <ExploreNFTCard
               key={index}
-              collectionId={tokenId}
+              tokenId={tokenId}
               imageUrl={
                 "https://cloudflare-ipfs.com/ipfs/" + imageUris[tokenId]
               }

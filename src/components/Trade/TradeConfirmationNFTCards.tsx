@@ -15,7 +15,7 @@ const TradeConfirmationNFTCards = ({
         Array.from(Array(tokenAmount), (_, index) => index).map((index) => (
           <TradeConfirmationNFTCard
             key={index}
-            collectionId={tokenId}
+            tokenId={tokenId}
             imageUrl={"https://cloudflare-ipfs.com/ipfs/" + imageUris[tokenId]}
             isTradeable
             //   isTradeable={Math.random() >= 0.5}

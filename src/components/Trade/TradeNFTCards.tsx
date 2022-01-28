@@ -26,7 +26,7 @@ const TradeNFTCards = ({
             return (
               <TradeNFTCard
                 key={index}
-                collectionId={0}
+                tokenId={0}
                 imageUrl={
                   "https://cloudflare-ipfs.com/ipfs/" + imageUris[tokenId]
                 }

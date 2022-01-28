@@ -17,16 +17,18 @@ interface PortfolioStatsProps {
 }
 
 const PortfolioStats = ({ sum, tokens, isLoading }: PortfolioStatsProps) => {
+  const totalSum = (sum && sum * MINT_PRICE * ETH_PRICE).toFixed(2) || 0;
+
   return (
     <Stack>
       <Stat size="md">
         <StatLabel fontSize="lg">NFT Net Worth</StatLabel>
         <StatNumber fontSize={"5xl"} fontWeight={800}>
-          ${(sum && sum * MINT_PRICE * ETH_PRICE).toFixed(2) || 0}
+          ${totalSum}
         </StatNumber>
         <StatHelpText>
           <StatArrow type="increase" fontSize={"md"} />
-          3.16%
+          {totalSum ? "3.16%" : 0}
         </StatHelpText>
       </Stat>
       <StatGroup pt={4}>
@@ -36,7 +38,8 @@ const PortfolioStats = ({ sum, tokens, isLoading }: PortfolioStatsProps) => {
             {isLoading ? <Spinner /> : tokens.filter(Boolean).length}
           </StatNumber>
           <StatHelpText>
-            <StatArrow type="increase" />1
+            <StatArrow type="increase" />
+            {totalSum ? 1 : 0}
           </StatHelpText>
         </Stat>
         <Stat size="md">
@@ -45,11 +48,11 @@ const PortfolioStats = ({ sum, tokens, isLoading }: PortfolioStatsProps) => {
             {isLoading ? <Spinner /> : sum}
           </StatNumber>
           <StatHelpText>
-            <StatArrow type="increase" />1
+            <StatArrow type="increase" /> {totalSum ? 1 : 0}
           </StatHelpText>
         </Stat>
         <Stat size="md">
-          <StatLabel fontSize="lg">Top Collection</StatLabel>
+          <StatLabel fontSize="lg">Top collection count</StatLabel>
           <StatNumber fontSize={"4xl"} fontWeight={800}>
             {isLoading ? <Spinner /> : Math.max(0, ...tokens)}
           </StatNumber>

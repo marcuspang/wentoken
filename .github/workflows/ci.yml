@@ -25,7 +25,7 @@ jobs:
         uses: bahmutov/npm-install@HEAD
 
       - name: Check types
-        run: yarn type-check
+        run: yarn hardhat compile && yarn type-check
 
       - name: Check linting
         run: yarn lint

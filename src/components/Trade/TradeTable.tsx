@@ -40,31 +40,6 @@ export const convertToString = (tokenAmounts: number[]) => {
     .join(", ");
 };
 
-function DeleteBtn() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  return (
-    <>
-      <Button onClick={onOpen}>Confirmation</Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Confirm delete?</ModalHeader>
-          <ModalCloseButton />
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Delete
-            </Button>
-            <Button variant="ghost" onClick={onClose} ml={2}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
-
 const TradeTable = ({
   isFetching,
   trades,

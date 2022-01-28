@@ -10,15 +10,15 @@ import {
 import Layout from "../../../components/Layout/Layout";
 import TradeConfirmationMenu from "../../../components/Trade/TradeConfirmationMenu";
 import TradeConfirmationNFTCards from "../../../components/Trade/TradeConfirmationNFTCards";
-import { TOKEN_IDS } from "../../../constants/constants";
-import { createTokenOptions } from "../../../util/createTokenOptions";
+import { WENTOKEN_IDS } from "../../../constants/constants";
+import { createWentokenOptions } from "../../../util/createTokenOptions";
 
 export interface PendingTrades {
   to: string;
-  toTokenIds: typeof TOKEN_IDS;
+  toTokenIds: typeof WENTOKEN_IDS;
   toTokenAmounts: number[];
   from: string;
-  fromTokenIds: typeof TOKEN_IDS;
+  fromTokenIds: typeof WENTOKEN_IDS;
   fromTokenAmounts: number[];
   confirmed: boolean;
   executed: boolean;
@@ -95,7 +95,7 @@ const TradeSubmissionPage: NextPage = () => {
     if (data && data.length) {
       if (!isExecuting) {
         await approvalFetch({
-          params: createTokenOptions("setApprovalForAll", {
+          params: createWentokenOptions("setApprovalForAll", {
             operator: data[0].attributes.to,
             approved: "true",
           }),
@@ -113,7 +113,7 @@ const TradeSubmissionPage: NextPage = () => {
         }
       } else {
         await executeFetch({
-          params: createTokenOptions("executeTradeBatch", {
+          params: createWentokenOptions("executeTradeBatch", {
             from: data[0].attributes.from,
             fromIds: data[0].attributes.fromTokenIds,
             fromAmounts: data[0].attributes.fromTokenAmounts,

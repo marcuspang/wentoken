@@ -1,7 +1,7 @@
 import { Box, Button, Flex, HStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { imageUris, TOKENS } from "../../constants/constants";
+import { wentokenImages, WENTOKEN } from "../../constants/constants";
 import PortfolioNFTCard from "./PortfolioNFTCard";
 
 interface PortfolioCollectionProps {
@@ -23,11 +23,12 @@ const PortfolioCollection = ({ tokens }: PortfolioCollectionProps) => {
                 key={tokenIndex}
                 tokenId={tokenIndex}
                 imageUrl={
-                  "https://cloudflare-ipfs.com/ipfs/" + imageUris[tokenIndex]
+                  "https://cloudflare-ipfs.com/ipfs/" +
+                  wentokenImages[tokenIndex]
                 }
                 isTradeable
                 tokenAmount={tokenAmount}
-                name={TOKENS[tokenIndex] + " x" + tokenAmount}
+                name={WENTOKEN[tokenIndex] + " x" + tokenAmount}
                 pnl="0.01 ETH"
                 value="0.01 ETH"
                 maxW={"calc(100% / 4 - 1rem)"}

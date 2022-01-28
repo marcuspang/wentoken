@@ -15,7 +15,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { TOKENS } from "../../constants/constants";
+import { WENTOKEN } from "../../constants/constants";
 import theme from "../../theme/theme";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
@@ -98,7 +98,7 @@ const TradeNFTCard = ({
           >
             <Stack width={"50%"} spacing={0}>
               <Text fontSize="xs" fontWeight="normal" isTruncated>
-                {TOKENS[collectionId]}
+                {WENTOKEN[collectionId]}
               </Text>
               <Text fontSize="sm" fontWeight="semibold" lineHeight={1.1}>
                 {name}

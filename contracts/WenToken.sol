@@ -6,16 +6,20 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
 contract WenToken is ERC1155, Ownable, ERC1155Supply {
-  uint256 public constant BLACK = 0;
+  uint256 public constant RED = 0;
   uint256 public constant BLUE = 1;
   uint256 public constant GREEN = 2;
-  uint256 public constant RED = 3;
+  uint256 public constant PINK = 3;
+  uint256 public constant YELLOW = 4;
+  uint256 public constant ORANGE = 5;
 
   constructor() ERC1155("") {
-    _mint(msg.sender, BLACK, 10**1, "");
+    _mint(msg.sender, RED, 10**1, "");
     _mint(msg.sender, BLUE, 10**2, "");
     _mint(msg.sender, GREEN, 10**3, "");
-    _mint(msg.sender, RED, 10**4, "");
+    _mint(msg.sender, PINK, 10**4, "");
+    _mint(msg.sender, YELLOW, 10**3, "");
+    _mint(msg.sender, ORANGE, 10**1, "");
   }
 
   function setURI(string memory newuri) public onlyOwner {
@@ -51,30 +55,6 @@ contract WenToken is ERC1155, Ownable, ERC1155Supply {
   ) internal override(ERC1155, ERC1155Supply) {
     super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
   }
-
-  // function payToMint(
-  //   address to,
-  //   uint256 id,
-  //   uint256 amount,
-  //   bytes memory data
-  // ) public payable {
-  //   require(msg.value >= amount * MINT_FEE, "Insufficient amount paid");
-  //   _mint(to, id, amount, data);
-  // }
-
-  // function payToMintBatch(
-  //   address to,
-  //   uint256[] memory ids,
-  //   uint256[] memory amounts,
-  //   bytes memory data
-  // ) public payable {
-  //   uint256 sum = 0;
-  //   for (uint256 i = 0; i < ids.length; i++) {
-  //     sum += MINT_FEE * amounts[i];
-  //   }
-  //   require(msg.value >= sum, "Insufficient amount paid");
-  //   _mintBatch(to, ids, amounts, data);
-  // }
 
   function executeTrade(
     address from,

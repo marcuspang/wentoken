@@ -16,11 +16,13 @@ import {
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
-import { TOKENS } from "../../constants/constants";
+import { WENTOKEN } from "../../constants/constants";
 import theme from "../../theme/theme";
 import {
   createTokenListingOptions,
+  createWentokenOptions,
   wenTokenAddress,
+  wenTokenListingAddress,
 } from "../../util/createTokenOptions";
 
 interface SellConfirmationProps {
@@ -59,11 +61,20 @@ const SellConfirmation = ({
         toast({
           status: "success",
           title: "Successfully listed!",
-          description: `Listed ${amount} ${TOKENS[tokenId]} for ${value} ETH each`,
+          description: `Listed ${amount} ${WENTOKEN[tokenId]} for ${value} ETH each`,
           isClosable: true,
         });
         router.push("/portfolio/" + user?.get("ethAddress"));
       },
+    });
+  };
+
+  const setApprovalHandler = () => {
+    fetch({
+      params: createWentokenOptions("setApprovalForAll", {
+        operator: wenTokenListingAddress,
+        approved: "true",
+      }),
     });
   };
 
@@ -135,6 +146,9 @@ const SellConfirmation = ({
         <Text>Gas Fees: 0.001 ETH</Text>
       </Stack>
       <HStack justifyContent={"space-around"}>
+        <Button variant={"dark-shadow"} onClick={setApprovalHandler}>
+          Set Approval
+        </Button>
         <Button variant={"dark-shadow"} onClick={submitHandler}>
           Submit Listing
         </Button>

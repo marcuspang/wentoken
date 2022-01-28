@@ -2,22 +2,7 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
-  FormLabel,
   HStack,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Text,
   useDisclosure,
   useToast,
@@ -30,10 +15,9 @@ import {
   useNativeBalance,
   useWeb3ExecuteFunction,
 } from "react-moralis";
-import { imageUris, MINT_PRICE, TOKENS } from "../../constants/constants";
+import { wentokenImages, WENTOKEN } from "../../constants/constants";
 import {
   createTokenListingOptions,
-  createTokenOptions,
   wenTokenAddress,
 } from "../../util/createTokenOptions";
 import { Listing } from "./ExploreCollections";
@@ -79,7 +63,7 @@ const ExploreCollection = ({
         selectedListingIndex !== -1 &&
         ethers.BigNumber.from(amount.balance!).gte(
           ethers.BigNumber.from(listings[selectedListingIndex].price).mul(
-            ethers.BigNumber.from(listings[selectedListingIndex].tokenCount),
+            selectedPurchaseAmount,
           ),
         )
       ) {
@@ -92,18 +76,14 @@ const ExploreCollection = ({
               amount: selectedPurchaseAmount,
             },
             ethers.BigNumber.from(listings[selectedListingIndex].price)
-              .mul(
-                ethers.BigNumber.from(
-                  listings[selectedListingIndex].tokenCount,
-                ),
-              )
+              .mul(selectedPurchaseAmount)
               .toString(),
           ),
           onSuccess: () => {
             toast({
               status: "success",
-              title: `Bought 1 ${
-                TOKENS[listings[selectedListingIndex].tokenId]
+              title: `Bought ${selectedPurchaseAmount} ${
+                WENTOKEN[listings[selectedListingIndex].tokenId]
               } token!`,
               description:
                 "Go to your portfolio page to see it once the transaction is finished",
@@ -154,16 +134,17 @@ const ExploreCollection = ({
               key={index}
               tokenId={listing.tokenId}
               imageUrl={
-                "https://cloudflare-ipfs.com/ipfs/" + imageUris[listing.tokenId]
+                "https://cloudflare-ipfs.com/ipfs/" +
+                wentokenImages[listing.tokenId]
               }
               isTradeable
-              name={TOKENS[listing.tokenId] + " x" + listing.tokenCount}
-              pnl="0.01 ETH"
-              value="0.01 ETH"
+              name={WENTOKEN[listing.tokenId] + " x" + listing.tokenCount}
+              value={ethers.utils.formatUnits(listing.price) + " ETH"}
               onSubmit={() => {
                 setSelectedListingIndex(index);
                 onOpen();
               }}
+              from={listing.seller}
               maxW={"calc(100% / 4 - 1rem)"}
               flex={"calc(100% / 4 - 1rem)"}
               pb={3}

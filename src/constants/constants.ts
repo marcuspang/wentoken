@@ -1,71 +1,47 @@
-export enum TOKENS {
+export enum WENTOKEN {
   Black = 0,
   Blue = 1,
   Green = 2,
   Red = 3,
 }
-export const TOKEN_LENGTH = Object.keys(TOKENS).length / 2;
-export const TOKEN_IDS = Object.values(TOKENS).slice(
-  TOKEN_LENGTH,
-  TOKEN_LENGTH * 2,
+
+export enum NOWTOKEN {
+  Red = 0,
+  Blue = 1,
+  Green = 2,
+  Pink = 3,
+  Yellow = 4,
+  Orange = 5,
+}
+
+export const WENTOKEN_LENGTH = Object.keys(WENTOKEN).length / 2;
+export const WENTOKEN_IDS = Object.values(WENTOKEN).slice(
+  WENTOKEN_LENGTH,
+  WENTOKEN_LENGTH * 2,
 );
-export const imageUris = [
+export const NOWTOKEN_LENGTH = Object.keys(NOWTOKEN).length / 2;
+export const NOWTOKEN_IDS = Object.values(NOWTOKEN).slice(
+  NOWTOKEN_LENGTH,
+  NOWTOKEN_LENGTH * 2,
+);
+export const wentokenImages = [
   "QmTTz2Yr2Z59stC69MNhB49Xdg3vBMiLuf8LRNz8QrHZXg", // black
   "QmNwxhPo8pzbuvxtsCEyRKYeUy8wndokntS6rX7NH3QjvU", // blue
   "QmSEkhUUcn4JWe3WUdvW7FQJh9zk9B17Y3zdo8iEJANxMy", // green
   "QmdhH4rENFsVpqHVQPKdqG5x8LRSeRwRQEegobvUrgciMi", // red
 ];
 
+export const nowtokenImages = [
+  "QmTb8H42bQ3x375FJrUhdzjMZGSyC2zBH66wXSbCPvGQiz",
+  "QmRQhMv2JTueManottZaBpzedLzPwm5QJpcfc92tp2mNVQ",
+  "QmTqSTid2ZZmw3uPqLnFbLBSFQTAuhbMhH5vBfsYyPk7SJ",
+  "QmbfMNt9jXbgKPQ3C5KifshEnn6F8UFJcoiKcJ3zxRmU8e",
+  "Qmcx4dGVNF4d51GVxwtuBcBct11EL9bUJYZuC5ni8VreYb",
+  "QmaTYsnoqPXFC4HFiDatrHoNBFyYGdCM6mKcw9u1pNUcsJ",
+];
+
 export const MINT_PRICE = 0.01; // in ether
 export const ETH_PRICE = 2500; // in USD
-
-export const fakecards = [
-  {
-    collectionId: 0,
-    isTradeable: true,
-    imageUrl:
-      "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
-    name: "Marcolian Parallel Collectible Card Back",
-    value: "1 ETH",
-    pnl: "1 ETH",
-  },
-  {
-    collectionId: 1,
-    isTradeable: true,
-    imageUrl:
-      "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
-    name: "abcd",
-    value: "2 ETH",
-    pnl: "2 ETH",
-  },
-  {
-    collectionId: 1,
-    isTradeable: false,
-    imageUrl:
-      "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
-    name: "efgh",
-    value: "3 ETH",
-    pnl: "3 ETH",
-  },
-  {
-    collectionId: 2,
-    isTradeable: true,
-    imageUrl:
-      "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
-    name: "ijkl",
-    value: "4 ETH",
-    pnl: "4 ETH",
-  },
-  {
-    collectionId: 2,
-    isTradeable: false,
-    imageUrl:
-      "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
-    name: "mnop",
-    value: "5 ETH",
-    pnl: "5 ETH",
-  },
-];
 
 export const composedChartData = [
   {

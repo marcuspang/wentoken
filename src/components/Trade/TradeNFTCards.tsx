@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { imageUris, TOKENS } from "../../constants/constants";
+import { wentokenImages, WENTOKEN } from "../../constants/constants";
 import TradeNFTCard from "./TradeNFTCard";
 
 interface NFTCardsProps {
@@ -28,10 +28,10 @@ const TradeNFTCards = ({
                 key={index}
                 tokenId={0}
                 imageUrl={
-                  "https://cloudflare-ipfs.com/ipfs/" + imageUris[tokenId]
+                  "https://cloudflare-ipfs.com/ipfs/" + wentokenImages[tokenId]
                 }
                 isTradeable
-                name={TOKENS[tokenId] + " #" + (+index + 1)}
+                name={WENTOKEN[tokenId] + " #" + (+index + 1)}
                 editCurrentSelection={(edit: 1 | -1) =>
                   editSelection(tokenId, edit)
                 }

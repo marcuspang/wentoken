@@ -28,8 +28,8 @@ import CustomLink from "../../components/Layout/CustomLink";
 import Layout from "../../components/Layout/Layout";
 import LogoIcon from "../../components/Layout/LogoIcon";
 import TradeMenu from "../../components/Trade/TradeMenu";
-import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
-import { createTokenOptions } from "../../util/createTokenOptions";
+import { WENTOKEN_IDS, WENTOKEN_LENGTH } from "../../constants/constants";
+import { createWentokenOptions } from "../../util/createTokenOptions";
 
 // check if selections are empty, to prevent user from getting free NFTs
 const checkIsSelectionValid = (fromTokens: number[], toTokens: number[]) => {
@@ -53,10 +53,10 @@ const TradeSelectionPage: NextPage = () => {
 
   const [tokens, setTokens] = useState<number[]>([]);
   const [selectedFromTokens, setSelectedFromTokens] = useState<number[]>(
-    new Array(TOKEN_LENGTH).fill(0) as number[],
+    new Array(WENTOKEN_LENGTH).fill(0) as number[],
   );
   const [selectedToTokens, setSelectedToTokens] = useState<number[]>(
-    new Array(TOKEN_LENGTH).fill(0) as number[],
+    new Array(WENTOKEN_LENGTH).fill(0) as number[],
   );
   const [toAddressInputError, setToAddressInputError] = useState(false);
   const [toAddress, setToAddress] = useState(router.query.to);
@@ -66,17 +66,17 @@ const TradeSelectionPage: NextPage = () => {
 
   useEffect(() => {
     if (user) {
-      let accounts = Array(TOKEN_LENGTH).fill(user.get("ethAddress"));
-      let ids = TOKEN_IDS;
+      let accounts = Array(WENTOKEN_LENGTH).fill(user.get("ethAddress"));
+      let ids = WENTOKEN_IDS;
       if (toAddress) {
-        accounts = accounts.concat(Array(TOKEN_LENGTH).fill(toAddress));
+        accounts = accounts.concat(Array(WENTOKEN_LENGTH).fill(toAddress));
         ids = ids.concat(ids);
       } else if (tokens.length) {
         // if there are tokens already and no toAddress or to then dont fetch again
         return;
       }
       balanceFetch({
-        params: createTokenOptions("balanceOfBatch", {
+        params: createWentokenOptions("balanceOfBatch", {
           // [from * 4, to * 4]
           accounts,
           // [0, 1, 2, 3, 0, 1, 2, 3]
@@ -183,7 +183,7 @@ const TradeSelectionPage: NextPage = () => {
           inputPlaceholder="Enter to search your NFTs"
           isLoading={isFetching}
           title="Select Your NFTs"
-          tokenAmounts={tokens.slice(0, TOKEN_LENGTH)}
+          tokenAmounts={tokens.slice(0, WENTOKEN_LENGTH)}
           editSelection={editSelection}
         />
         <Box flex="1.5">
@@ -202,10 +202,10 @@ const TradeSelectionPage: NextPage = () => {
                 // save to moralis
                 const result = await save({
                   to: (toAddress as string).toLowerCase(),
-                  toTokenIds: TOKEN_IDS,
+                  toTokenIds: WENTOKEN_IDS,
                   toTokenAmounts: selectedToTokens,
                   from: user?.get("ethAddress").toLowerCase(),
-                  fromTokenIds: TOKEN_IDS,
+                  fromTokenIds: WENTOKEN_IDS,
                   fromTokenAmounts: selectedFromTokens,
                   confirmed: false,
                   executed: false,
@@ -233,7 +233,7 @@ const TradeSelectionPage: NextPage = () => {
           isLoading={isFetching}
           title="Select Their NFTs"
           onOpen={onOpen}
-          tokenAmounts={tokens.slice(TOKEN_LENGTH, TOKEN_LENGTH * 2)}
+          tokenAmounts={tokens.slice(WENTOKEN_LENGTH, WENTOKEN_LENGTH * 2)}
           editSelection={editSelection}
         />
       </Flex>

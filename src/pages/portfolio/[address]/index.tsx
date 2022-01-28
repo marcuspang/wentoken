@@ -3,19 +3,14 @@ import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {
-  useApiContract,
-  useMoralis,
-  useWeb3ExecuteFunction,
-} from "react-moralis";
+import { useApiContract, useMoralis } from "react-moralis";
 import Layout from "../../../components/Layout/Layout";
 import PortfolioCollection from "../../../components/Portfolio/PortfolioCollection";
 import PortfolioCollectionChart from "../../../components/Portfolio/PortfolioCollectionChart";
 import PortfolioStats from "../../../components/Portfolio/PortfolioStats";
-import { TOKEN_IDS, TOKEN_LENGTH } from "../../../constants/constants";
+import { WENTOKEN_IDS, WENTOKEN_LENGTH } from "../../../constants/constants";
 import theme from "../../../theme/theme";
 import {
-  createTokenListingOptions,
   wenTokenAbi,
   wenTokenAddress,
   wenTokenListingAbi,
@@ -34,9 +29,9 @@ const PortfolioPage: NextPage = () => {
     chain: "ropsten",
     params: {
       // [address, address, address, address]
-      accounts: Array(TOKEN_LENGTH).fill(address),
+      accounts: Array(WENTOKEN_LENGTH).fill(address),
       // [0, 1, 2, 3]
-      ids: TOKEN_IDS,
+      ids: WENTOKEN_IDS,
     },
   });
   const { runContractFunction: fetchBalances } = useApiContract({
@@ -68,9 +63,7 @@ const PortfolioPage: NextPage = () => {
       fetchBalances({
         onSuccess: (res) => {
           setOutstandingBalance(
-            +ethers.utils.formatEther(
-              (res as unknown as ethers.BigNumber)._hex,
-            ),
+            +ethers.utils.formatUnits(res as unknown as number),
           );
         },
       });

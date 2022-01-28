@@ -7,7 +7,7 @@ import CustomSpinner from "../../../components/Layout/CustomSpinner";
 import Layout from "../../../components/Layout/Layout";
 import SellConfirmation from "../../../components/Sell/SellConfirmation";
 import SellNFTCard from "../../../components/Sell/SellNFTCard";
-import { imageUris, TOKENS } from "../../../constants/constants";
+import { wentokenImages, WENTOKEN } from "../../../constants/constants";
 
 const SellPage: NextPage = () => {
   const router = useRouter();
@@ -18,14 +18,6 @@ const SellPage: NextPage = () => {
   const [currentAmount, setCurrentAmount] = useState(amount);
   const [currentValue, setCurrentValue] = useState(0.01);
 
-  const onAmountChange = (valueAsString: string, valueAsNumber: number) => {
-    setCurrentAmount(valueAsNumber);
-  };
-
-  const onValueChange = (valueAsString: string, valueAsNumber: number) => {
-    setCurrentValue(valueAsNumber);
-  };
-
   return (
     <Layout>
       <Flex
@@ -35,15 +27,17 @@ const SellPage: NextPage = () => {
         maxW={"6xl"}
         mx={"auto"}
       >
-        {!tokenId || !amount ? (
+        {(!tokenId && tokenId !== 0) || !amount ? (
           <CustomSpinner flex={1} />
         ) : (
           <SellNFTCard
             collectionName="wentoken"
-            imageUrl={"https://cloudflare-ipfs.com/ipfs/" + imageUris[tokenId]}
+            imageUrl={
+              "https://cloudflare-ipfs.com/ipfs/" + wentokenImages[tokenId]
+            }
             isTradeable
             from={user?.get("ethAddress")}
-            name={TOKENS[tokenId] + ` x${currentAmount || 0}`}
+            name={WENTOKEN[tokenId] + ` x${currentAmount || 0}`}
             pnl="0.01 ETH"
             value={currentValue + " ETH"}
             tokenId={tokenId}
@@ -51,7 +45,7 @@ const SellPage: NextPage = () => {
             p={10}
           />
         )}
-        {!tokenId || !amount ? (
+        {(!tokenId && tokenId !== 0) || !amount ? (
           <CustomSpinner flex={1} />
         ) : (
           <SellConfirmation
@@ -59,8 +53,12 @@ const SellPage: NextPage = () => {
             maxAmount={amount}
             amount={currentAmount!}
             value={currentValue}
-            onAmountChange={onAmountChange}
-            onValueChange={onValueChange}
+            onAmountChange={(_: string, valueAsNumber: number) => {
+              setCurrentAmount(valueAsNumber);
+            }}
+            onValueChange={(_: string, valueAsNumber: number) => {
+              setCurrentValue(valueAsNumber);
+            }}
             tokenId={tokenId}
           />
         )}

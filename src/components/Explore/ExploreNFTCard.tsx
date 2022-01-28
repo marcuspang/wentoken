@@ -15,7 +15,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { TOKENS } from "../../constants/constants";
+import { WENTOKEN } from "../../constants/constants";
 import theme from "../../theme/theme";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
@@ -29,17 +29,18 @@ import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 //   pnl: "3.1%",
 // };
 
-interface NFTCardProps extends NFTCard, FlexProps {
+interface NFTCardProps extends Omit<NFTCard, "pnl">, FlexProps {
   onSubmit: () => void;
+  from: string;
 }
 
 const ExploreNFTCard = ({
   tokenId: collectionId,
-  pnl,
   value,
   imageUrl,
   isTradeable,
   name,
+  from,
   onSubmit,
   ...props
 }: NFTCardProps) => {
@@ -87,7 +88,7 @@ const ExploreNFTCard = ({
           >
             <Stack width={"67%"} spacing={0}>
               <Text fontSize="sm" fontWeight="normal" isTruncated>
-                {TOKENS[collectionId]}
+                {WENTOKEN[collectionId]}
               </Text>
               <Text fontSize="md" fontWeight="semibold" lineHeight={1.1}>
                 {name}
@@ -102,7 +103,7 @@ const ExploreNFTCard = ({
               <StatNumber fontSize={"md"}>{value}</StatNumber>
               <StatHelpText>
                 <StatArrow type="increase" />
-                {pnl}
+                {value}
               </StatHelpText>
             </Stat>
           </HStack>
@@ -116,10 +117,7 @@ const ExploreNFTCard = ({
               variant={"normal-dark"}
               onClick={() =>
                 // TODO implement offers by other people
-                router.push(
-                  "/trade/selection?to=" +
-                    "0xE269cf4647c3BE31E4e99ADeD398aA164BdFa0aC",
-                )
+                router.push("/trade/selection?to=" + from)
               }
               isDisabled={!isTradeable}
             >

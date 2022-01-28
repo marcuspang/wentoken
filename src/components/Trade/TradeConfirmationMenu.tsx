@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import router from "next/router";
 import { v4 as uuidv4 } from "uuid";
-import { TOKENS } from "../../constants/constants";
+import { WENTOKEN } from "../../constants/constants";
 import { PendingTrades } from "../../pages/trade/[id]";
 import theme from "../../theme/theme";
 
@@ -102,7 +102,7 @@ const TradeConfirmationMenu = ({
                       key={uuidv4()}
                       variant={"filled"}
                       bg={"gray.300"}
-                      value={TOKENS[tokenId]}
+                      value={WENTOKEN[tokenId]}
                       disabled
                     />
                   )),
@@ -128,7 +128,7 @@ const TradeConfirmationMenu = ({
                       key={uuidv4()}
                       variant={"filled"}
                       bg={"gray.300"}
-                      value={TOKENS[tokenId]}
+                      value={WENTOKEN[tokenId]}
                       disabled
                     />
                   )),

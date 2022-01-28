@@ -40,9 +40,6 @@ const PortfolioStats = ({
         amount: ethers.utils.parseEther(balance.toString()),
         to: user?.get("ethAddress"),
       }),
-      onSuccess: (res) => {
-        console.log(res);
-      },
     });
   };
 

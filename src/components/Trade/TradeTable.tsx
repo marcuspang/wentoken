@@ -1,6 +1,5 @@
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import {
-  Button,
   Flex,
   IconButton,
   Spinner,
@@ -14,8 +13,9 @@ import {
 } from "@chakra-ui/react";
 import Moralis from "moralis/types";
 import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { TOKENS } from "../../constants/constants";
+import { WENTOKEN } from "../../constants/constants";
 import { PendingTrades } from "../../pages/trade/[id]";
 
 interface TradeTableProps {
@@ -23,13 +23,13 @@ interface TradeTableProps {
   trades: Moralis.Object<PendingTrades>[];
   isOthers?: boolean;
   isExecuted?: boolean;
-  refetch: () => void;
+  setTrades: Dispatch<SetStateAction<Moralis.Object<PendingTrades>[]>>;
 }
 
 export const convertToString = (tokenAmounts: number[]) => {
   return tokenAmounts
     .map((tokenAmount, index) =>
-      tokenAmount === 0 ? "" : tokenAmount + " " + TOKENS[index],
+      tokenAmount === 0 ? "" : tokenAmount + " " + WENTOKEN[index],
     )
     .filter(Boolean)
     .join(", ");
@@ -38,12 +38,13 @@ export const convertToString = (tokenAmounts: number[]) => {
 const TradeTable = ({
   isFetching,
   trades,
-  refetch,
+  setTrades,
   isOthers,
   isExecuted,
 }: TradeTableProps) => {
   const router = useRouter();
   const toast = useToast();
+  const [deleting, setDeleting] = useState(false);
 
   return (
     <>
@@ -71,7 +72,9 @@ const TradeTable = ({
                       cursor: "pointer",
                       opacity: 0.6,
                     }}
-                    onClick={() => router.push("/trade/" + trade.id)}
+                    onClick={() =>
+                      !deleting && router.push("/trade/" + trade.id)
+                    }
                   >
                     <Td>{trade.attributes.from.substring(0, 30) + "..."}</Td>
                     <Td>{trade.attributes.to.substring(0, 30) + "..."}</Td>
@@ -104,9 +107,14 @@ const TradeTable = ({
                       <IconButton
                         aria-label="delete trade"
                         icon={<FaTrash />}
+                        variant={"ghost"}
+                        onMouseEnter={() => setDeleting(true)}
+                        onMouseLeave={() => setDeleting(false)}
                         onClick={() => {
                           trade.destroy();
-                          refetch();
+                          setTrades((prev) =>
+                            prev.filter((item) => item.id !== trade.id),
+                          );
                         }}
                       >
                         Delete

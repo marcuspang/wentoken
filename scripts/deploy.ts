@@ -9,8 +9,6 @@ async function main() {
   await wenToken.deployed();
   await wenTokenListing.deployed();
 
-  await wenToken.setApprovalForAll(wenTokenListing.address, true);
-
   console.log("WenToken deployed to:", wenToken.address);
   console.log("WenTokenListing deployed to:", wenTokenListing.address);
 }

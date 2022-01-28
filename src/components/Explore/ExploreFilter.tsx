@@ -1,4 +1,4 @@
-import { Box, Flex, Checkbox, Text } from "@chakra-ui/react";
+import { Checkbox, Flex, Text } from "@chakra-ui/react";
 
 const options = [
   {
@@ -14,16 +14,6 @@ const options = [
     defaultCheckValue: false,
   },
 ];
-
-// const checked = () => {
-//     const handleCheck = (event) => {
-//       if (event.key === 'Enter') {
-//         console.log('do validate')
-//       }
-//     }
-
-//     return <input type="text" onKeyDown={handleKeyDown} />
-//   }
 
 const ExploreFilter = () => {
   return (

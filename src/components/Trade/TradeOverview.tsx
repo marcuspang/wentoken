@@ -76,13 +76,7 @@ const TradeOverview = () => {
       <TradeTable
         isFetching={fromIsFetching}
         trades={fromTrades}
-        refetch={() =>
-          fromFetch({
-            onSuccess: (res) => {
-              setFromTrades(res);
-            },
-          })
-        }
+        setTrades={setFromTrades}
       />
       <Tooltip
         label="Existing trade offers that are awaiting for your confirmation"
@@ -103,14 +97,8 @@ const TradeOverview = () => {
       <TradeTable
         isFetching={toIsFetching}
         trades={toTrades}
+        setTrades={setToTrades}
         isOthers
-        refetch={() =>
-          toFetch({
-            onSuccess: (res) => {
-              setToTrades(res);
-            },
-          })
-        }
       />
       <Tooltip label="Trade offers executed" rounded={"md"} p={2}>
         <Text
@@ -127,18 +115,7 @@ const TradeOverview = () => {
       <TradeTable
         isFetching={toIsFetching || fromIsFetching}
         isExecuted
-        refetch={() => {
-          toFetch({
-            onSuccess: (res) => {
-              setToTrades(res);
-            },
-          });
-          fromFetch({
-            onSuccess: (res) => {
-              setFromTrades(res);
-            },
-          });
-        }}
+        setTrades={setFromTrades}
         trades={fromTrades
           .filter((trade) => trade.attributes.executed)
           .concat(toTrades.filter((trade) => trade.attributes.executed))}

@@ -11,22 +11,62 @@ import {
   NumberInputStepper,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { ethers } from "ethers";
+import { useRouter } from "next/router";
+import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import { TOKENS } from "../../constants/constants";
 import theme from "../../theme/theme";
+import {
+  createTokenListingOptions,
+  wenTokenAddress,
+} from "../../util/createTokenOptions";
 
 interface SellConfirmationProps {
   maxAmount: number;
+  amount: number;
+  value: number;
+  from: string;
   tokenId: number;
-  onChange: (valueAsString: string, valueAsNumber: number) => void;
+  onAmountChange: (valueAsString: string, valueAsNumber: number) => void;
+  onValueChange: (valueAsString: string, valueAsNumber: number) => void;
 }
 
 const SellConfirmation = ({
   maxAmount,
+  amount,
+  value,
+  from,
   tokenId,
-  onChange,
+  onAmountChange,
+  onValueChange,
 }: SellConfirmationProps) => {
-  const [amount, setAmount] = useState(1);
+  const { fetch } = useWeb3ExecuteFunction();
+  const toast = useToast();
+  const router = useRouter();
+  const { user } = useMoralis();
+
+  const submitHandler = () => {
+    fetch({
+      params: createTokenListingOptions("addListing", {
+        contractAddress: wenTokenAddress,
+        price: ethers.utils.parseEther(value.toString()),
+        tokenId,
+        tokenCount: amount,
+      }),
+      onSuccess: () => {
+        toast({
+          status: "success",
+          title: "Successfully listed!",
+          description: `Listed ${amount} ${TOKENS[tokenId]} for ${value} ETH each`,
+          isClosable: true,
+        });
+        router.push("/portfolio/" + user?.get("ethAddress"));
+      },
+    });
+  };
+
   return (
     <Stack
       ml={8}
@@ -45,17 +85,40 @@ const SellConfirmation = ({
           <FormLabel htmlFor="from" fontWeight={600} fontSize={"lg"} mb={0}>
             From
           </FormLabel>
-          <Input variant={"filled"} bg={"gray.300"} id="from" disabled />
+          <Input
+            variant={"filled"}
+            bg={"gray.300"}
+            id="from"
+            disabled
+            value={from}
+          />
         </Stack>
         <Stack>
           <FormLabel fontWeight={600} fontSize={"lg"} mb={0}>
             Amount
           </FormLabel>
           <NumberInput
-            defaultValue={maxAmount}
+            value={amount}
             min={1}
             max={maxAmount}
-            onChange={onChange}
+            onChange={onAmountChange}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Stack>
+        <Stack>
+          <FormLabel fontWeight={600} fontSize={"lg"} mb={0}>
+            Value (in ETH)
+          </FormLabel>
+          <NumberInput
+            value={value}
+            step={0.0000000001}
+            min={0}
+            onChange={onValueChange}
           >
             <NumberInputField />
             <NumberInputStepper>
@@ -72,8 +135,9 @@ const SellConfirmation = ({
         <Text>Gas Fees: 0.001 ETH</Text>
       </Stack>
       <HStack justifyContent={"space-around"}>
-        <Button variant="shadow">Edit Trade</Button>
-        <Button variant={"dark-shadow"}>Submit Listing</Button>
+        <Button variant={"dark-shadow"} onClick={submitHandler}>
+          Submit Listing
+        </Button>
       </HStack>
     </Stack>
   );

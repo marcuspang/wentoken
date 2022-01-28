@@ -15,7 +15,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { TOKENS } from "../../constants/constants";
 import theme from "../../theme/theme";
 
 export interface NFTCard {
@@ -69,23 +68,21 @@ const PortfolioNFTCard = ({
 
         <Box p="4">
           <Box d="flex" alignItems="flex-start" mb={2}>
-            {
-              isTradeable ? (
-                <Badge
-                  rounded="full"
-                  px="2"
-                  fontSize="0.8em"
-                  colorScheme="green"
-                >
-                  Tradeable
-                </Badge>
-              ) : (
-                <Box h="19.2px"></Box>
-              )
-              //   <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="white" color="white">
-              //   Untradeable
-              // </Badge>
-            }
+            {isTradeable ? (
+              <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="green">
+                Tradeable
+              </Badge>
+            ) : (
+              <Badge
+                rounded="full"
+                px="2"
+                fontSize="0.8em"
+                colorScheme="white"
+                color="white"
+              >
+                Untradeable
+              </Badge>
+            )}
           </Box>
           <HStack
             justifyContent="space-between"
@@ -95,7 +92,7 @@ const PortfolioNFTCard = ({
           >
             <Stack width={"67%"} spacing={0}>
               <Text fontSize="sm" fontWeight="normal" isTruncated>
-                {TOKENS[tokenId]}
+                {"wentoken"}
               </Text>
               <Text fontSize="md" fontWeight="semibold" lineHeight={1.1}>
                 {name}

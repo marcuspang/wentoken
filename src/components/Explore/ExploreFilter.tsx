@@ -6,7 +6,11 @@ const options = [
     defaultCheckValue: false,
   },
   {
-    name: "Placeholder",
+    name: "wentoken",
+    defaultCheckValue: false,
+  },
+  {
+    name: "nowtoken",
     defaultCheckValue: false,
   },
 ];

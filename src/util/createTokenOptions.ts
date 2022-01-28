@@ -2,10 +2,11 @@ import WenToken from "../artifacts/contracts/WenToken.sol/WenToken.json";
 import WenTokenListing from "../artifacts/contracts/WenTokenListing.sol/WenTokenListing.json";
 
 export const wenTokenAbi = WenToken.abi;
-export const wenTokenAddress = process.env.WENTOKEN_ADDRESS;
+export const wenTokenAddress = process.env.WENTOKEN_ADDRESS?.toLowerCase();
 
 export const wenTokenListingAbi = WenTokenListing.abi;
-export const wenTokenListingAddress = process.env.WENTOKENLISTING_ADDRESS;
+export const wenTokenListingAddress =
+  process.env.WENTOKENLISTING_ADDRESS?.toLowerCase();
 
 export const createTokenOptions = (
   functionName: string,

@@ -1,6 +1,7 @@
 import { Button, Flex, Text, Tooltip } from "@chakra-ui/react";
+import Moralis from "moralis/types";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMoralis, useMoralisQuery } from "react-moralis";
 import { PendingTrades } from "../../pages/trade/[id]";
 import TradeTable from "./TradeTable";
@@ -9,25 +10,42 @@ const TradeOverview = () => {
   const router = useRouter();
   const { user, isAuthenticating, isInitializing, isWeb3EnableLoading } =
     useMoralis();
-  const {
-    data: fromData,
-    isFetching: fromIsFetching,
-    fetch: fromFetch,
-  } = useMoralisQuery<PendingTrades>("PendingTrades", (query) =>
-    query.equalTo("from", user?.get("ethAddress").toLowerCase()),
+  const { isFetching: fromIsFetching, fetch: fromFetch } =
+    useMoralisQuery<PendingTrades>("PendingTrades", (query) =>
+      query.equalTo("from", user?.get("ethAddress").toLowerCase()),
+    );
+  const { isFetching: toIsFetching, fetch: toFetch } =
+    useMoralisQuery<PendingTrades>("PendingTrades", (query) =>
+      query.equalTo("to", user?.get("ethAddress").toLowerCase()),
+    );
+
+  const [fromTrades, setFromTrades] = useState<Moralis.Object<PendingTrades>[]>(
+    [],
   );
-  const {
-    data: toData,
-    isFetching: toIsFetching,
-    fetch: toFetch,
-  } = useMoralisQuery<PendingTrades>("PendingTrades", (query) =>
-    query.equalTo("to", user?.get("ethAddress").toLowerCase()),
-  );
+  const [toTrades, setToTrades] = useState<Moralis.Object<PendingTrades>[]>([]);
 
   useEffect(() => {
-    fromFetch();
-    toFetch();
-  }, [user, isAuthenticating, isWeb3EnableLoading, isInitializing]);
+    fromFetch({
+      onSuccess: (res) => {
+        setFromTrades(res);
+      },
+    });
+    toFetch({
+      onSuccess: (res) => {
+        setToTrades(res);
+      },
+    });
+    return () => {
+      setFromTrades([]);
+      setToTrades([]);
+    };
+  }, [
+    isAuthenticating,
+    isWeb3EnableLoading,
+    isInitializing,
+    fromFetch,
+    toFetch,
+  ]);
 
   return (
     <>
@@ -55,7 +73,17 @@ const TradeOverview = () => {
           Select Screen
         </Button>
       </Flex>
-      <TradeTable isFetching={fromIsFetching} trades={fromData} />
+      <TradeTable
+        isFetching={fromIsFetching}
+        trades={fromTrades}
+        refetch={() =>
+          fromFetch({
+            onSuccess: (res) => {
+              setFromTrades(res);
+            },
+          })
+        }
+      />
       <Tooltip
         label="Existing trade offers that are awaiting for your confirmation"
         rounded={"md"}
@@ -72,7 +100,18 @@ const TradeOverview = () => {
           Pending Trade Offers From Others
         </Text>
       </Tooltip>
-      <TradeTable isFetching={toIsFetching} trades={toData} isOthers />
+      <TradeTable
+        isFetching={toIsFetching}
+        trades={toTrades}
+        isOthers
+        refetch={() =>
+          toFetch({
+            onSuccess: (res) => {
+              setToTrades(res);
+            },
+          })
+        }
+      />
       <Tooltip label="Trade offers executed" rounded={"md"} p={2}>
         <Text
           as="h1"
@@ -88,9 +127,21 @@ const TradeOverview = () => {
       <TradeTable
         isFetching={toIsFetching || fromIsFetching}
         isExecuted
-        trades={fromData
+        refetch={() => {
+          toFetch({
+            onSuccess: (res) => {
+              setToTrades(res);
+            },
+          });
+          fromFetch({
+            onSuccess: (res) => {
+              setFromTrades(res);
+            },
+          });
+        }}
+        trades={fromTrades
           .filter((trade) => trade.attributes.executed)
-          .concat(toData.filter((trade) => trade.attributes.executed))}
+          .concat(toTrades.filter((trade) => trade.attributes.executed))}
       />
     </>
   );

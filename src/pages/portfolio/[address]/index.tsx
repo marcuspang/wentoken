@@ -1,20 +1,33 @@
 import { Box, Text } from "@chakra-ui/react";
+import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useApiContract } from "react-moralis";
+import {
+  useApiContract,
+  useMoralis,
+  useWeb3ExecuteFunction,
+} from "react-moralis";
 import Layout from "../../../components/Layout/Layout";
 import PortfolioCollection from "../../../components/Portfolio/PortfolioCollection";
 import PortfolioCollectionChart from "../../../components/Portfolio/PortfolioCollectionChart";
 import PortfolioStats from "../../../components/Portfolio/PortfolioStats";
-import { TOKENS, TOKEN_IDS, TOKEN_LENGTH } from "../../../constants/constants";
+import { TOKEN_IDS, TOKEN_LENGTH } from "../../../constants/constants";
 import theme from "../../../theme/theme";
-import { wenTokenAbi, wenTokenAddress } from "../../../util/createTokenOptions";
+import {
+  createTokenListingOptions,
+  wenTokenAbi,
+  wenTokenAddress,
+  wenTokenListingAbi,
+  wenTokenListingAddress,
+} from "../../../util/createTokenOptions";
 
 const PortfolioPage: NextPage = () => {
   const router = useRouter();
+  const { user, isInitializing, isWeb3EnableLoading, isAuthenticating } =
+    useMoralis();
   const { address } = router.query;
-  const { data, isLoading, runContractFunction } = useApiContract({
+  const { isLoading, runContractFunction } = useApiContract({
     abi: wenTokenAbi,
     functionName: "balanceOfBatch",
     address: wenTokenAddress,
@@ -26,22 +39,56 @@ const PortfolioPage: NextPage = () => {
       ids: TOKEN_IDS,
     },
   });
+  const { runContractFunction: fetchBalances } = useApiContract({
+    abi: wenTokenListingAbi,
+    functionName: "balances",
+    address: wenTokenListingAddress,
+    chain: "ropsten",
+    params: {
+      "": user?.get("ethAddress"),
+    },
+  });
 
   const [tokens, setTokens] = useState<number[]>([]);
   const [sum, setSum] = useState(0);
+  const [outstandingBalance, setOutstandingBalance] = useState(0);
 
   // fetch data
   useEffect(() => {
-    runContractFunction();
-  }, [runContractFunction]);
-
-  // once data is retrieved, update localstate for tokens and sum of tokens
-  useEffect(() => {
-    if (data) {
-      setTokens((data as unknown as string[]).map(Number));
-      setSum((data as unknown as string[]).reduce((a, b) => +a + +b, 0));
+    if (address) {
+      runContractFunction({
+        onSuccess: (res) => {
+          // once data is retrieved, update state for tokens and sum of tokens
+          setTokens((res as unknown as string[]).map(Number));
+          setSum((res as unknown as string[]).reduce((a, b) => +a + +b, 0));
+        },
+      });
     }
-  }, [data]);
+    if (user) {
+      fetchBalances({
+        onSuccess: (res) => {
+          setOutstandingBalance(
+            +ethers.utils.formatEther(
+              (res as unknown as ethers.BigNumber)._hex,
+            ),
+          );
+        },
+      });
+    }
+    return () => {
+      setTokens([]);
+      setSum(0);
+      setOutstandingBalance(0);
+    };
+  }, [
+    isInitializing,
+    isWeb3EnableLoading,
+    isAuthenticating,
+    address,
+    user,
+    runContractFunction,
+    fetchBalances,
+  ]);
 
   return (
     <Layout>
@@ -53,20 +100,22 @@ const PortfolioPage: NextPage = () => {
           pt={8}
           pb={6}
         >
-          <PortfolioStats sum={sum} tokens={tokens} isLoading={isLoading} />
+          <PortfolioStats
+            sum={sum}
+            tokens={tokens}
+            isLoading={isLoading}
+            balance={outstandingBalance}
+          />
         </Box>
-        {tokens.map(
-          (token, index) =>
-            token > 0 && (
-              <Box key={index}>
-                <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2} mt={10}>
-                  {TOKENS[index]}
-                </Text>
-                <PortfolioCollectionChart />
-                <PortfolioCollection tokens={tokens} key={index} />
-              </Box>
-            ),
-        )}
+        {
+          <Box>
+            <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2} mt={10}>
+              {"wentoken"}
+            </Text>
+            <PortfolioCollectionChart />
+            <PortfolioCollection tokens={tokens} />
+          </Box>
+        }
       </Box>
     </Layout>
   );

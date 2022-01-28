@@ -68,4 +68,16 @@ contract WenTokenListing {
     to.transfer(amount);
     balances[msg.sender] -= amount;
   }
+
+  function getListing(address contractAddress, uint256 listingId)
+    public
+    view
+    returns (Listing memory)
+  {
+    return listings[contractAddress][listingId];
+  }
+
+  function getListingIndex() public view returns (uint256) {
+    return listingIndex;
+  }
 }

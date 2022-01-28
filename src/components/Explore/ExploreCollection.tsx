@@ -1,69 +1,123 @@
-import { Box, Button, Flex, HStack, Text, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  HStack,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useMoralis,
   useNativeBalance,
   useWeb3ExecuteFunction,
 } from "react-moralis";
 import { imageUris, MINT_PRICE, TOKENS } from "../../constants/constants";
-import { createTokenOptions } from "../../util/createTokenOptions";
+import {
+  createTokenListingOptions,
+  createTokenOptions,
+  wenTokenAddress,
+} from "../../util/createTokenOptions";
+import { Listing } from "./ExploreCollections";
 import ExploreNFTCard from "./ExploreNFTCard";
+import ExplorePurchaseModal from "./ExplorePurchaseModal";
 
 interface ExploreCollectionProps {
-  tokenAmount: number;
-  tokenId: number;
+  listings: Listing[];
+  collectionName: string;
 }
 
 const ExploreCollection = ({
-  tokenAmount,
-  tokenId,
+  listings,
+  collectionName,
 }: ExploreCollectionProps) => {
-  const { fetch, error } = useWeb3ExecuteFunction();
+  const { fetch } = useWeb3ExecuteFunction();
   const { user } = useMoralis();
   const { data: amount } = useNativeBalance({ chain: "ropsten" });
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const router = useRouter();
   const toast = useToast();
 
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(8);
+  const [selectedListingIndex, setSelectedListingIndex] = useState(-1);
+  const [selectedPurchaseAmount, setSelectedPurchaseAmount] = useState(1);
+
+  // to prevent updates when this component is unmounted
+  useEffect(() => {
+    return () => {
+      setStartIndex(0);
+      setEndIndex(8);
+      setSelectedListingIndex(-1);
+      setSelectedPurchaseAmount(1);
+    };
+  }, []);
 
   const purchaseNFT = async () => {
     if (user) {
       if (
         amount.balance &&
-        +ethers.utils.formatEther(amount.balance) >= MINT_PRICE
+        selectedListingIndex !== -1 &&
+        ethers.BigNumber.from(amount.balance!).gte(
+          ethers.BigNumber.from(listings[selectedListingIndex].price).mul(
+            ethers.BigNumber.from(listings[selectedListingIndex].tokenCount),
+          ),
+        )
       ) {
         await fetch({
-          params: createTokenOptions(
-            "payToMint",
+          params: createTokenListingOptions(
+            "purchaseToken",
             {
-              to: user.get("ethAddress"),
-              id: tokenId,
-              amount: 1,
-              data: "0x00",
+              contractAddress: wenTokenAddress,
+              listingId: selectedListingIndex,
+              amount: selectedPurchaseAmount,
             },
-            ethers.utils.parseEther("0.01").toString(),
+            ethers.BigNumber.from(listings[selectedListingIndex].price)
+              .mul(
+                ethers.BigNumber.from(
+                  listings[selectedListingIndex].tokenCount,
+                ),
+              )
+              .toString(),
           ),
+          onSuccess: () => {
+            toast({
+              status: "success",
+              title: `Bought 1 ${
+                TOKENS[listings[selectedListingIndex].tokenId]
+              } token!`,
+              description:
+                "Go to your portfolio page to see it once the transaction is finished",
+              isClosable: true,
+            });
+            router.push("/portfolio/" + user.get("ethAddress"));
+          },
         });
-        if (!error) {
-          toast({
-            status: "success",
-            title: "Bought 1 " + TOKENS[tokenId] + " token!",
-            description:
-              "Go to your portfolio page to see it once the transaction is finished",
-            isClosable: true,
-          });
-          router.push("/portfolio/" + user.get("ethAddress"));
-        }
       } else {
         toast({
           isClosable: true,
           status: "error",
           title: "Not enough ETH",
-          description: "Please add more ethereum to your account on faucets",
+          description: "Please add more ethereum to your account with faucets",
         });
       }
     } else {
@@ -77,25 +131,39 @@ const ExploreCollection = ({
 
   return (
     <Box mt={6}>
+      <ExplorePurchaseModal
+        isOpen={isOpen}
+        onClose={onClose}
+        purchaseNFT={purchaseNFT}
+        selectedPurchaseAmount={selectedPurchaseAmount}
+        maxCount={
+          listings[selectedListingIndex] &&
+          listings[selectedListingIndex].tokenCount
+        }
+        selectedPurchaseAmountOnChange={(_, value) =>
+          setSelectedPurchaseAmount(value)
+        }
+      />
       <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2}>
-        {TOKENS[tokenId]}
+        {collectionName}
       </Text>
       <Flex flexWrap={"wrap"} gap={4} justifyContent={"space-around"}>
-        {Array.from(Array(tokenAmount), (_, index) => index)
-          .slice(startIndex, endIndex)
-          .map((index) => (
+        {listings &&
+          listings.slice(startIndex, endIndex).map((listing, index) => (
             <ExploreNFTCard
               key={index}
-              tokenId={tokenId}
+              tokenId={listing.tokenId}
               imageUrl={
-                "https://cloudflare-ipfs.com/ipfs/" + imageUris[tokenId]
+                "https://cloudflare-ipfs.com/ipfs/" + imageUris[listing.tokenId]
               }
               isTradeable
-              //   isTradeable={Math.random() >= 0.5}
-              name={TOKENS[tokenId] + " #" + (+index + 1)}
+              name={TOKENS[listing.tokenId] + " x" + listing.tokenCount}
               pnl="0.01 ETH"
               value="0.01 ETH"
-              onEditSelection={purchaseNFT}
+              onSubmit={() => {
+                setSelectedListingIndex(index);
+                onOpen();
+              }}
               maxW={"calc(100% / 4 - 1rem)"}
               flex={"calc(100% / 4 - 1rem)"}
               pb={3}
@@ -115,7 +183,7 @@ const ExploreCollection = ({
         </Button>
         <Button
           variant={"normal"}
-          isDisabled={tokenAmount - startIndex <= 8}
+          isDisabled={listings.length - startIndex <= 8}
           onClick={() => {
             setStartIndex((prev) => prev + 8);
             setEndIndex((prev) => prev + 8);

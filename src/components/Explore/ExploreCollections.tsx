@@ -1,59 +1,65 @@
-import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useApiContract, useMoralis } from "react-moralis";
-import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
-import { wenTokenAbi, wenTokenAddress } from "../../util/createTokenOptions";
+import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import {
+  createTokenListingOptions,
+  wenTokenAddress,
+} from "../../util/createTokenOptions";
+import CustomSpinner from "../Layout/CustomSpinner";
 import ExploreCollection from "./ExploreCollection";
 
-const purchaseAddress = "0xE269cf4647c3BE31E4e99ADeD398aA164BdFa0aC";
+export interface Listing {
+  seller: string;
+  price: number;
+  tokenCount: number;
+  tokenId: number;
+}
 
 const ExploreCollections = () => {
   const { isWeb3EnableLoading, isInitializing, isAuthenticating } =
     useMoralis();
-  const { data, isLoading, runContractFunction } = useApiContract({
-    abi: wenTokenAbi,
-    functionName: "balanceOfBatch",
-    address: wenTokenAddress,
-    chain: "ropsten",
-    params: {
-      // [address, address, address, address]
-      accounts: Array(TOKEN_LENGTH).fill(purchaseAddress),
-      // [0, 1, 2, 3]
-      ids: TOKEN_IDS,
-    },
-  });
-  const [tokens, setTokens] = useState<number[]>([]);
+  const { fetch, isLoading } = useWeb3ExecuteFunction();
+  const { fetch: listingIndexFetch } = useWeb3ExecuteFunction();
+  const [listings, setListings] = useState<Listing[]>([]);
 
   useEffect(() => {
-    runContractFunction();
-  }, [isWeb3EnableLoading, isInitializing, isAuthenticating]);
+    listingIndexFetch({
+      params: createTokenListingOptions("getListingIndex", {}),
+      onSuccess: (res) => {
+        for (let i = 0; i < (res as number); i++) {
+          fetch({
+            params: createTokenListingOptions("getListing", {
+              contractAddress: wenTokenAddress,
+              listingId: i,
+            }),
+            onSuccess: (res) => {
+              setListings((prev) => {
+                if (
+                  (res as Listing).seller ===
+                  "0x0000000000000000000000000000000000000000"
+                ) {
+                  return prev;
+                }
+                return [...prev, { ...(res as Listing) }];
+              });
+            },
+            onError: (err) => console.log("error", i, err),
+          });
+        }
+      },
+    });
 
-  useEffect(() => {
-    if (data) {
-      setTokens((data as unknown as string[]).map(Number));
-    }
     return () => {
-      setTokens([]);
+      setListings([]);
     };
-  }, [data]);
+  }, [isWeb3EnableLoading, isInitializing, isAuthenticating]);
 
   return (
     <Box px={3}>
       {isLoading ? (
-        <Flex justifyContent={"center"} mt={10}>
-          <Spinner />
-        </Flex>
+        <CustomSpinner mt={10} />
       ) : (
-        tokens.map(
-          (token, index) =>
-            token > 0 && (
-              <ExploreCollection
-                tokenAmount={token}
-                tokenId={index}
-                key={index}
-              />
-            ),
-        )
+        <ExploreCollection collectionName="wentoken" listings={listings} />
       )}
     </Box>
   );

@@ -13,14 +13,18 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { TOKENS } from "../../constants/constants";
 import theme from "../../theme/theme";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
-interface NFTCardProps extends NFTCard, FlexProps {}
+interface NFTCardProps extends NFTCard, FlexProps {
+  collectionName: string;
+  from: string;
+}
 
 const SellNFTCard = ({
   tokenId,
+  from,
+  collectionName,
   pnl,
   value,
   imageUrl,
@@ -50,26 +54,23 @@ const SellNFTCard = ({
           width={"60%"}
           mx="auto"
         />
-
         <Box p="4">
           <Box d="flex" alignItems="flex-start" mb={2}>
-            {
-              isTradeable ? (
-                <Badge
-                  rounded="full"
-                  px="2"
-                  fontSize="0.8em"
-                  colorScheme="green"
-                >
-                  Tradeable
-                </Badge>
-              ) : (
-                <Box h="19.2px"></Box>
-              )
-              //   <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="white" color="white">
-              //   Untradeable
-              // </Badge>
-            }
+            {isTradeable ? (
+              <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="green">
+                Tradeable
+              </Badge>
+            ) : (
+              <Badge
+                rounded="full"
+                px="2"
+                fontSize="0.8em"
+                colorScheme="white"
+                color="white"
+              >
+                Untradeable
+              </Badge>
+            )}
           </Box>
           <HStack
             justifyContent="space-between"
@@ -77,9 +78,9 @@ const SellNFTCard = ({
             spacing={1}
             mb={4}
           >
-            <Stack width={"67%"} spacing={0}>
+            <Stack width={"50%"} spacing={0}>
               <Text fontSize="sm" fontWeight="normal" isTruncated>
-                {TOKENS[tokenId]}
+                {collectionName}
               </Text>
               <Text fontSize="md" fontWeight="semibold" lineHeight={1.1}>
                 {name}
@@ -87,7 +88,7 @@ const SellNFTCard = ({
             </Stack>
             <Stat
               display={"flex"}
-              width={"33%"}
+              width={"50%"}
               textAlign={"right"}
               justifyContent={"flex-end"}
             >

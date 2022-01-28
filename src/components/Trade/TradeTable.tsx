@@ -1,6 +1,8 @@
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Flex,
+  IconButton,
   Spinner,
   Table,
   Tbody,
@@ -9,31 +11,19 @@ import {
   Thead,
   Tr,
   useToast,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
 } from "@chakra-ui/react";
 import Moralis from "moralis/types";
 import { useRouter } from "next/router";
+import { FaTrash } from "react-icons/fa";
 import { TOKENS } from "../../constants/constants";
 import { PendingTrades } from "../../pages/trade/[id]";
-import {
-  useMoralis,
-  useNewMoralisObject,
-  useWeb3ExecuteFunction,
-} from "react-moralis";
 
 interface TradeTableProps {
   isFetching: boolean;
   trades: Moralis.Object<PendingTrades>[];
   isOthers?: boolean;
   isExecuted?: boolean;
+  refetch: () => void;
 }
 
 export const convertToString = (tokenAmounts: number[]) => {
@@ -48,20 +38,12 @@ export const convertToString = (tokenAmounts: number[]) => {
 const TradeTable = ({
   isFetching,
   trades,
+  refetch,
   isOthers,
   isExecuted,
 }: TradeTableProps) => {
   const router = useRouter();
   const toast = useToast();
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { user, isWeb3EnableLoading, isInitializing } = useMoralis();
-  const {
-    isSaving,
-    save,
-    error: saveError,
-  } = useNewMoralisObject("PendingTrades");
 
   return (
     <>
@@ -89,7 +71,7 @@ const TradeTable = ({
                       cursor: "pointer",
                       opacity: 0.6,
                     }}
-                    // onClick={() => router.push("/trade/" + trade.id)}
+                    onClick={() => router.push("/trade/" + trade.id)}
                   >
                     <Td>{trade.attributes.from.substring(0, 30) + "..."}</Td>
                     <Td>{trade.attributes.to.substring(0, 30) + "..."}</Td>
@@ -119,51 +101,16 @@ const TradeTable = ({
                       )}
                     </Td>
                     <Td>
-                      {(
-                        isOthers || isExecuted
-                          ? trade.attributes.executed
-                          : trade.attributes.confirmed
-                      ) ? (
-                        <CheckIcon />
-                      ) : (
-                        // <Flex>
-                        <Button
-                          variant={"dark-shadow"}
-                          onClick={async () => {
-                            await trade.destroy();
-                          }}
-                        >
-                          Delete
-                        </Button>
-
-                        // <Modal isOpen={isOpen} onClose={onClose}>
-                        //   <ModalOverlay />
-                        //   <ModalContent>
-                        //     <ModalHeader>Confirm delete?</ModalHeader>
-                        //     <ModalCloseButton />
-
-                        //     <ModalFooter>
-                        //       <Button
-                        //         colorScheme="blue"
-                        //         mr={3}
-                        //         onClick={async () => {
-                        //           await trade.destroy()
-                        //         }}
-                        //       >
-                        //         Delete
-                        //       </Button>
-                        //       <Button
-                        //         variant="ghost"
-                        //         onClick={onClose}
-                        //         ml={2}
-                        //       >
-                        //         Cancel
-                        //       </Button>
-                        //     </ModalFooter>
-                        //   </ModalContent>
-                        // </Modal>
-                        // {/* </Flex> */}
-                      )}
+                      <IconButton
+                        aria-label="delete trade"
+                        icon={<FaTrash />}
+                        onClick={() => {
+                          trade.destroy();
+                          refetch();
+                        }}
+                      >
+                        Delete
+                      </IconButton>
                     </Td>
                   </Tr>
                 ),

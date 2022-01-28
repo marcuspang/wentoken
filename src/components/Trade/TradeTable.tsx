@@ -23,6 +23,11 @@ import Moralis from "moralis/types";
 import { useRouter } from "next/router";
 import { TOKENS } from "../../constants/constants";
 import { PendingTrades } from "../../pages/trade/[id]";
+import {
+  useMoralis,
+  useNewMoralisObject,
+  useWeb3ExecuteFunction,
+} from "react-moralis";
 
 interface TradeTableProps {
   isFetching: boolean;
@@ -48,10 +53,16 @@ const TradeTable = ({
 }: TradeTableProps) => {
   const router = useRouter();
   const toast = useToast();
-  const deletebtn = null;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  console.log(isOthers, isExecuted, trades);
+  const { user, isWeb3EnableLoading, isInitializing } = useMoralis();
+  const {
+    isSaving,
+    save,
+    error: saveError,
+  } = useNewMoralisObject("PendingTrades");
+
   return (
     <>
       <Table variant={"striped"}>
@@ -78,6 +89,7 @@ const TradeTable = ({
                       cursor: "pointer",
                       opacity: 0.6,
                     }}
+                    // onClick={() => router.push("/trade/" + trade.id)}
                   >
                     <Td>{trade.attributes.from.substring(0, 30) + "..."}</Td>
                     <Td>{trade.attributes.to.substring(0, 30) + "..."}</Td>
@@ -91,51 +103,66 @@ const TradeTable = ({
                           ? trade.attributes.executed
                           : trade.attributes.confirmed
                       ) ? (
-                        <CheckIcon
-                          onClick={() => router.push("/trade/" + trade.id)}
-                        />
+                        <CheckIcon />
                       ) : (
-                        <Flex>
-                          <CloseIcon
-                            onClick={() =>
-                              toast({
-                                status: "success",
-                                title:
-                                  "Successfully submitted your trade offer",
-                                description:
-                                  "Please wait until the other party has accepted your request",
-                                isClosable: true,
-                              })
-                            }
-                          />
-                          <Button variant={"dark-shadow"} onClick={onOpen}>
-                            Delete
-                          </Button>
-                          <Modal isOpen={isOpen} onClose={onClose}>
-                            <ModalOverlay />
-                            <ModalContent>
-                              <ModalHeader>Confirm delete?</ModalHeader>
-                              <ModalCloseButton />
+                        <CloseIcon
+                          onClick={() =>
+                            toast({
+                              status: "success",
+                              title: "Successfully submitted your trade offer",
+                              description:
+                                "Please wait until the other party has accepted your request",
+                              isClosable: true,
+                            })
+                          }
+                        />
+                      )}
+                    </Td>
+                    <Td>
+                      {(
+                        isOthers || isExecuted
+                          ? trade.attributes.executed
+                          : trade.attributes.confirmed
+                      ) ? (
+                        <CheckIcon />
+                      ) : (
+                        // <Flex>
+                        <Button
+                          variant={"dark-shadow"}
+                          onClick={async () => {
+                            await trade.destroy();
+                          }}
+                        >
+                          Delete
+                        </Button>
 
-                              <ModalFooter>
-                                <Button
-                                  colorScheme="blue"
-                                  mr={3}
-                                  onClick={onClose}
-                                >
-                                  Delete
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  onClick={onClose}
-                                  ml={2}
-                                >
-                                  Cancel
-                                </Button>
-                              </ModalFooter>
-                            </ModalContent>
-                          </Modal>
-                        </Flex>
+                        // <Modal isOpen={isOpen} onClose={onClose}>
+                        //   <ModalOverlay />
+                        //   <ModalContent>
+                        //     <ModalHeader>Confirm delete?</ModalHeader>
+                        //     <ModalCloseButton />
+
+                        //     <ModalFooter>
+                        //       <Button
+                        //         colorScheme="blue"
+                        //         mr={3}
+                        //         onClick={async () => {
+                        //           await trade.destroy()
+                        //         }}
+                        //       >
+                        //         Delete
+                        //       </Button>
+                        //       <Button
+                        //         variant="ghost"
+                        //         onClick={onClose}
+                        //         ml={2}
+                        //       >
+                        //         Cancel
+                        //       </Button>
+                        //     </ModalFooter>
+                        //   </ModalContent>
+                        // </Modal>
+                        // {/* </Flex> */}
                       )}
                     </Td>
                   </Tr>

@@ -8,6 +8,16 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Moralis from "moralis/types";
 import { useRouter } from "next/router";
@@ -30,6 +40,31 @@ export const convertToString = (tokenAmounts: number[]) => {
     .join(", ");
 };
 
+function DeleteBtn() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <Button onClick={onOpen}>Confirmation</Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm delete?</ModalHeader>
+          <ModalCloseButton />
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Delete
+            </Button>
+            <Button variant="ghost" onClick={onClose} ml={2}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
 const TradeTable = ({
   isFetching,
   trades,
@@ -37,6 +72,10 @@ const TradeTable = ({
   isExecuted,
 }: TradeTableProps) => {
   const router = useRouter();
+  const toast = useToast();
+  const deletebtn = null;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   console.log(isOthers, isExecuted, trades);
   return (
     <>
@@ -64,7 +103,6 @@ const TradeTable = ({
                       cursor: "pointer",
                       opacity: 0.6,
                     }}
-                    onClick={() => router.push("/trade/" + trade.id)}
                   >
                     <Td>{trade.attributes.from.substring(0, 30) + "..."}</Td>
                     <Td>{trade.attributes.to.substring(0, 30) + "..."}</Td>
@@ -78,9 +116,51 @@ const TradeTable = ({
                           ? trade.attributes.executed
                           : trade.attributes.confirmed
                       ) ? (
-                        <CheckIcon />
+                        <CheckIcon
+                          onClick={() => router.push("/trade/" + trade.id)}
+                        />
                       ) : (
-                        <CloseIcon />
+                        <Flex>
+                          <CloseIcon
+                            onClick={() =>
+                              toast({
+                                status: "success",
+                                title:
+                                  "Successfully submitted your trade offer",
+                                description:
+                                  "Please wait until the other party has accepted your request",
+                                isClosable: true,
+                              })
+                            }
+                          />
+                          <Button variant={"dark-shadow"} onClick={onOpen}>
+                            Delete
+                          </Button>
+                          <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                              <ModalHeader>Confirm delete?</ModalHeader>
+                              <ModalCloseButton />
+
+                              <ModalFooter>
+                                <Button
+                                  colorScheme="blue"
+                                  mr={3}
+                                  onClick={onClose}
+                                >
+                                  Delete
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  onClick={onClose}
+                                  ml={2}
+                                >
+                                  Cancel
+                                </Button>
+                              </ModalFooter>
+                            </ModalContent>
+                          </Modal>
+                        </Flex>
                       )}
                     </Td>
                   </Tr>

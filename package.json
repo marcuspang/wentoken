@@ -14,6 +14,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "deploy:contract": "yarn hardhat run scripts/deploy.ts --network ropsten",
     "type-check": "tsc",
     "frp": "./frp_windows/frpc.exe -c ./frp_windows/frpc.ini",
     "frp:mac": "./frp_mac/frpc -c ./frp_mac/frpc.ini",

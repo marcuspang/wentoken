@@ -9,12 +9,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { fakecomposedchartdata } from "../../constants/constants";
+import { composedChartData } from "../../constants/constants";
 
 const PortfolioComposedChart = (props: StackProps) => (
   <VStack {...props}>
     <ResponsiveContainer width={"100%"} height={300}>
-      <ComposedChart data={fakecomposedchartdata}>
+      <ComposedChart data={composedChartData}>
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />

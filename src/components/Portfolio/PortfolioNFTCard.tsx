@@ -14,21 +14,12 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { TOKENS } from "../../constants/constants";
 import theme from "../../theme/theme";
 
-// const data = {
-//   isTradeable: true,
-//   imageURL:
-//     "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
-//   collection: "Parallel Alpha",
-//   name: "Marcolian Parallel Collectible Card Back",
-//   value: "0.3 ETH",
-//   pnl: "3.1%",
-// };
-
 export interface NFTCard {
-  collectionId: number;
+  tokenId: number;
   isTradeable: boolean;
   imageUrl: string;
   name: string;
@@ -38,18 +29,21 @@ export interface NFTCard {
 
 interface NFTCardProps extends NFTCard, FlexProps {
   onClick: () => void;
+  tokenAmount: number;
 }
 
 const PortfolioNFTCard = ({
-  collectionId,
+  tokenId,
   pnl,
   value,
   imageUrl,
   isTradeable,
   name,
+  tokenAmount,
   onClick,
   ...props
 }: NFTCardProps) => {
+  const router = useRouter();
   return (
     <Flex
       alignItems="center"
@@ -101,7 +95,7 @@ const PortfolioNFTCard = ({
           >
             <Stack width={"67%"} spacing={0}>
               <Text fontSize="sm" fontWeight="normal" isTruncated>
-                {TOKENS[collectionId]}
+                {TOKENS[tokenId]}
               </Text>
               <Text fontSize="md" fontWeight="semibold" lineHeight={1.1}>
                 {name}
@@ -121,7 +115,19 @@ const PortfolioNFTCard = ({
             </Stat>
           </HStack>
           <Flex justifyContent="space-evenly">
-            <Button minW="30%" maxW="50%" variant={"normal"}>
+            <Button
+              minW="30%"
+              maxW="50%"
+              variant={"normal"}
+              onClick={() =>
+                router.push(
+                  "/portfolio/sell/?tokenId=" +
+                    tokenId +
+                    "&amount=" +
+                    tokenAmount,
+                )
+              }
+            >
               Sell
             </Button>
             <Button

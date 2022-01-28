@@ -24,7 +24,7 @@ interface NFTCardProps extends NFTCard, FlexProps {
 }
 
 const TradeNFTCard = ({
-  collectionId,
+  tokenId: collectionId,
   pnl,
   value,
   imageUrl,

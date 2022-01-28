@@ -1,8 +1,6 @@
-import { Button, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
-import Moralis from "moralis/types";
+import { Button, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { IoRefresh } from "react-icons/io5";
+import { useEffect } from "react";
 import { useMoralis, useMoralisQuery } from "react-moralis";
 import { PendingTrades } from "../../pages/trade/[id]";
 import TradeTable from "./TradeTable";

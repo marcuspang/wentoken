@@ -1,7 +1,6 @@
 import {
   Badge,
   Box,
-  Button,
   Flex,
   FlexProps,
   HStack,
@@ -14,36 +13,21 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { TOKENS } from "../../constants/constants";
 import theme from "../../theme/theme";
 import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 
-// const data = {
-//   isTradeable: true,
-//   imageURL:
-//     "https://storage.googleapis.com/prod.static-assets.parallelnft.com/card-art/Marcolian_Orb_Se-1.gif",
-//   collection: "Parallel Alpha",
-//   name: "Marcolian Parallel Collectible Card Back",
-//   value: "0.3 ETH",
-//   pnl: "3.1%",
-// };
+interface NFTCardProps extends NFTCard, FlexProps {}
 
-interface NFTCardProps extends NFTCard, FlexProps {
-  onEditSelection: () => void;
-}
-
-const ExploreNFTCard = ({
-  tokenId: collectionId,
+const SellNFTCard = ({
+  tokenId,
   pnl,
   value,
   imageUrl,
   isTradeable,
   name,
-  onEditSelection,
   ...props
 }: NFTCardProps) => {
-  const router = useRouter();
   return (
     <Flex
       alignItems="center"
@@ -69,15 +53,23 @@ const ExploreNFTCard = ({
 
         <Box p="4">
           <Box d="flex" alignItems="flex-start" mb={2}>
-            {isTradeable ? (
-              <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="green">
-                Tradeable
-              </Badge>
-            ) : (
-              <Badge rounded="full" px="2" fontSize="0.8em" color="black">
-                Untradeable
-              </Badge>
-            )}
+            {
+              isTradeable ? (
+                <Badge
+                  rounded="full"
+                  px="2"
+                  fontSize="0.8em"
+                  colorScheme="green"
+                >
+                  Tradeable
+                </Badge>
+              ) : (
+                <Box h="19.2px"></Box>
+              )
+              //   <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="white" color="white">
+              //   Untradeable
+              // </Badge>
+            }
           </Box>
           <HStack
             justifyContent="space-between"
@@ -87,7 +79,7 @@ const ExploreNFTCard = ({
           >
             <Stack width={"67%"} spacing={0}>
               <Text fontSize="sm" fontWeight="normal" isTruncated>
-                {TOKENS[collectionId]}
+                {TOKENS[tokenId]}
               </Text>
               <Text fontSize="md" fontWeight="semibold" lineHeight={1.1}>
                 {name}
@@ -106,35 +98,10 @@ const ExploreNFTCard = ({
               </StatHelpText>
             </Stat>
           </HStack>
-          <Flex justifyContent="space-evenly">
-            <Button
-              minW="30%"
-              maxW="50%"
-              variant={"normal"}
-              onClick={onEditSelection}
-            >
-              Buy
-            </Button>
-            <Button
-              minW="30%"
-              maxW="50%"
-              variant={"normal-dark"}
-              onClick={() =>
-                // TODO implement offers by other people
-                router.push(
-                  "/trade/selection?to=" +
-                    "0xE269cf4647c3BE31E4e99ADeD398aA164BdFa0aC",
-                )
-              }
-              isDisabled={!isTradeable}
-            >
-              Trade
-            </Button>
-          </Flex>
         </Box>
       </Box>
     </Flex>
   );
 };
 
-export default ExploreNFTCard;
+export default SellNFTCard;

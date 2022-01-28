@@ -63,11 +63,7 @@ const PortfolioPage: NextPage = () => {
                   {TOKENS[index]}
                 </Text>
                 <PortfolioCollectionChart />
-                <PortfolioCollection
-                  tokenAmount={token}
-                  tokenId={index}
-                  key={index}
-                />
+                <PortfolioCollection tokens={tokens} key={index} />
               </Box>
             ),
         )}

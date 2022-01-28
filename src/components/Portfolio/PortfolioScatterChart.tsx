@@ -1,27 +1,22 @@
+import { StackProps, Text, VStack } from "@chakra-ui/react";
 import {
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  Bar,
-  Line,
-  ComposedChart,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
-import { StackProps, Text, VStack } from "@chakra-ui/react";
-import { fakescatterchartdata } from "../../constants/constants";
+import { scatterChartData } from "../../constants/constants";
 
 const PortfolioScatterChart = (props: StackProps) => (
   <VStack {...props}>
     <ResponsiveContainer width={"100%"} height={300}>
       <ScatterChart>
-        <XAxis dataKey="x" />
-        <YAxis dataKey="y" />
+        <XAxis dataKey="buy" />
+        <YAxis dataKey="sell" />
         <Tooltip />
-        <Scatter data={fakescatterchartdata} fill="black" name="Scatter" />
+        <Scatter data={scatterChartData} fill="black" name="Scatter" />
       </ScatterChart>
     </ResponsiveContainer>
     <Text as="h3" fontSize={"lg"} fontWeight={400} mb={2} py={3}>

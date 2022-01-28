@@ -67,119 +67,123 @@ export const fakecards = [
   },
 ];
 
-export const fakecomposedchartdata = [
+export const composedChartData = [
   {
-    name: "d1",
+    name: "-7d",
     price: 2155,
     volume: 2400,
   },
   {
-    name: "d2",
+    name: "-6d",
     price: 2800,
     volume: 2512,
   },
   {
-    name: "d3",
+    name: "-5d",
     price: 2500,
     volume: 2000,
   },
   {
-    name: "d4",
+    name: "-4d",
     price: 2980,
     volume: 3208,
   },
   {
-    name: "d5",
+    name: "-3d",
     price: 2600,
     volume: 3000,
   },
   {
-    name: "d6",
+    name: "-2d",
     price: 4090,
     volume: 3800,
   },
   {
-    name: "d7",
+    name: "-1d",
     price: 5090,
     volume: 4600,
   },
 ];
 
-export const fakescatterchartdata = [
+export const scatterChartData = [
   {
-    x: 168,
-    y: 250,
+    buy: 168,
+    sell: 250,
   },
   {
-    x: 190,
-    y: 290,
+    buy: 190,
+    sell: 290,
   },
   {
-    x: 200,
-    y: 260,
+    buy: 200,
+    sell: 260,
   },
   {
-    x: 240,
-    y: 290,
+    buy: 240,
+    sell: 290,
   },
 
   {
-    x: 250,
-    y: 280,
+    buy: 250,
+    sell: 280,
   },
   {
-    x: 310,
-    y: 220,
+    buy: 310,
+    sell: 220,
   },
   {
-    x: 400,
-    y: 300,
+    buy: 400,
+    sell: 300,
   },
   {
-    x: 340,
-    y: 350,
+    buy: 340,
+    sell: 350,
   },
   {
-    x: 250,
-    y: 370,
+    buy: 250,
+    sell: 370,
   },
   {
-    x: 438,
-    y: 220,
+    buy: 438,
+    sell: 220,
   },
   {
-    x: 440,
-    y: 350,
+    buy: 440,
+    sell: 350,
   },
   {
-    x: 500,
-    y: 450,
+    buy: 500,
+    sell: 450,
   },
 ];
 
-export const fakelinechartdata = [
+export const lineChartData = [
   {
-    name: "2017",
-    uv: 1800,
+    name: "-7d",
+    holders: 1200,
   },
   {
-    name: "2018",
-    uv: 1440,
+    name: "-6d",
+    holders: 1400,
   },
   {
-    name: "2019",
-    uv: 2580,
+    name: "-5d",
+    holders: 1440,
   },
   {
-    name: "2020",
-    uv: 1890,
+    name: "-4d",
+    holders: 2580,
   },
   {
-    name: "2021",
-    uv: 2790,
+    name: "-3d",
+    holders: 2200,
   },
   {
-    name: "2022",
-    uv: 2390,
+    name: "-2d",
+    holders: 2790,
+  },
+  {
+    name: "-1d",
+    holders: 2390,
   },
 ];

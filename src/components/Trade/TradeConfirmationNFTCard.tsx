@@ -30,7 +30,7 @@ import { NFTCard } from "../Portfolio/PortfolioNFTCard";
 interface NFTCardProps extends NFTCard, FlexProps {}
 
 const TradeConfirmationNFTCard = ({
-  collectionId,
+  tokenId: collectionId,
   pnl,
   value,
   imageUrl,

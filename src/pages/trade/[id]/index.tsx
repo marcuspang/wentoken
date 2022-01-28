@@ -11,7 +11,7 @@ import Layout from "../../../components/Layout/Layout";
 import TradeConfirmationMenu from "../../../components/Trade/TradeConfirmationMenu";
 import TradeConfirmationNFTCards from "../../../components/Trade/TradeConfirmationNFTCards";
 import { TOKEN_IDS } from "../../../constants/constants";
-import createTokenOptions from "../../../util/createTokenOptions";
+import { createTokenOptions } from "../../../util/createTokenOptions";
 
 export interface PendingTrades {
   to: string;

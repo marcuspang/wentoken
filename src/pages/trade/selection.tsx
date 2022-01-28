@@ -92,7 +92,21 @@ const TradeSelectionPage: NextPage = () => {
         },
       });
     }
+
+    return () => {
+      setTokens([]);
+    };
   }, [isWeb3EnableLoading, isInitializing, toAddress]);
+
+  useEffect(() => {
+    setValidForm(() =>
+      checkIsSelectionValid(selectedFromTokens, selectedToTokens),
+    );
+
+    return () => {
+      setValidForm(() => false);
+    };
+  }, [selectedFromTokens, selectedToTokens]);
 
   const addressOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.value && ethers.utils.isAddress(e.target.value)) {
@@ -110,33 +124,31 @@ const TradeSelectionPage: NextPage = () => {
   const editSelection = useCallback(
     (tokenId: number, selection: "to" | "from", edit: 1 | -1) => {
       if (selection === "from") {
-        setSelectedFromTokens((prev) => {
-          const temp = prev.map((item, index) => {
+        setSelectedFromTokens((prev) =>
+          prev.map((item, index) => {
             if (index === tokenId) {
               return item + edit;
             } else {
               return item;
             }
-          });
-          setValidForm(checkIsSelectionValid(temp, selectedToTokens));
-          return temp;
-        });
+          }),
+        );
       } else {
-        setSelectedToTokens((prev) => {
-          const temp = prev.map((item, index) => {
+        setSelectedToTokens((prev) =>
+          prev.map((item, index) => {
             if (index === tokenId) {
               return item + edit;
             } else {
               return item;
             }
-          });
-          setValidForm(checkIsSelectionValid(selectedFromTokens, temp));
-          return temp;
-        });
+          }),
+        );
       }
     },
     [],
   );
+
+  console.log(selectedFromTokens, selectedToTokens, validForm);
 
   return (
     <Layout>

@@ -47,7 +47,7 @@ const theme = extendTheme({
             bg: "black",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
             _hover: {
-              bg: "gray.600",
+              bg: "var(--chakra-colors-gray-600) !important",
             },
           };
         },

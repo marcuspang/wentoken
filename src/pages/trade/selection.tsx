@@ -13,11 +13,12 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { ChangeEventHandler, useEffect, useState } from "react";
+import { ChangeEventHandler, useCallback, useEffect, useState } from "react";
 import {
   useMoralis,
   useNewMoralisObject,
@@ -30,13 +31,25 @@ import TradeMenu from "../../components/Trade/TradeMenu";
 import { TOKEN_IDS, TOKEN_LENGTH } from "../../constants/constants";
 import createTokenOptions from "../../util/createTokenOptions";
 
+// check if selections are empty, to prevent user from getting free NFTs
+const checkIsSelectionValid = (fromTokens: number[], toTokens: number[]) => {
+  return !!(
+    fromTokens.filter(Boolean).length && toTokens.filter(Boolean).length
+  );
+};
+
 const TradeSelectionPage: NextPage = () => {
   const router = useRouter();
+  const toast = useToast();
 
   const { user, isWeb3EnableLoading, isInitializing } = useMoralis();
-  const { isSaving, save } = useNewMoralisObject("PendingTrades");
+  const {
+    isSaving,
+    save,
+    error: saveError,
+  } = useNewMoralisObject("PendingTrades");
 
-  const { data, fetch, isFetching } = useWeb3ExecuteFunction();
+  const { fetch: balanceFetch, isFetching } = useWeb3ExecuteFunction();
 
   const [tokens, setTokens] = useState<number[]>([]);
   const [selectedFromTokens, setSelectedFromTokens] = useState<number[]>(
@@ -62,78 +75,68 @@ const TradeSelectionPage: NextPage = () => {
         // if there are tokens already and no toAddress or to then dont fetch again
         return;
       }
-      fetch({
+      balanceFetch({
         params: createTokenOptions("balanceOfBatch", {
           // [from * 4, to * 4]
           accounts,
           // [0, 1, 2, 3, 0, 1, 2, 3]
           ids,
         }),
+        onSuccess: (data) => {
+          if (data && (data as ethers.BigNumber[]).length) {
+            const tokenAmounts = (data as ethers.BigNumber[]).map((token) =>
+              ethers.BigNumber.from(token).toNumber(),
+            );
+            setTokens(tokenAmounts);
+          }
+        },
       });
     }
   }, [isWeb3EnableLoading, isInitializing, toAddress]);
-
-  useEffect(() => {
-    if (data) {
-      const tokenAmounts = (data as ethers.BigNumber[]).map((token) =>
-        ethers.BigNumber.from(token).toNumber(),
-      );
-      setTokens(tokenAmounts);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    console.log(selectedFromTokens, selectedToTokens);
-    if (
-      selectedFromTokens &&
-      selectedFromTokens.length &&
-      selectedToTokens &&
-      selectedToTokens.length
-    ) {
-      setValidForm(true);
-    } else {
-      setValidForm(false);
-    }
-    console.log("here");
-  }, [selectedFromTokens, selectedToTokens]);
 
   const addressOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.value && ethers.utils.isAddress(e.target.value)) {
       setToAddress(e.target.value);
       setToAddressInputError(false);
+      // reset tokens
+      setSelectedFromTokens([0, 0, 0, 0]);
+      setSelectedToTokens([0, 0, 0, 0]);
     } else {
       setToAddress("");
       setToAddressInputError(true);
     }
   };
 
-  const editSelection = (
-    tokenId: number,
-    selection: "to" | "from",
-    edit: 1 | -1,
-  ) => {
-    if (selection === "from") {
-      setSelectedFromTokens((prev) => {
-        const temp = prev;
-        if (edit === 1) {
-          temp[tokenId]++;
-        } else {
-          temp[tokenId]--;
-        }
-        return temp;
-      });
-    } else {
-      setSelectedToTokens((prev) => {
-        const temp = prev;
-        if (edit === 1) {
-          temp[tokenId]++;
-        } else {
-          temp[tokenId]--;
-        }
-        return temp;
-      });
-    }
-  };
+  const editSelection = useCallback(
+    (tokenId: number, selection: "to" | "from", edit: 1 | -1) => {
+      if (selection === "from") {
+        setSelectedFromTokens((prev) => {
+          const temp = prev.map((item, index) => {
+            if (index === tokenId) {
+              return item + edit;
+            } else {
+              return item;
+            }
+          });
+          setValidForm(checkIsSelectionValid(temp, selectedToTokens));
+          return temp;
+        });
+      } else {
+        setSelectedToTokens((prev) => {
+          const temp = prev.map((item, index) => {
+            if (index === tokenId) {
+              return item + edit;
+            } else {
+              return item;
+            }
+          });
+          setValidForm(checkIsSelectionValid(selectedFromTokens, temp));
+          return temp;
+        });
+      }
+    },
+    [],
+  );
 
   return (
     <Layout>
@@ -186,6 +189,7 @@ const TradeSelectionPage: NextPage = () => {
               mb={4}
               isDisabled={isSaving || !validForm}
               onClick={async () => {
+                // save to moralis
                 const result = await save({
                   to: (toAddress as string).toLowerCase(),
                   toTokenIds: TOKEN_IDS,
@@ -196,6 +200,13 @@ const TradeSelectionPage: NextPage = () => {
                   confirmed: false,
                   executed: false,
                 });
+                if (saveError) {
+                  toast({
+                    status: "error",
+                    title: "Something went wrong with making a new transaction",
+                    description: saveError.message,
+                  });
+                }
                 // TODO add error handling
                 router.push("/trade/" + result.id);
               }}

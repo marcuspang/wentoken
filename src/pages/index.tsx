@@ -20,6 +20,7 @@ import Card from "../components/Explore/Card";
 import Layout from "../components/Layout/Layout";
 import theme from "../theme/theme";
 import PlayIcon from "../components/Layout/PlayIcon";
+import CustomLink from "../components/Layout/CustomLink";
 
 // fetch({
 //   params: createTokenOptions(
@@ -127,21 +128,20 @@ const Home: NextPage = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Submit your email to stay updated!</ModalHeader>
+          <ModalHeader>Join us!</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input
-              placeholder="your-email@web3.com"
-              _placeholder={{ color: "gray.500" }}
-              type="email"
-            />
+            Fill up this Google form to{" "}
+            <CustomLink
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeV_qe0hCrjEIrmCqNf1xjS3YIQEldkH6gvmFImqTPYlDiK9g/viewform"
+              color={"blue.400"}
+            >
+              join our Beta.
+            </CustomLink>
           </ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button colorScheme="blue">Submit Email</Button>
+            <Button onClick={onClose}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

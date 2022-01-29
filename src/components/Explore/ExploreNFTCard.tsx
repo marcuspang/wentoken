@@ -12,6 +12,7 @@ import {
   StatHelpText,
   StatNumber,
   Text,
+  Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -35,7 +36,7 @@ interface NFTCardProps extends Omit<NFTCard, "pnl">, FlexProps {
 }
 
 const ExploreNFTCard = ({
-  tokenId: collectionId,
+  tokenId,
   value,
   imageUrl,
   isTradeable,
@@ -88,7 +89,7 @@ const ExploreNFTCard = ({
           >
             <Stack width={"67%"} spacing={0}>
               <Text fontSize="sm" fontWeight="normal" isTruncated>
-                {WENTOKEN[collectionId]}
+                {WENTOKEN[tokenId]}
               </Text>
               <Text fontSize="md" fontWeight="semibold" lineHeight={1.1}>
                 {name}
@@ -108,21 +109,30 @@ const ExploreNFTCard = ({
             </Stat>
           </HStack>
           <Flex justifyContent="space-evenly">
-            <Button minW="30%" maxW="50%" variant={"normal"} onClick={onSubmit}>
-              Buy
-            </Button>
-            <Button
-              minW="30%"
-              maxW="50%"
-              variant={"normal-dark"}
-              onClick={() =>
-                // TODO implement offers by other people
-                router.push("/trade/selection?to=" + from)
-              }
-              isDisabled={!isTradeable}
-            >
-              Trade
-            </Button>
+            <Tooltip label={"Buy from " + from}>
+              <Button
+                minW="30%"
+                maxW="50%"
+                variant={"normal"}
+                onClick={onSubmit}
+              >
+                Buy
+              </Button>
+            </Tooltip>
+            <Tooltip label={"Trade with " + from}>
+              <Button
+                minW="30%"
+                maxW="50%"
+                variant={"normal-dark"}
+                onClick={() =>
+                  // TODO implement offers by other people
+                  router.push("/trade/selection?to=" + from)
+                }
+                isDisabled={!isTradeable}
+              >
+                Trade
+              </Button>
+            </Tooltip>
           </Flex>
         </Box>
       </Box>

@@ -109,7 +109,7 @@ const PortfolioPage: NextPage = () => {
         </Box>
         <Box>
           <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2} mt={10}>
-            {"wentoken"}
+            {"wentoken reborn"}
           </Text>
           <PortfolioCollectionChart />
           <PortfolioCollection tokens={tokens} />

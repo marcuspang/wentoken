@@ -100,15 +100,20 @@ const PortfolioPage: NextPage = () => {
             balance={outstandingBalance}
           />
         </Box>
-        {
-          <Box>
-            <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2} mt={10}>
-              {"wentoken"}
-            </Text>
-            <PortfolioCollectionChart />
-            <PortfolioCollection tokens={tokens} />
-          </Box>
-        }
+        <Box>
+          <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2} mt={10}>
+            {"wentoken"}
+          </Text>
+          <PortfolioCollectionChart />
+          <PortfolioCollection tokens={tokens} />
+        </Box>
+        <Box>
+          <Text as="h2" fontSize={"4xl"} fontWeight={600} mb={2} mt={10}>
+            {"wentoken"}
+          </Text>
+          <PortfolioCollectionChart />
+          <PortfolioCollection tokens={tokens} />
+        </Box>
       </Box>
     </Layout>
   );

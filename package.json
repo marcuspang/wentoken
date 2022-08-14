@@ -37,7 +37,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/poppins": "4.5.0",
-    "@openzeppelin/contracts": "4.4.2",
+    "@openzeppelin/contracts": "4.7.2",
     "@walletconnect/web3-provider": "1.7.1",
     "concurrently": "7.0.0",
     "framer-motion": "^5",
